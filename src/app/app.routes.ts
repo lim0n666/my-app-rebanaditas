@@ -2,24 +2,9 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'productos', // Redirige automáticamente a productos
     pathMatch: 'full',
-  },  {
-    path: 'login',
-    loadComponent: () => import('./login/login.page').then( m => m.LoginPage)
-  },
-  {
-    path: 'registro',
-    loadComponent: () => import('./registro/registro.page').then( m => m.RegistroPage)
-  },
-  {
-    path: 'categorias',
-    loadComponent: () => import('./categorias/categorias.page').then( m => m.CategoriasPage)
   },
   {
     path: 'productos',
@@ -30,12 +15,7 @@ export const routes: Routes = [
     loadComponent: () => import('./carrito/carrito.page').then( m => m.CarritoPage)
   },
   {
-    path: 'pago',
-    loadComponent: () => import('./pago/pago.page').then( m => m.PagoPage)
+    path: 'login',
+    loadComponent: () => import('./login/login.page').then( m => m.LoginPage)
   },
-  {
-    path: 'perfil',
-    loadComponent: () => import('./perfil/perfil.page').then( m => m.PerfilPage)
-  },
-
 ];

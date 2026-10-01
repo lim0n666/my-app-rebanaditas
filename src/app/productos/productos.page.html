@@ -1,13 +1,37 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>productos</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Gestión de Productos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">productos</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <!-- Formulario para agregar -->
+  <ion-item>
+    <ion-input [(ngModel)]="nuevoNombre" placeholder="Nombre del postre"></ion-input>
+  </ion-item>
+  
+  <ion-item>
+    <ion-input [(ngModel)]="nuevoPrecio" type="number" placeholder="Precio"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input [(ngModel)]="nuevaCategoria" placeholder="Categoría"></ion-input>
+  </ion-item>
+
+  <ion-button expand="block" class="ion-margin-top" (click)="agregarProducto()">Agregar Producto</ion-button>
+
+  <!-- Lista moderna con @for -->
+  <ion-list class="ion-margin-top">
+    @for (p of misPostres; track p.id; let i = $index) {
+      <ion-item>
+        <ion-label>
+          <h2>{{ p.nombre }}</h2>
+          <p>${{ p.precio }} - {{ p.categoria }}</p>
+        </ion-label>
+        <ion-button color="danger" slot="end" (click)="eliminarProducto(i)">X</ion-button>
+      </ion-item>
+    }
+  </ion-list>
+
 </ion-content>
