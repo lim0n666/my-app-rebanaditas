@@ -1,0 +1,205 @@
+ion-content {
+  --background: #ffffff;
+}
+
+.login {
+  width: 100%;
+  min-height: 100%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* =========================
+   ENCABEZADO
+========================= */
+
+.encabezado {
+  width: 85%;
+  text-align: center;
+  margin-top: 70px;
+}
+
+.logo {
+  width: 75px;
+  height: 75px;
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: #f4eeee;
+
+  font-size: 38px;
+}
+
+.encabezado h1 {
+  margin: 0;
+
+  font-size: 26px;
+  font-weight: 400;
+
+  color: #263238;
+}
+
+.encabezado p {
+  margin: 8px 0 0;
+
+  font-size: 15px;
+  color: #8b959b;
+}
+
+
+/* =========================
+   FORMULARIO
+========================= */
+
+.formulario {
+  width: 82%;
+  max-width: 420px;
+
+  margin-top: 55px;
+}
+
+.formulario h2 {
+  margin: 0;
+
+  font-size: 25px;
+  font-weight: 500;
+
+  color: #263238;
+}
+
+.subtitulo {
+  margin: 8px 0 30px;
+
+  font-size: 14px;
+  color: #7b878e;
+}
+
+
+/* =========================
+   CAMPOS
+========================= */
+
+.campo {
+  position: relative;
+
+  margin-bottom: 20px;
+}
+
+ion-input {
+  --background: #ffffff;
+  --border-color: #b9c2c7;
+  --border-style: solid;
+  --border-width: 1px;
+  --border-radius: 5px;
+
+  --highlight-color: #8b4a45;
+
+  --color: #263238;
+  --placeholder-color: #a2abb0;
+
+  min-height: 55px;
+}
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+.password {
+  padding-right: 75px;
+}
+
+.boton-password {
+  position: absolute;
+
+  right: 10px;
+  top: 16px;
+
+  border: none;
+  background: transparent;
+
+  color: #8b4a45;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.mensaje-error {
+  margin: 5px 0 18px;
+
+  padding: 12px;
+
+  border-radius: 5px;
+
+  background: #fceeee;
+
+  color: #a33d3d;
+
+  font-size: 14px;
+
+  text-align: center;
+}
+
+
+/* =========================
+   BOTÓN LOGIN
+========================= */
+
+.boton-login {
+  margin-top: 10px;
+
+  --background: #8b4a45;
+  --background-activated: #733c38;
+
+  --border-radius: 5px;
+
+  height: 50px;
+
+  font-size: 15px;
+  font-weight: 500;
+}
+
+
+/* =========================
+   REGISTRO
+========================= */
+
+.registro {
+  margin-top: 25px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  font-size: 14px;
+
+  color: #7b878e;
+}
+
+.registro button {
+  border: none;
+  background: transparent;
+
+  padding: 0;
+
+  color: #8b4a45;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}

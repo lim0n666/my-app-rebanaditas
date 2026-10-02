@@ -6,32 +6,82 @@
 
 <ion-content class="ion-padding">
 
-  <!-- Formulario para agregar -->
+  <!-- Nombre del producto -->
   <ion-item>
-    <ion-input [(ngModel)]="nuevoNombre" placeholder="Nombre del postre"></ion-input>
-  </ion-item>
-  
-  <ion-item>
-    <ion-input [(ngModel)]="nuevoPrecio" type="number" placeholder="Precio"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-input [(ngModel)]="nuevaCategoria" placeholder="Categoría"></ion-input>
+    <ion-input
+      [(ngModel)]="nuevoNombre"
+      label="Nombre del postre"
+      labelPlacement="floating"
+      placeholder="Ej. Pay de Limón">
+    </ion-input>
   </ion-item>
 
-  <ion-button expand="block" class="ion-margin-top" (click)="agregarProducto()">Agregar Producto</ion-button>
+  <!-- Precio -->
+  <ion-item>
+    <ion-input
+      [(ngModel)]="nuevoPrecio"
+      type="number"
+      label="Precio"
+      labelPlacement="floating"
+      placeholder="Ej. 35">
+    </ion-input>
+  </ion-item>
 
-  <!-- Lista moderna con @for -->
-  <ion-list class="ion-margin-top">
-    @for (p of misPostres; track p.id; let i = $index) {
-      <ion-item>
+  <!-- Categoría -->
+  <ion-item>
+    <ion-input
+      [(ngModel)]="nuevaCategoria"
+      label="Categoría"
+      labelPlacement="floating"
+      placeholder="Ej. Pasteles">
+    </ion-input>
+  </ion-item>
+
+  <!-- Botón -->
+  <ion-button
+    expand="block"
+    class="boton-agregar"
+    (click)="agregarProducto()">
+    AGREGAR PRODUCTO
+  </ion-button>
+
+  <!-- Lista de productos -->
+  <ion-list class="lista-productos">
+
+    @for (producto of productos; track producto.id; let i = $index) {
+
+      <ion-item class="producto-item">
+
         <ion-label>
-          <h2>{{ p.nombre }}</h2>
-          <p>${{ p.precio }} - {{ p.categoria }}</p>
+          <h2>{{ producto.nombre }}</h2>
+
+          <p>
+            ${{ producto.precio }} - {{ producto.categoria }}
+          </p>
         </ion-label>
-        <ion-button color="danger" slot="end" (click)="eliminarProducto(i)">X</ion-button>
+
+        <ion-button
+          color="danger"
+          fill="clear"
+          slot="end"
+          (click)="eliminarProducto(i)">
+          X
+        </ion-button>
+
       </ion-item>
+
     }
+
   </ion-list>
+
+  <!-- Mensaje cuando no hay productos -->
+  @if (productos.length === 0) {
+
+    <div class="sin-productos">
+      <h2>No hay productos</h2>
+      <p>Agrega un producto utilizando el formulario.</p>
+    </div>
+
+  }
 
 </ion-content>

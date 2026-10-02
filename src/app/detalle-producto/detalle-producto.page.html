@@ -1,0 +1,56 @@
+<ion-content>
+
+  <div class="detalle" *ngIf="producto">
+
+    <div class="encabezado">
+
+      <button
+        class="boton-regresar"
+        (click)="regresar()">
+        ←
+      </button>
+
+      <h1>Postres que enamoran</h1>
+
+    </div>
+
+    <div class="imagen-producto">
+
+      <div class="imagen-placeholder">
+        🍰
+      </div>
+
+    </div>
+
+    <div class="informacion">
+
+      <h2>
+        {{ producto.nombre }}
+      </h2>
+
+      <div class="precio">
+        ${{ producto.precio }}
+      </div>
+
+      <h3>
+        Detalles del producto
+      </h3>
+
+      <p>
+        {{ producto.descripcion }}
+      </p>
+
+      <ion-button
+        expand="block"
+        class="boton-carrito"
+        (click)="agregarAlCarrito()">
+
+        Agregar al carrito
+
+      </ion-button>
+
+    </div>
+
+  </div>
+
+</ion-content>

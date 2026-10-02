@@ -1,11 +1,20 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { 
-  IonContent, IonHeader, IonTitle, IonToolbar, 
-  IonList, IonItem, IonLabel, IonButton, IonInput, 
-  IonCard, IonItemSliding 
+
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonButton,
+  IonInput
 } from '@ionic/angular';
+
+import { Producto } from '../models/producto.models';
 
 @Component({
   selector: 'app-productos',
@@ -13,57 +22,98 @@ import {
   styleUrls: ['./productos.page.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    IonContent, 
-    IonHeader, 
-    IonTitle, 
-    IonToolbar, 
-    IonList, 
-    IonItem, 
-    IonLabel, 
-    IonButton, 
-    IonInput,
-    IonCard,
-    IonItemSliding
+    CommonModule,
+    FormsModule,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonButton,
+    IonInput
   ]
 })
 export class ProductosPage {
-  // Arreglo directo con los datos estáticos
-  misPostres = [
-    { id: 1, nombre: 'Pay de Limón', precio: 35, categoria: 'Pay' },
-    { id: 2, nombre: 'Tres Leches', precio: 40, categoria: 'Pasteles' },
-    { id: 3, nombre: 'Cheesecake de Fresa', precio: 50, categoria: 'Especiales' },
-    { id: 4, nombre: 'Brownie con Nuez', precio: 30, categoria: 'Chocolate' }
+
+  // ARREGLO ESTÁTICO DE PRODUCTOS
+  productos: Producto[] = [
+    {
+      id: 1,
+      nombre: 'Pay de Limón',
+      precio: 35,
+      categoria: 'Pay'
+    },
+    {
+      id: 2,
+      nombre: 'Tres Leches',
+      precio: 40,
+      categoria: 'Pasteles'
+    },
+    {
+      id: 3,
+      nombre: 'Cheesecake de Fresa',
+      precio: 50,
+      categoria: 'Especiales'
+    },
+    {
+      id: 4,
+      nombre: 'Brownie con Nuez',
+      precio: 30,
+      categoria: 'Chocolate'
+    }
   ];
 
-  // Variables para el formulario
-  nuevoNombre: string = '';
-  nuevoPrecio: number = 0;
-  nuevaCategoria: string = '';
+  nuevoNombre = '';
+nuevoPrecio: number | null = null;
+  nuevaCategoria = '';
 
-  constructor() {}
+  agregarProducto(): void {
 
-  // Método para agregar un producto
-  agregarProducto() {
-    if (this.nuevoNombre && this.nuevoPrecio > 0) {
-      const nuevo = {
-        id: this.misPostres.length + 1,
-        nombre: this.nuevoNombre,
-        precio: Number(this.nuevoPrecio),
-        categoria: this.nuevaCategoria || 'General'
-      };
-      this.misPostres.push(nuevo);
-      
-      // Limpiar campos
-      this.nuevoNombre = '';
-      this.nuevoPrecio = 0;
-      this.nuevaCategoria = '';
-    }
+    if (
+  this.nuevoNombre.trim() === '' ||
+  this.nuevoPrecio === null ||
+  this.nuevoPrecio <= 0
+) {
+  return;
+}
+
+    const nuevoProducto: Producto = {
+      id: this.obtenerNuevoId(),
+      nombre: this.nuevoNombre.trim(),
+      precio: Number(this.nuevoPrecio),
+      categoria:
+        this.nuevaCategoria.trim() !== ''
+          ? this.nuevaCategoria.trim()
+          : 'General'
+    };
+
+    // Agregar elemento al arreglo
+    this.productos.push(nuevoProducto);
+
+    // Limpiar formulario
+    this.nuevoNombre = '';
+this.nuevoPrecio = null;
+    this.nuevaCategoria = '';
   }
 
-  // Método para eliminar un producto
-  eliminarProducto(index: number) {
-    this.misPostres.splice(index, 1);
+  obtenerNuevoId(): number {
+
+    if (this.productos.length === 0) {
+      return 1;
+    }
+
+    return (
+      Math.max(
+        ...this.productos.map(producto => producto.id)
+      ) + 1
+    );
+  }
+
+  eliminarProducto(indice: number): void {
+
+    // Eliminar elemento del arreglo
+    this.productos.splice(indice, 1);
   }
 }

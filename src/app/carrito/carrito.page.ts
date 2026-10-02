@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { 
-  IonContent, IonHeader, IonTitle, IonToolbar, 
-  IonList, IonItem, IonLabel, IonButton, IonInput 
+import { Router } from '@angular/router';
+
+import {
+  IonContent,
+  IonButton
 } from '@ionic/angular';
+
+import { ItemCarrito } from '../models/producto.models';
+import { DataService } from '../services/data';
 
 @Component({
   selector: 'app-carrito',
@@ -12,59 +16,49 @@ import {
   styleUrls: ['./carrito.page.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    IonContent, 
-    IonHeader, 
-    IonTitle, 
-    IonToolbar, 
-    IonList, 
-    IonItem, 
-    IonLabel, 
-    IonButton, 
-    IonInput
+    CommonModule,
+    IonContent,
+    IonButton
   ]
 })
 export class CarritoPage {
-  // Arreglo inicial del carrito
-  listaCarrito = [
-    { id: 1, producto: 'Pay de Limón', cantidad: 2, precio: 35 },
-    { id: 2, producto: 'Tres Leches', cantidad: 1, precio: 40 }
-  ];
 
-  // Variables para agregar un producto al carrito
-  nuevoProducto: string = '';
-  nuevaCantidad: number = 1;
-  nuevoPrecio: number = 0;
+  carrito: ItemCarrito[] = [];
 
-  constructor() {}
+  constructor(
+    private dataService: DataService,
+    private router: Router
+  ) {}
 
-  // Método para agregar un producto al carrito
-  agregarAlCarrito() {
-    if (this.nuevoProducto && this.nuevoPrecio > 0) {
-      const item = {
-        id: this.listaCarrito.length + 1,
-        producto: this.nuevoProducto,
-        cantidad: Number(this.nuevaCantidad) || 1,
-        precio: Number(this.nuevoPrecio)
-      };
-      
-      this.listaCarrito.push(item);
-      
-      // Limpiar campos
-      this.nuevoProducto = '';
-      this.nuevaCantidad = 1;
-      this.nuevoPrecio = 0;
+  ngOnInit(): void {
+    this.carrito = this.dataService.getCarrito();
+  }
+
+  regresar(): void {
+    this.router.navigate(['/home']);
+  }
+
+  aumentarCantidad(item: ItemCarrito): void {
+    item.cantidad++;
+  }
+
+  disminuirCantidad(item: ItemCarrito): void {
+    if (item.cantidad > 1) {
+      item.cantidad--;
+    } else {
+      const indice = this.carrito.indexOf(item);
+
+      if (indice !== -1) {
+        this.carrito.splice(indice, 1);
+      }
     }
   }
 
-  // Método para eliminar un elemento del carrito por índice
-  eliminarDelCarrito(index: number) {
-    this.listaCarrito.splice(index, 1);
-  }
-
-  // Método opcional para calcular el costo total del carrito
-  calcularTotal(): number {
-    return this.listaCarrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+  obtenerTotal(): number {
+    return this.carrito.reduce(
+      (total, item) =>
+        total + item.producto.precio * item.cantidad,
+      0
+    );
   }
 }

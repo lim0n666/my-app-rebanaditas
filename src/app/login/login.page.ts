@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { 
-  IonContent, IonHeader, IonTitle, IonToolbar, 
-  IonList, IonItem, IonLabel, IonButton, IonInput 
+import { Router } from '@angular/router';
+
+import {
+  IonContent,
+  IonInput,
+  IonButton
 } from '@ionic/angular';
+
+import { Usuario } from '../models/producto.models';
 
 @Component({
   selector: 'app-login',
@@ -12,51 +17,72 @@ import {
   styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    IonContent, 
-    IonHeader, 
-    IonTitle, 
-    IonToolbar, 
-    IonList, 
-    IonItem, 
-    IonLabel, 
-    IonButton, 
-    IonInput
+    CommonModule,
+    FormsModule,
+    IonContent,
+    IonInput,
+    IonButton
   ]
 })
 export class LoginPage {
-  // Arreglo inicial de usuarios (simulando tu estructura)
-  listaUsuarios = [
-    { id: 1, nombre: 'Luciana Silvaran', correo: 'luciana@correo.com' },
-    { id: 2, nombre: 'Cliente Demo', correo: 'cliente@correo.com' }
+
+  usuarios: Usuario[] = [
+    {
+      id: 1,
+      nombre: 'Reyna',
+      correo: 'reyna@gmail.com'
+    },
+    {
+      id: 2,
+      nombre: 'Cliente',
+      correo: 'cliente@gmail.com'
+    }
   ];
 
-  // Variables para el formulario de nuevo usuario / registro
-  nuevoNombre: string = '';
-  nuevoCorreo: string = '';
+  correo = '';
+  password = '';
 
-  constructor() {}
+  mensajeError = '';
+  mostrarPassword = false;
 
-  // Método para agregar un usuario
-  agregarUsuario() {
-    if (this.nuevoNombre && this.nuevoCorreo) {
-      const nuevo = {
-        id: this.listaUsuarios.length + 1,
-        nombre: this.nuevoNombre,
-        correo: this.nuevoCorreo
-      };
-      
-      this.listaUsuarios.push(nuevo);
-      
-      // Limpiar campos
-      this.nuevoNombre = '';
-      this.nuevoCorreo = '';
+  constructor(private router: Router) {}
+
+  iniciarSesion(): void {
+
+    this.mensajeError = '';
+
+    if (
+      this.correo.trim() === '' ||
+      this.password.trim() === ''
+    ) {
+      this.mensajeError = 'Completa todos los campos.';
+      return;
     }
+
+    const usuarioEncontrado = this.usuarios.find(
+      usuario =>
+        usuario.correo.toLowerCase() ===
+        this.correo.trim().toLowerCase()
+    );
+
+    if (!usuarioEncontrado) {
+      this.mensajeError = 'El correo no está registrado.';
+      return;
+    }
+
+    if (this.password !== '123456') {
+      this.mensajeError = 'La contraseña es incorrecta.';
+      return;
+    }
+
+    this.router.navigate(['/home']);
   }
 
-  // Método para eliminar un usuario por índice
-  eliminarUsuario(index: number) {
-    this.listaUsuarios.splice(index, 1);
+  cambiarVisibilidadPassword(): void {
+    this.mostrarPassword = !this.mostrarPassword;
+  }
+
+  irARegistro(): void {
+    this.router.navigate(['/home']);
   }
 }

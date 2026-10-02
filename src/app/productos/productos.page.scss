@@ -1,0 +1,76 @@
+ion-content {
+  --background: #fff8f5;
+}
+
+/* Campos del formulario */
+ion-item {
+  --background: #ffffff;
+  --border-radius: 12px;
+  --padding-start: 15px;
+  --inner-padding-end: 15px;
+
+  margin-bottom: 12px;
+}
+
+/* Etiquetas */
+ion-input {
+  --highlight-color-focused: #4d8dff;
+  --color: #333333;
+}
+
+/* Botón agregar */
+.boton-agregar {
+  margin-top: 20px;
+  margin-bottom: 25px;
+
+  --border-radius: 12px;
+
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Lista */
+.lista-productos {
+  background: transparent;
+}
+
+/* Cada producto */
+.producto-item {
+  --background: #ffffff;
+  --border-radius: 15px;
+
+  margin-bottom: 10px;
+
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Nombre */
+.producto-item h2 {
+  margin-bottom: 6px;
+
+  font-size: 17px;
+  font-weight: bold;
+
+  color: #4a2c2a;
+}
+
+/* Precio y categoría */
+.producto-item p {
+  margin: 0;
+
+  font-size: 14px;
+  color: #777777;
+}
+
+/* Mensaje sin productos */
+.sin-productos {
+  margin-top: 50px;
+
+  text-align: center;
+
+  color: #777777;
+}
+
+.sin-productos h2 {
+  color: #4a2c2a;
+}

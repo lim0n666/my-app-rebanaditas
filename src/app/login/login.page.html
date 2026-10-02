@@ -1,33 +1,110 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Gestión de Usuarios</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
 
-<ion-content class="ion-padding">
+  <div class="login">
 
-  <!-- Formulario para Registrar / Agregar Usuario -->
-  <ion-item>
-    <ion-input [(ngModel)]="nuevoNombre" placeholder="Nombre completo"></ion-input>
-  </ion-item>
-  
-  <ion-item>
-    <ion-input [(ngModel)]="nuevoCorreo" type="email" placeholder="Correo electrónico"></ion-input>
-  </ion-item>
+    <!-- LOGO / ENCABEZADO -->
+    <div class="encabezado">
 
-  <ion-button expand="block" class="ion-margin-top" (click)="agregarUsuario()">Registrar Usuario</ion-button>
+      <div class="logo">
+        🍰
+      </div>
 
-  <!-- Lista de Usuarios en pantalla -->
-  <ion-list class="ion-margin-top">
-    @for (u of listaUsuarios; track u.id; let i = $index) {
-      <ion-item>
-        <ion-label>
-          <h2>{{ u.nombre }}</h2>
-          <p>{{ u.correo }}</p>
-        </ion-label>
-        <ion-button color="danger" slot="end" (click)="eliminarUsuario(i)">Eliminar</ion-button>
-      </ion-item>
-    }
-  </ion-list>
+      <h1>Postres que enamoran</h1>
+
+      <p>
+        Bienvenido
+      </p>
+
+    </div>
+
+
+    <!-- FORMULARIO -->
+    <div class="formulario">
+
+      <h2>Iniciar sesión</h2>
+
+      <p class="subtitulo">
+        Ingresa tus datos para continuar
+      </p>
+
+
+      <!-- CORREO -->
+      <div class="campo">
+
+        <ion-input
+          [(ngModel)]="correo"
+          type="email"
+          label="Correo electrónico"
+          labelPlacement="floating"
+          placeholder="correo@ejemplo.com">
+        </ion-input>
+
+      </div>
+
+
+      <!-- CONTRASEÑA -->
+      <div class="campo password">
+
+        <ion-input
+          [(ngModel)]="password"
+          [type]="mostrarPassword ? 'text' : 'password'"
+          label="Contraseña"
+          labelPlacement="floating"
+          placeholder="Ingresa tu contraseña">
+        </ion-input>
+
+        <button
+          type="button"
+          class="boton-password"
+          (click)="cambiarVisibilidadPassword()">
+
+          {{ mostrarPassword ? 'Ocultar' : 'Mostrar' }}
+
+        </button>
+
+      </div>
+
+
+      <!-- MENSAJE DE ERROR -->
+      @if (mensajeError) {
+
+        <div class="mensaje-error">
+          {{ mensajeError }}
+        </div>
+
+      }
+
+
+      <!-- BOTÓN -->
+      <ion-button
+        expand="block"
+        class="boton-login"
+        (click)="iniciarSesion()">
+
+        Iniciar sesión
+
+      </ion-button>
+
+
+      <!-- REGISTRO -->
+      <div class="registro">
+
+        <span>
+          ¿No tienes una cuenta?
+        </span>
+
+        <button
+          type="button"
+          (click)="irARegistro()">
+
+          Regístrate
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
 
 </ion-content>

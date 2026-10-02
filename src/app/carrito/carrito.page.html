@@ -1,42 +1,110 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Carrito de Compras - Rebanaditas</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
 
-<ion-content class="ion-padding">
+  <div class="carrito">
 
-  <!-- Formulario para agregar artículos al carrito -->
-  <ion-item>
-    <ion-input [(ngModel)]="nuevoProducto" placeholder="Nombre del producto"></ion-input>
-  </ion-item>
-  
-  <ion-item>
-    <ion-input [(ngModel)]="nuevaCantidad" type="number" placeholder="Cantidad"></ion-input>
-  </ion-item>
+    <!-- ENCABEZADO -->
+    <div class="encabezado">
 
-  <ion-item>
-    <ion-input [(ngModel)]="nuevoPrecio" type="number" placeholder="Precio unitario"></ion-input>
-  </ion-item>
+      <button
+        class="boton-regresar"
+        (click)="regresar()">
+        ←
+      </button>
 
-  <ion-button expand="block" class="ion-margin-top" (click)="agregarAlCarrito()">Agregar al Carrito</ion-button>
+      <h1>Mi carrito</h1>
 
-  <!-- Lista de productos en el carrito usando @for -->
-  <ion-list class="ion-margin-top">
-    @for (item of listaCarrito; track item.id; let i = $index) {
-      <ion-item>
-        <ion-label>
-          <h2>{{ item.producto }}</h2>
-          <p>Cantidad: {{ item.cantidad }} | Subtotal: ${{ item.precio * item.cantidad }}</p>
-        </ion-label>
-        <ion-button color="danger" slot="end" (click)="eliminarDelCarrito(i)">Eliminar</ion-button>
-      </ion-item>
-    }
-  </ion-list>
+    </div>
 
-  <!-- Mostrar el total general calculado -->
-  <div class="ion-padding" style="text-align: right;">
-    <h3>Total a Pagar: ${{ calcularTotal() }}</h3>
+    <!-- PRODUCTOS -->
+    <div class="lista-carrito">
+
+      @if (carrito.length > 0) {
+
+        @for (item of carrito; track item.producto.id) {
+
+          <div class="producto-carrito">
+
+            <div class="imagen-producto">
+              🍰
+            </div>
+
+            <div class="informacion">
+
+              <h2>
+                {{ item.producto.nombre }}
+              </h2>
+
+              <p class="precio">
+                ${{ item.producto.precio }}
+              </p>
+
+              <div class="cantidad">
+
+                <button
+                  (click)="disminuirCantidad(item)">
+                  −
+                </button>
+
+                <span>
+                  {{ item.cantidad }}
+                </span>
+
+                <button
+                  (click)="aumentarCantidad(item)">
+                  +
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+        <!-- TOTAL -->
+        <div class="total">
+
+          <span>Total</span>
+
+          <strong>
+            ${{ obtenerTotal() }}
+          </strong>
+
+        </div>
+
+        <ion-button
+          expand="block"
+          class="boton-comprar">
+          Continuar compra
+        </ion-button>
+
+      } @else {
+
+        <div class="carrito-vacio">
+
+          <div class="icono-vacio">
+            🛒
+          </div>
+
+          <h2>Tu carrito está vacío</h2>
+
+          <p>
+            Agrega tus postres favoritos para continuar.
+          </p>
+
+          <ion-button
+            class="boton-regresar-productos"
+            (click)="regresar()">
+            Ver postres
+          </ion-button>
+
+        </div>
+
+      }
+
+    </div>
+
   </div>
 
 </ion-content>
