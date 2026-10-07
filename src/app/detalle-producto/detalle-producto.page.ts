@@ -4,7 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   IonContent,
-  IonButton
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButton,
+  ToastController // <--- 1. Importar ToastController
 } from '@ionic/angular';
 
 import { Producto } from '../models/producto.models';
@@ -18,17 +22,22 @@ import { DataService } from '../services/data';
   imports: [
     CommonModule,
     IonContent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
     IonButton
   ]
 })
 export class DetalleProductoPage {
 
   producto: Producto | undefined;
+  cantidad: number = 1;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private toastController: ToastController // <--- 2. Inyectar ToastController
   ) {}
 
   ngOnInit(): void {
@@ -36,23 +45,43 @@ export class DetalleProductoPage {
       this.route.snapshot.paramMap.get('id')
     );
 
-    // Buscamos el producto dentro del arreglo del DataService
-    this.producto = this.dataService
-      .getProductos()
-      .find(producto => producto.id === id);
+    this.producto =
+      this.dataService
+        .getProductos()
+        .find(
+          producto => producto.id === id
+        );
   }
 
-  regresar(): void {
-    this.router.navigate(['/home']);
+  aumentarCantidad(): void {
+    this.cantidad++;
   }
 
-  agregarAlCarrito(): void {
+  disminuirCantidad(): void {
+    if (this.cantidad > 1) {
+      this.cantidad--;
+    }
+  }
+
+  async agregarAlCarrito(): Promise<void> {
     if (!this.producto) {
       return;
     }
 
-    this.dataService.agregarAlCarrito(this.producto);
+    // 3. Guardamos en el servicio
+    this.dataService.agregarAlCarrito(
+      this.producto,
+      this.cantidad
+    );
 
-    this.router.navigate(['/carrito']);
+    // 4. Eliminamos la redirección a /carrito y en su lugar mostramos un Toast
+    const toast = await this.toastController.create({
+      message: `¡Se agregaron ${this.cantidad} producto(s) al carrito!`,
+      duration: 2000, // Se quita solo después de 2 segundos
+      position: 'bottom',
+      color: 'success'
+    });
+
+    await toast.present();
   }
 }

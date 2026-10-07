@@ -1,13 +1,42 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>categorias</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">categorias</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="categorias-pagina">
+
+    <!-- ENCABEZADO -->
+    <header class="encabezado">
+      <h1>Categorías de Postres</h1>
+      <p>Elige tu categoría favorita para consentirte hoy</p>
+    </header>
+
+    <!-- GRID DE CATEGORÍAS -->
+    <section class="seccion-categorias">
+      <div class="grid-categorias">
+
+        @for (categoria of categorias; track categoria) {
+          <article class="tarjeta-categoria" (click)="seleccionarCategoria(categoria)">
+            <div class="contenido-categoria">
+              
+              <!-- Icono dinámico según la categoría -->
+             <div class="icono-categoria">
+  @if (categoria === 'Pasteles') { 🎂 }
+  @else if (categoria === 'Carlotas') { 🍋 }
+  @else if (categoria === 'Pays') { 🥧 }
+  @else if (categoria === 'Helados') { 🍨 }
+  @else if (categoria === 'Gelatinas') { 🍮 }
+  @else if (categoria === 'Brownies') { 🍫 }
+  @else { 🥤 }
+</div>
+
+              <h3>{{ categoria }}</h3>
+              <p>Explorar deliciosos {{ categoria.toLowerCase() }}</p>
+
+            </div>
+          </article>
+        }
+
+      </div>
+    </section>
+
+  </div>
+
 </ion-content>

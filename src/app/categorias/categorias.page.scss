@@ -1,0 +1,81 @@
+.categorias-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 30px;
+
+  .encabezado {
+    text-align: center;
+    margin-top: 10px;
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--ion-color-primary, #3880ff);
+      margin-bottom: 5px;
+    }
+
+    p {
+      font-size: 0.95rem;
+      color: var(--ion-color-step-600, #666);
+    }
+  }
+
+  .seccion-categorias {
+    .grid-categorias {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); // Dos columnas para diseño móvil atractivo
+      gap: 16px;
+
+      @media (min-width: 768px) {
+        grid-template-columns: repeat(3, 1fr); // Tres columnas en pantallas más grandes
+      }
+
+      .tarjeta-categoria {
+        background: var(--ion-card-background, #fff);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        text-align: center;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+
+        &:active {
+          transform: scale(0.96);
+        }
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .contenido-categoria {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+
+          .icono-categoria {
+            font-size: 2.5rem;
+            margin-bottom: 4px;
+          }
+
+          h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--ion-text-color, #222);
+            margin: 0;
+          }
+
+          p {
+            font-size: 0.8rem;
+            color: var(--ion-color-step-500, #888);
+            margin: 0;
+            line-height: 1.2;
+          }
+        }
+      }
+    }
+  }
+}

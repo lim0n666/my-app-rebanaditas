@@ -1,0 +1,283 @@
+<ion-content>
+
+  <div class="metodos-pago">
+
+    <div class="encabezado">
+
+      <button
+        class="boton-regresar"
+        type="button"
+        (click)="regresar()">
+        ←
+      </button>
+
+      <h1>Métodos de pago</h1>
+
+    </div>
+
+
+    <div class="contenido">
+
+      <h2>Selecciona un método de pago</h2>
+
+      <p class="subtitulo">
+        Elige cómo deseas realizar tu compra.
+      </p>
+
+
+      <div class="metodos">
+
+        <!-- TARJETA -->
+
+        <button
+          type="button"
+          class="metodo"
+          [class.seleccionado]="metodoSeleccionado === 'Tarjeta'"
+          (click)="seleccionarMetodo('Tarjeta')">
+
+          <div class="icono">
+            💳
+          </div>
+
+          <div class="informacion">
+
+            <strong>
+              Tarjeta
+            </strong>
+
+            <span>
+              Crédito o débito
+            </span>
+
+          </div>
+
+          @if (metodoSeleccionado === 'Tarjeta') {
+
+            <div class="check">
+              ✓
+            </div>
+
+          }
+
+        </button>
+
+
+        <!-- FORMULARIO TARJETA -->
+
+        @if (metodoSeleccionado === 'Tarjeta') {
+
+          <div class="formulario-tarjeta">
+
+            <h3>Datos de la tarjeta</h3>
+
+            <div class="campo">
+
+              <ion-input
+                type="text"
+                label="Número de tarjeta"
+                labelPlacement="floating"
+                placeholder="0000 0000 0000 0000"
+                maxlength="19"
+                [(ngModel)]="numeroTarjeta">
+              </ion-input>
+
+            </div>
+
+
+            <div class="campo">
+
+              <ion-input
+                type="text"
+                label="Nombre del titular"
+                labelPlacement="floating"
+                placeholder="Nombre completo"
+                [(ngModel)]="nombreTitular">
+              </ion-input>
+
+            </div>
+
+
+            <div class="campos-pequenos">
+
+              <div class="campo">
+
+                <ion-input
+                  type="text"
+                  label="Fecha de vencimiento"
+                  labelPlacement="floating"
+                  placeholder="MM/AA"
+                  maxlength="5"
+                  [(ngModel)]="fechaVencimiento">
+                </ion-input>
+
+              </div>
+
+
+              <div class="campo">
+
+                <ion-input
+                  type="password"
+                  label="CVV"
+                  labelPlacement="floating"
+                  placeholder="000"
+                  maxlength="3"
+                  [(ngModel)]="cvv">
+                </ion-input>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+
+        <!-- EFECTIVO -->
+
+        <button
+          type="button"
+          class="metodo"
+          [class.seleccionado]="metodoSeleccionado === 'Efectivo'"
+          (click)="seleccionarMetodo('Efectivo')">
+
+          <div class="icono">
+            💵
+          </div>
+
+          <div class="informacion">
+
+            <strong>
+              Efectivo
+            </strong>
+
+            <span>
+              Pago al recibir tu pedido
+            </span>
+
+          </div>
+
+          @if (metodoSeleccionado === 'Efectivo') {
+
+            <div class="check">
+              ✓
+            </div>
+
+          }
+
+        </button>
+
+
+        <!-- INFORMACIÓN EFECTIVO -->
+
+        @if (metodoSeleccionado === 'Efectivo') {
+
+          <div class="mensaje-metodo">
+
+            <span class="icono-mensaje">
+              💵
+            </span>
+
+            <p>
+              Realizarás el pago en efectivo
+              cuando recibas tu pedido.
+            </p>
+
+          </div>
+
+        }
+
+
+        <!-- TRANSFERENCIA -->
+
+        <button
+          type="button"
+          class="metodo"
+          [class.seleccionado]="metodoSeleccionado === 'Transferencia'"
+          (click)="seleccionarMetodo('Transferencia')">
+
+          <div class="icono">
+            🏦
+          </div>
+
+          <div class="informacion">
+
+            <strong>
+              Transferencia
+            </strong>
+
+            <span>
+              Transferencia bancaria
+            </span>
+
+          </div>
+
+          @if (metodoSeleccionado === 'Transferencia') {
+
+            <div class="check">
+              ✓
+            </div>
+
+          }
+
+        </button>
+
+
+        <!-- INFORMACIÓN TRANSFERENCIA -->
+
+        @if (metodoSeleccionado === 'Transferencia') {
+
+          <div class="mensaje-metodo">
+
+            <span class="icono-mensaje">
+              🏦
+            </span>
+
+            <div>
+
+              <p>
+                Realiza una transferencia bancaria
+                para completar tu compra.
+              </p>
+
+              <strong>
+                Banco: Rebanaditas
+              </strong>
+
+              <span class="dato-bancario">
+                CLABE: 000000000000000000
+              </span>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+
+      @if (mensajeError) {
+
+        <div class="mensaje-error">
+          {{ mensajeError }}
+        </div>
+
+      }
+
+
+      <ion-button
+        expand="block"
+        class="boton-confirmar"
+        [disabled]="metodoSeleccionado === ''"
+        (click)="confirmarCompra()">
+
+        Confirmar compra
+
+      </ion-button>
+
+    </div>
+
+  </div>
+
+</ion-content>

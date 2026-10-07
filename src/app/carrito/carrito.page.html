@@ -2,20 +2,10 @@
 
   <div class="carrito">
 
-    <!-- ENCABEZADO -->
     <div class="encabezado">
-
-      <button
-        class="boton-regresar"
-        (click)="regresar()">
-        ←
-      </button>
-
       <h1>Mi carrito</h1>
-
     </div>
 
-    <!-- PRODUCTOS -->
     <div class="lista-carrito">
 
       @if (carrito.length > 0) {
@@ -25,7 +15,10 @@
           <div class="producto-carrito">
 
             <div class="imagen-producto">
-              🍰
+              <img
+                [src]="item.producto.imagen"
+                [alt]="item.producto.nombre"
+              >
             </div>
 
             <div class="informacion">
@@ -41,6 +34,7 @@
               <div class="cantidad">
 
                 <button
+                  class="boton-cantidad"
                   (click)="disminuirCantidad(item)">
                   −
                 </button>
@@ -50,6 +44,7 @@
                 </span>
 
                 <button
+                  class="boton-cantidad"
                   (click)="aumentarCantidad(item)">
                   +
                 </button>
@@ -62,20 +57,17 @@
 
         }
 
-        <!-- TOTAL -->
         <div class="total">
-
           <span>Total</span>
-
           <strong>
             ${{ obtenerTotal() }}
           </strong>
-
         </div>
 
         <ion-button
           expand="block"
-          class="boton-comprar">
+          class="boton-comprar"
+          (click)="irAMetodosPago()">
           Continuar compra
         </ion-button>
 
@@ -87,7 +79,9 @@
             🛒
           </div>
 
-          <h2>Tu carrito está vacío</h2>
+          <h2>
+            Tu carrito está vacío
+          </h2>
 
           <p>
             Agrega tus postres favoritos para continuar.

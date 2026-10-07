@@ -35,3 +35,65 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+/* =========================================
+   PALETA DE COLORES - REBANADITAS
+   ========================================= */
+
+:root {
+
+  /* Rosa */
+  --rosa-principal: #F48FB1;
+  --rosa-acento: #EC407A;
+  --rosa-claro: #F8BBD0;
+
+  /* Fondos */
+  --fondo-principal: #FFF9FA;
+  --fondo-degradado: #FFF0F5;
+  --rosa-nieve: #FCE4EC;
+
+  /* Café */
+  --cafe-oscuro: #2E1F1D;
+  --cafe-chocolate: #3B2327;
+  --cafe-texto: #3E2723;
+  --cafe-secundario: #6D4C41;
+  --moka-acento: #5C3A44;
+
+  /* Ionic */
+  --ion-color-primary: #F48FB1;
+  --ion-color-primary-rgb: 244, 143, 177;
+  --ion-color-primary-contrast: #2E1F1D;
+  --ion-color-primary-contrast-rgb: 46, 31, 29;
+
+  --ion-color-secondary: #EC407A;
+  --ion-color-secondary-rgb: 236, 64, 122;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+
+  --ion-color-light: #FCE4EC;
+  --ion-color-light-rgb: 252, 228, 236;
+  --ion-color-light-contrast: #3E2723;
+  --ion-color-light-contrast-rgb: 62, 39, 35;
+
+  --ion-color-dark: #2E1F1D;
+  --ion-color-dark-rgb: 46, 31, 29;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+}
+
+
+/* =========================================
+   ESTILOS GENERALES
+   ========================================= */
+
+body {
+  background: var(--fondo-principal);
+  color: var(--cafe-texto);
+}
+
+ion-content {
+  --background: var(--fondo-principal);
+}
+
+button {
+  font-family: inherit;
+}

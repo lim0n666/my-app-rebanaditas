@@ -31,34 +31,75 @@ export class CarritoPage {
   ) {}
 
   ngOnInit(): void {
-    this.carrito = this.dataService.getCarrito();
+
+    this.carrito =
+      this.dataService.getCarrito();
+
   }
 
   regresar(): void {
-    this.router.navigate(['/home']);
+
+    this.router.navigate([
+      '/home'
+    ]);
+
   }
 
-  aumentarCantidad(item: ItemCarrito): void {
+  irAMetodosPago(): void {
+
+    this.router.navigate([
+      '/metodos-pago'
+    ]);
+
+  }
+
+  aumentarCantidad(
+    item: ItemCarrito
+  ): void {
+
     item.cantidad++;
+
   }
 
-  disminuirCantidad(item: ItemCarrito): void {
+  disminuirCantidad(
+    item: ItemCarrito
+  ): void {
+
     if (item.cantidad > 1) {
+
       item.cantidad--;
+
     } else {
-      const indice = this.carrito.indexOf(item);
+
+      const indice =
+        this.carrito.indexOf(item);
 
       if (indice !== -1) {
-        this.carrito.splice(indice, 1);
+
+        this.carrito.splice(
+          indice,
+          1
+        );
+
       }
+
     }
+
   }
 
   obtenerTotal(): number {
+
     return this.carrito.reduce(
-      (total, item) =>
-        total + item.producto.precio * item.cantidad,
+      (
+        total,
+        item
+      ) =>
+        total +
+        item.producto.precio *
+        item.cantidad,
       0
     );
+
   }
+
 }

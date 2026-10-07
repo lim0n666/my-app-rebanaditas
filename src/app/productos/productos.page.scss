@@ -2,25 +2,174 @@ ion-content {
   --background: #fff8f5;
 }
 
-/* Campos del formulario */
-ion-item {
-  --background: #ffffff;
-  --border-radius: 12px;
-  --padding-start: 15px;
-  --inner-padding-end: 15px;
+/* ==========================================
+   ADMINISTRACIÓN
+   ========================================== */
 
+.administracion {
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   ENCABEZADO
+   ========================================== */
+
+.encabezado-admin {
+  margin-bottom: 20px;
+}
+
+.encabezado-admin h1 {
+  margin: 10px 0 5px;
+  color: #4a2c2a;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.encabezado-admin p {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+}
+
+/* ==========================================
+   FORMULARIO
+   ========================================== */
+
+.formulario-producto {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-sizing: border-box;
+  margin-bottom: 25px;
+}
+
+/* Campos */
+
+.formulario-producto ion-item {
+  --background: #ffffff;
+  --color: #3e2723;
+  --border-color: #eadbd7;
+
+  margin-bottom: 12px;
+  border-radius: 10px;
+}
+
+/* Inputs */
+
+ion-input {
+  --color: #333333;
+  --placeholder-color: #8d7773;
+  --highlight-color-focused: #f48fb1;
+}
+
+/* Textarea */
+
+.campo-descripcion {
+  --background: #ffffff;
+  --color: #3e2723;
   margin-bottom: 12px;
 }
 
-/* Etiquetas */
-ion-input {
-  --highlight-color-focused: #4d8dff;
-  --color: #333333;
+.campo-descripcion ion-textarea {
+  --color: #3e2723;
+  --placeholder-color: #8d7773;
+  --highlight-color-focused: #f48fb1;
 }
 
-/* Botón agregar */
+/* Select */
+
+.formulario-producto ion-select {
+  --color: #3e2723;
+  --placeholder-color: #8d7773;
+}
+
+/* ==========================================
+   IMAGEN
+   ========================================== */
+
+.campo-imagen {
+  margin: 15px 5px;
+  padding: 12px;
+
+  border: 1px solid #eadbd7;
+  border-radius: 10px;
+
+  background: #fff8f5;
+}
+
+.etiqueta-imagen {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #4a2c2a;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.campo-imagen input[type="file"] {
+  width: 100%;
+
+  color: #777;
+
+  font-size: 13px;
+}
+
+/* ==========================================
+   VISTA PREVIA
+   ========================================== */
+
+.vista-previa {
+  margin: 15px 5px;
+  text-align: center;
+}
+
+.vista-previa p {
+  margin-bottom: 8px;
+
+  color: #4a2c2a;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vista-previa img {
+  width: 130px;
+  height: 130px;
+
+  object-fit: cover;
+
+  border-radius: 12px;
+
+  border: 1px solid #eadbd7;
+}
+
+/* ==========================================
+   MENSAJE
+   ========================================== */
+
+.mensaje {
+  margin: 10px 5px;
+  padding: 10px;
+
+  border-radius: 8px;
+
+  background: #fff0f3;
+  color: #4a2c2a;
+
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ==========================================
+   BOTÓN AGREGAR
+   ========================================== */
+
 .boton-agregar {
-  margin-top: 20px;
+  margin-top: 15px;
   margin-bottom: 25px;
 
   --border-radius: 12px;
@@ -29,48 +178,106 @@ ion-input {
   letter-spacing: 1px;
 }
 
-/* Lista */
+/* ==========================================
+   TÍTULO DE LISTA
+   ========================================== */
+
+.titulo-lista {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 15px 0 10px;
+}
+
+.titulo-lista h2 {
+  margin: 0;
+
+  color: #4a2c2a;
+
+  font-size: 19px;
+}
+
+.titulo-lista span {
+  color: #777;
+
+  font-size: 12px;
+}
+
+/* ==========================================
+   LISTA DE PRODUCTOS
+   ========================================== */
+
 .lista-productos {
   background: transparent;
 }
 
-/* Cada producto */
+/* ==========================================
+   PRODUCTO
+   ========================================== */
+
 .producto-item {
   --background: #ffffff;
-  --border-radius: 15px;
+  --border-radius: 12px;
 
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
 }
 
-/* Nombre */
+.miniatura-producto {
+  width: 55px;
+  height: 55px;
+
+  object-fit: cover;
+
+  border-radius: 8px;
+
+  margin-right: 10px;
+}
+
 .producto-item h2 {
   margin-bottom: 6px;
 
-  font-size: 17px;
-  font-weight: bold;
-
   color: #4a2c2a;
+
+  font-size: 15px;
+  font-weight: 600;
 }
 
-/* Precio y categoría */
 .producto-item p {
-  margin: 0;
+  margin: 2px 0;
 
-  font-size: 14px;
-  color: #777777;
+  color: #777;
+
+  font-size: 12px;
 }
 
-/* Mensaje sin productos */
+/* ==========================================
+   SIN PRODUCTOS
+   ========================================== */
+
 .sin-productos {
-  margin-top: 50px;
+  padding: 30px;
 
   text-align: center;
 
-  color: #777777;
+  color: #777;
 }
 
 .sin-productos h2 {
   color: #4a2c2a;
+}
+
+/* ==========================================
+   BOTÓN REGRESAR
+   ========================================== */
+
+.boton-regresar {
+  --color: #3e2723;
+
+  font-size: 24px;
+
+  margin-left: 4px;
 }

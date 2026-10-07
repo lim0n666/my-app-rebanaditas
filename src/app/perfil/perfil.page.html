@@ -1,13 +1,66 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>perfil</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="perfil">
+
+    <div class="encabezado">
+
+      <button
+        class="boton-regresar"
+        (click)="regresar()">
+        ←
+      </button>
+
+      <h1>Mi perfil</h1>
+
+    </div>
+
+    <div class="contenido">
+
+      <div class="avatar">
+        👤
+      </div>
+
+      @if (usuario) {
+
+        <h2>{{ usuario.nombre }}</h2>
+
+        <p class="correo">
+          {{ usuario.correo }}
+        </p>
+
+        <div class="informacion">
+
+          <div class="dato">
+            <span class="etiqueta">Nombre</span>
+            <span>{{ usuario.nombre }}</span>
+          </div>
+
+          <div class="dato">
+            <span class="etiqueta">Correo electrónico</span>
+            <span>{{ usuario.correo }}</span>
+          </div>
+
+        </div>
+
+      } @else {
+
+        <h2>Usuario</h2>
+
+        <p class="correo">
+          No hay una sesión activa.
+        </p>
+
+      }
+
+      <ion-button
+        expand="block"
+        class="boton-cerrar"
+        (click)="cerrarSesion()">
+        Cerrar sesión
+      </ion-button>
+
+    </div>
+
+  </div>
+
 </ion-content>

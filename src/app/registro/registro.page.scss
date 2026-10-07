@@ -1,0 +1,294 @@
+/* =========================================
+   REGISTRO - REBANADITAS
+   ========================================= */
+
+ion-content {
+  --background: var(--fondo-principal);
+}
+
+.registro {
+  width: 100%;
+  min-height: 100%;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--fondo-principal) 0%,
+      var(--fondo-degradado) 100%
+    );
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-bottom: 35px;
+}
+
+/* =========================================
+   ENCABEZADO
+   ========================================= */
+
+.encabezado {
+  width: 85%;
+
+  text-align: center;
+
+  margin-top: 35px;
+
+  position: relative;
+}
+
+.boton-regresar {
+  position: absolute;
+
+  left: 0;
+  top: 5px;
+
+  border: none;
+
+  background: transparent;
+
+  color: var(--cafe-secundario);
+
+  font-size: 28px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.boton-regresar:hover {
+  color: var(--rosa-acento);
+}
+
+/* =========================================
+   LOGO
+   ========================================= */
+
+.logo {
+  width: 75px;
+  height: 75px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--rosa-nieve);
+
+  border: 2px solid var(--rosa-claro);
+
+  font-size: 38px;
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   TÍTULO
+   ========================================= */
+
+.encabezado h1 {
+  margin: 0;
+
+  font-size: 26px;
+
+  font-weight: 500;
+
+  color: var(--cafe-chocolate);
+}
+
+.encabezado p {
+  margin: 8px 0 0;
+
+  font-size: 15px;
+
+  color: var(--cafe-secundario);
+}
+
+/* =========================================
+   FORMULARIO
+   ========================================= */
+
+.formulario {
+  width: 82%;
+
+  max-width: 420px;
+
+  margin-top: 40px;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 8px 25px rgba(46, 31, 29, 0.10);
+}
+
+.formulario h2 {
+  margin: 0;
+
+  font-size: 25px;
+
+  font-weight: 500;
+
+  color: var(--cafe-chocolate);
+}
+
+.subtitulo {
+  margin: 8px 0 25px;
+
+  font-size: 14px;
+
+  color: var(--cafe-secundario);
+}
+
+/* =========================================
+   CAMPOS
+   ========================================= */
+
+.campo {
+  margin-bottom: 18px;
+}
+
+ion-input {
+  --background: var(--rosa-nieve);
+
+  --border-color: var(--rosa-claro);
+
+  --border-style: solid;
+
+  --border-width: 1px;
+
+  --border-radius: 10px;
+
+  --highlight-color: var(--rosa-acento);
+
+  --color: var(--cafe-texto);
+
+  --placeholder-color: var(--cafe-secundario);
+
+  min-height: 55px;
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   MENSAJE DE ERROR
+   ========================================= */
+
+.mensaje-error {
+  margin: 5px 0 18px;
+
+  padding: 12px;
+
+  border-radius: 8px;
+
+  background: var(--rosa-nieve);
+
+  border: 1px solid var(--rosa-claro);
+
+  color: var(--rosa-acento);
+
+  font-size: 14px;
+
+  text-align: center;
+}
+
+/* =========================================
+   BOTÓN REGISTRARSE
+   ========================================= */
+
+.boton-registro {
+  margin-top: 10px;
+
+  --background: var(--rosa-principal);
+
+  --background-hover: var(--rosa-acento);
+
+  --background-activated: var(--rosa-acento);
+
+  --color: var(--cafe-oscuro);
+
+  --border-radius: 10px;
+
+  height: 50px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.3px;
+}
+
+/* =========================================
+   LINK PARA LOGIN
+   ========================================= */
+
+.login {
+  margin-top: 25px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: 14px;
+
+  color: var(--cafe-secundario);
+}
+
+.login button {
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  color: var(--rosa-acento);
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.login button:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   CELULAR
+   ========================================= */
+
+@media (max-width: 480px) {
+
+  .encabezado {
+    width: 90%;
+
+    margin-top: 25px;
+  }
+
+  .formulario {
+    width: 90%;
+
+    padding: 25px 20px;
+
+    margin-top: 30px;
+  }
+
+  .encabezado h1 {
+    font-size: 23px;
+  }
+
+}

@@ -1,0 +1,230 @@
+/* =========================================
+   PERFIL - REBANADITAS
+   ========================================= */
+
+ion-content {
+  --background: var(--fondo-principal);
+}
+
+.perfil {
+  min-height: 100%;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--fondo-principal) 0%,
+      var(--fondo-degradado) 100%
+    );
+
+  color: var(--cafe-texto);
+}
+
+/* =========================================
+   ENCABEZADO
+   ========================================= */
+
+.encabezado {
+  width: 100%;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 18px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid var(--rosa-claro);
+}
+
+.encabezado h1 {
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 500;
+
+  color: var(--cafe-chocolate);
+}
+
+.boton-regresar {
+  border: none;
+
+  background: transparent;
+
+  color: var(--cafe-secundario);
+
+  font-size: 28px;
+
+  width: 40px;
+  height: 40px;
+
+  margin-right: 8px;
+
+  cursor: pointer;
+}
+
+/* =========================================
+   CONTENIDO
+   ========================================= */
+
+.contenido {
+  width: 90%;
+  max-width: 500px;
+
+  margin: 35px auto;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 8px 25px rgba(46, 31, 29, 0.10);
+
+  text-align: center;
+}
+
+/* =========================================
+   AVATAR
+   ========================================= */
+
+.avatar {
+  width: 90px;
+  height: 90px;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background: var(--rosa-nieve);
+
+  border: 2px solid var(--rosa-claro);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 42px;
+}
+
+/* =========================================
+   USUARIO
+   ========================================= */
+
+.contenido h2 {
+  margin: 5px 0;
+
+  color: var(--cafe-chocolate);
+
+  font-size: 23px;
+
+  font-weight: 500;
+}
+
+.correo {
+  margin: 5px 0 25px;
+
+  color: var(--cafe-secundario);
+
+  font-size: 14px;
+}
+
+/* =========================================
+   INFORMACIÓN
+   ========================================= */
+
+.informacion {
+  width: 100%;
+
+  margin-top: 15px;
+
+  border-top: 1px solid var(--rosa-claro);
+}
+
+.dato {
+  width: 100%;
+
+  padding: 16px 5px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 5px;
+
+  border-bottom: 1px solid var(--rosa-claro);
+
+  text-align: left;
+}
+
+.dato span:last-child {
+  color: var(--cafe-texto);
+
+  font-size: 15px;
+}
+
+.etiqueta {
+  color: var(--cafe-secundario);
+
+  font-size: 12px;
+
+  font-weight: 500;
+}
+
+/* =========================================
+   BOTÓN CERRAR SESIÓN
+   ========================================= */
+
+.boton-cerrar {
+  --background: var(--rosa-principal);
+  --background-hover: var(--rosa-acento);
+
+  --color: var(--cafe-oscuro);
+
+  --border-radius: 10px;
+
+  height: 48px;
+
+  margin-top: 28px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+}
+
+/* =========================================
+   SIN SESIÓN
+   ========================================= */
+
+.contenido:not(:has(.informacion)) {
+  color: var(--cafe-texto);
+}
+
+/* =========================================
+   CELULAR
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .contenido {
+    width: 92%;
+
+    padding: 25px 20px;
+
+    margin-top: 25px;
+  }
+
+  .encabezado {
+    padding: 0 12px;
+  }
+
+}

@@ -1,19 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular';
+import { Router } from '@angular/router';
+
+import {
+  IonContent,
+  IonButton
+} from '@ionic/angular';
+
+import { DataService } from '../services/data';
+import { Usuario } from '../models/producto.models';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
   styleUrls: ['./perfil.page.scss'],
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonContent,
+    IonButton
+  ]
 })
-export class PerfilPage implements OnInit {
+export class PerfilPage {
 
-  constructor() { }
+  usuario: Usuario | undefined;
 
-  ngOnInit() {
+  constructor(
+    private router: Router,
+    private dataService: DataService
+  ) {}
+
+  ngOnInit(): void {
+    this.usuario = this.dataService.getUsuarioActual();
   }
 
+  regresar(): void {
+    this.router.navigate(['/home']);
+  }
+
+  cerrarSesion(): void {
+    this.dataService.cerrarSesion();
+    this.router.navigate(['/login']);
+  }
 }

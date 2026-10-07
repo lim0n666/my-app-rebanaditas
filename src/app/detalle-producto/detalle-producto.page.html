@@ -1,56 +1,63 @@
-<ion-content>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Postres que enamoran
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <div class="detalle" *ngIf="producto">
+<ion-content class="ion-padding">
 
-    <div class="encabezado">
+  @if (producto) {
 
-      <button
-        class="boton-regresar"
-        (click)="regresar()">
-        ←
-      </button>
+    <div class="detalle">
 
-      <h1>Postres que enamoran</h1>
+      <!-- IMAGEN DEL PRODUCTO -->
+      <div class="imagen-producto">
+        <img [src]="producto.imagen" [alt]="producto.nombre">
+      </div>
 
-    </div>
+      <!-- INFORMACIÓN -->
+      <div class="informacion">
 
-    <div class="imagen-producto">
+        <h2>
+          {{ producto.nombre }}
+        </h2>
 
-      <div class="imagen-placeholder">
-        🍰
+        <div class="precio">
+          ${{ producto.precio }}
+        </div>
+
+        <h3>
+          Detalles del producto
+        </h3>
+
+        <p>
+          {{ producto.descripcion }}
+        </p>
+
+        <!-- CONTENEDOR: CANTIDAD Y BOTÓN LADO A LADO -->
+        <div class="acciones-carrito">
+          
+          <div class="selector-cantidad">
+            <ion-button fill="outline" size="small" (click)="disminuirCantidad()">-</ion-button>
+            <span class="cantidad-num">{{ cantidad }}</span>
+            <ion-button fill="outline" size="small" (click)="aumentarCantidad()">+</ion-button>
+          </div>
+
+          <ion-button
+            expand="block"
+            class="boton-carrito"
+            (click)="agregarAlCarrito()">
+            Agregar al carrito
+          </ion-button>
+
+        </div>
+
       </div>
 
     </div>
 
-    <div class="informacion">
-
-      <h2>
-        {{ producto.nombre }}
-      </h2>
-
-      <div class="precio">
-        ${{ producto.precio }}
-      </div>
-
-      <h3>
-        Detalles del producto
-      </h3>
-
-      <p>
-        {{ producto.descripcion }}
-      </p>
-
-      <ion-button
-        expand="block"
-        class="boton-carrito"
-        (click)="agregarAlCarrito()">
-
-        Agregar al carrito
-
-      </ion-button>
-
-    </div>
-
-  </div>
+  }
 
 </ion-content>

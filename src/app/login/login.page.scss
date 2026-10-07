@@ -1,205 +1,272 @@
+/* =========================================
+   LOGIN - REBANADITAS
+   ========================================= */
+
 ion-content {
-  --background: #ffffff;
+  --background: var(--fondo-principal);
 }
 
 .login {
   width: 100%;
   min-height: 100%;
-  background: #ffffff;
+
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+
+  padding: 30px 20px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--fondo-principal),
+      var(--fondo-degradado)
+    );
 }
 
+/* =========================================
+   CONTENEDOR PRINCIPAL
+   ========================================= */
 
-/* =========================
-   ENCABEZADO
-========================= */
+.contenedor-login {
+  width: 100%;
+  max-width: 420px;
 
-.encabezado {
-  width: 85%;
+  padding: 38px 35px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 30px rgba(46, 31, 29, 0.10);
+
   text-align: center;
-  margin-top: 70px;
 }
+
+/* =========================================
+   LOGO
+   ========================================= */
 
 .logo {
-  width: 75px;
-  height: 75px;
-  margin: 0 auto 18px;
+  width: 85px;
+  height: 85px;
+
+  margin: 0 auto 20px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   border-radius: 50%;
-  background: #f4eeee;
 
-  font-size: 38px;
+  background: var(--rosa-nieve);
+
+  border: 2px solid var(--rosa-claro);
+
+  font-size: 42px;
 }
 
-.encabezado h1 {
+/* =========================================
+   TÍTULO
+   ========================================= */
+
+.titulo {
+  margin-bottom: 30px;
+}
+
+.titulo h1 {
   margin: 0;
 
-  font-size: 26px;
-  font-weight: 400;
+  color: var(--cafe-chocolate);
 
-  color: #263238;
+  font-size: 27px;
+
+  font-weight: 500;
 }
 
-.encabezado p {
+.titulo p {
   margin: 8px 0 0;
 
-  font-size: 15px;
-  color: #8b959b;
+  color: var(--cafe-secundario);
+
+  font-size: 14px;
 }
 
-
-/* =========================
+/* =========================================
    FORMULARIO
-========================= */
+   ========================================= */
 
 .formulario {
-  width: 82%;
-  max-width: 420px;
-
-  margin-top: 55px;
+  width: 100%;
 }
-
-.formulario h2 {
-  margin: 0;
-
-  font-size: 25px;
-  font-weight: 500;
-
-  color: #263238;
-}
-
-.subtitulo {
-  margin: 8px 0 30px;
-
-  font-size: 14px;
-  color: #7b878e;
-}
-
-
-/* =========================
-   CAMPOS
-========================= */
 
 .campo {
-  position: relative;
+  width: 100%;
 
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
+
+/* =========================================
+   INPUTS
+   ========================================= */
 
 ion-input {
-  --background: #ffffff;
-  --border-color: #b9c2c7;
-  --border-style: solid;
-  --border-width: 1px;
-  --border-radius: 5px;
+  width: 100%;
 
-  --highlight-color: #8b4a45;
+  --background: var(--rosa-nieve);
 
-  --color: #263238;
-  --placeholder-color: #a2abb0;
+  --color: var(--cafe-texto);
 
-  min-height: 55px;
+  --placeholder-color: var(--cafe-secundario);
+
+  --highlight-color-focused: var(--rosa-acento);
+
+  --padding-start: 15px;
+  --padding-end: 15px;
+
+  border: 1px solid var(--rosa-claro);
+
+  border-radius: 10px;
+
+  box-sizing: border-box;
 }
 
+/* =========================================
+   MOSTRAR CONTRASEÑA
+   ========================================= */
 
-/* =========================
-   PASSWORD
-========================= */
+.mostrar-password {
+  display: block;
 
-.password {
-  padding-right: 75px;
-}
+  margin: -5px 0 18px;
 
-.boton-password {
-  position: absolute;
-
-  right: 10px;
-  top: 16px;
+  padding: 0;
 
   border: none;
+
   background: transparent;
 
-  color: #8b4a45;
+  color: var(--rosa-acento);
 
-  font-size: 12px;
+  font-size: 13px;
 
   cursor: pointer;
+
+  text-align: left;
 }
 
+.mostrar-password:hover {
+  text-decoration: underline;
+}
 
-/* =========================
-   ERROR
-========================= */
+/* =========================================
+   MENSAJE DE ERROR
+   ========================================= */
 
 .mensaje-error {
-  margin: 5px 0 18px;
+  margin-bottom: 15px;
 
-  padding: 12px;
+  padding: 10px;
 
-  border-radius: 5px;
+  border-radius: 8px;
 
-  background: #fceeee;
+  background: var(--rosa-nieve);
 
-  color: #a33d3d;
+  color: var(--rosa-acento);
 
-  font-size: 14px;
+  font-size: 13px;
 
   text-align: center;
 }
 
-
-/* =========================
-   BOTÓN LOGIN
-========================= */
+/* =========================================
+   BOTÓN INICIAR SESIÓN
+   ========================================= */
 
 .boton-login {
-  margin-top: 10px;
+  --background: var(--rosa-principal);
 
-  --background: #8b4a45;
-  --background-activated: #733c38;
+  --background-hover: var(--rosa-acento);
 
-  --border-radius: 5px;
+  --color: var(--cafe-oscuro);
 
-  height: 50px;
+  --border-radius: 10px;
 
-  font-size: 15px;
-  font-weight: 500;
-}
+  height: 48px;
 
-
-/* =========================
-   REGISTRO
-========================= */
-
-.registro {
-  margin-top: 25px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
+  margin-top: 5px;
 
   font-size: 14px;
 
-  color: #7b878e;
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
 }
 
-.registro button {
-  border: none;
-  background: transparent;
+/* =========================================
+   REGISTRO
+   ========================================= */
+
+.registro {
+  margin-top: 22px;
+
+  color: var(--cafe-secundario);
+
+  font-size: 14px;
+}
+
+.boton-registro {
+  margin-left: 5px;
 
   padding: 0;
 
-  color: #8b4a45;
+  border: none;
+
+  background: transparent;
+
+  color: var(--rosa-acento);
 
   font-size: 14px;
-  font-weight: 500;
+
+  font-weight: 600;
 
   cursor: pointer;
+}
+
+.boton-registro:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   CELULAR
+   ========================================= */
+
+@media (max-width: 480px) {
+
+  .login {
+    padding: 20px 15px;
+  }
+
+  .contenedor-login {
+    padding: 30px 22px;
+
+    border-radius: 16px;
+  }
+
+  .logo {
+    width: 75px;
+    height: 75px;
+
+    font-size: 36px;
+  }
+
+  .titulo h1 {
+    font-size: 23px;
+  }
+
 }

@@ -2,104 +2,86 @@
 
   <div class="login">
 
-    <!-- LOGO / ENCABEZADO -->
-    <div class="encabezado">
+    <div class="contenedor-login">
 
+      <!-- LOGO -->
       <div class="logo">
         🍰
       </div>
 
-      <h1>Postres que enamoran</h1>
-
-      <p>
-        Bienvenido
-      </p>
-
-    </div>
-
-
-    <!-- FORMULARIO -->
-    <div class="formulario">
-
-      <h2>Iniciar sesión</h2>
-
-      <p class="subtitulo">
-        Ingresa tus datos para continuar
-      </p>
-
-
-      <!-- CORREO -->
-      <div class="campo">
-
-        <ion-input
-          [(ngModel)]="correo"
-          type="email"
-          label="Correo electrónico"
-          labelPlacement="floating"
-          placeholder="correo@ejemplo.com">
-        </ion-input>
-
+      <!-- ENCABEZADO -->
+      <div class="titulo">
+        <h1>Postres que enamoran</h1>
+        <p>Bienvenido</p>
       </div>
 
+      <!-- FORMULARIO -->
+      <div class="formulario">
 
-      <!-- CONTRASEÑA -->
-      <div class="campo password">
-
-        <ion-input
-          [(ngModel)]="password"
-          [type]="mostrarPassword ? 'text' : 'password'"
-          label="Contraseña"
-          labelPlacement="floating"
-          placeholder="Ingresa tu contraseña">
-        </ion-input>
-
-        <button
-          type="button"
-          class="boton-password"
-          (click)="cambiarVisibilidadPassword()">
-
-          {{ mostrarPassword ? 'Ocultar' : 'Mostrar' }}
-
-        </button>
-
-      </div>
-
-
-      <!-- MENSAJE DE ERROR -->
-      @if (mensajeError) {
-
-        <div class="mensaje-error">
-          {{ mensajeError }}
+        <!-- CORREO -->
+        <div class="campo">
+          <ion-input
+            type="email"
+            label="Correo electrónico"
+            labelPlacement="floating"
+            placeholder="Ingresa tu correo"
+            [(ngModel)]="correo">
+          </ion-input>
         </div>
 
-      }
+        <!-- CONTRASEÑA -->
+        <div class="campo">
+          <ion-input
+            [type]="mostrarPassword ? 'text' : 'password'"
+            label="Contraseña"
+            labelPlacement="floating"
+            placeholder="Ingresa tu contraseña"
+            [(ngModel)]="password">
+          </ion-input>
+        </div>
 
-
-      <!-- BOTÓN -->
-      <ion-button
-        expand="block"
-        class="boton-login"
-        (click)="iniciarSesion()">
-
-        Iniciar sesión
-
-      </ion-button>
-
-
-      <!-- REGISTRO -->
-      <div class="registro">
-
-        <span>
-          ¿No tienes una cuenta?
-        </span>
-
+        <!-- MOSTRAR CONTRASEÑA -->
         <button
           type="button"
-          (click)="irARegistro()">
+          class="mostrar-password"
+          (click)="cambiarVisibilidadPassword()">
 
-          Regístrate
+          {{ mostrarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña' }}
 
         </button>
+
+        <!-- ERROR -->
+        @if (mensajeError) {
+          <div class="mensaje-error">
+            {{ mensajeError }}
+          </div>
+        }
+
+        <!-- BOTÓN LOGIN -->
+        <ion-button
+          expand="block"
+          class="boton-login"
+          (click)="iniciarSesion()">
+
+          INICIAR SESIÓN
+
+        </ion-button>
+
+        <!-- REGISTRO -->
+        <div class="registro">
+
+          <span>¿No tienes una cuenta?</span>
+
+          <button
+            type="button"
+            class="boton-registro"
+            (click)="irARegistro()">
+
+            Regístrate
+
+          </button>
+
+        </div>
 
       </div>
 

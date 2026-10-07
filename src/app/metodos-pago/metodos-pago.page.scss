@@ -1,0 +1,456 @@
+ion-content {
+  --background: var(--fondo-principal);
+}
+
+.metodos-pago {
+  width: 100%;
+  min-height: 100%;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--fondo-principal) 0%,
+      var(--fondo-degradado) 100%
+    );
+
+  color: var(--cafe-texto);
+
+  padding-bottom: 40px;
+}
+
+/* =========================================
+   ENCABEZADO
+   ========================================= */
+
+.encabezado {
+  width: 100%;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 18px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid var(--rosa-claro);
+}
+
+.boton-regresar {
+  width: 40px;
+  height: 40px;
+
+  margin-right: 8px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: var(--cafe-secundario);
+
+  font-size: 28px;
+
+  cursor: pointer;
+}
+
+.boton-regresar:hover {
+  color: var(--rosa-acento);
+}
+
+.encabezado h1 {
+  margin: 0;
+
+  color: var(--cafe-chocolate);
+
+  font-size: 20px;
+
+  font-weight: 500;
+}
+
+/* =========================================
+   CONTENIDO
+   ========================================= */
+
+.contenido {
+  width: 90%;
+  max-width: 600px;
+
+  margin: 30px auto 40px;
+}
+
+.contenido h2 {
+  margin: 0;
+
+  color: var(--cafe-chocolate);
+
+  font-size: 22px;
+
+  font-weight: 600;
+}
+
+.subtitulo {
+  margin: 8px 0 25px;
+
+  color: var(--cafe-secundario);
+
+  font-size: 14px;
+}
+
+/* =========================================
+   MÉTODOS
+   ========================================= */
+
+.metodos {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.metodo {
+  width: 100%;
+
+  min-height: 80px;
+
+  display: flex;
+
+  align-items: center;
+
+  text-align: left;
+
+  padding: 15px;
+
+  box-sizing: border-box;
+
+  border: 1px solid var(--rosa-claro);
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  color: var(--cafe-texto);
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.metodo:hover {
+  border-color: var(--rosa-acento);
+
+  background: var(--rosa-nieve);
+}
+
+.metodo.seleccionado {
+  border: 2px solid var(--rosa-acento);
+
+  background: var(--rosa-nieve);
+}
+
+/* =========================================
+   ICONOS
+   ========================================= */
+
+.icono {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--rosa-nieve);
+
+  font-size: 25px;
+}
+
+/* =========================================
+   INFORMACIÓN
+   ========================================= */
+
+.informacion {
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  margin-left: 15px;
+
+  gap: 5px;
+}
+
+.informacion strong {
+  color: var(--cafe-chocolate);
+
+  font-size: 16px;
+}
+
+.informacion span {
+  color: var(--cafe-secundario);
+
+  font-size: 13px;
+}
+
+/* =========================================
+   CHECK
+   ========================================= */
+
+.check {
+  width: 25px;
+  height: 25px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: var(--rosa-acento);
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: bold;
+}
+
+/* =========================================
+   FORMULARIO TARJETA
+   ========================================= */
+
+.formulario-tarjeta {
+  width: 100%;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid var(--rosa-claro);
+
+  border-top: none;
+
+  border-radius: 0 0 12px 12px;
+
+  margin-top: -14px;
+
+  margin-bottom: 0;
+}
+
+.formulario-tarjeta h3 {
+  margin: 0 0 18px;
+
+  color: var(--cafe-chocolate);
+
+  font-size: 17px;
+
+  font-weight: 600;
+}
+
+.campo {
+  width: 100%;
+
+  margin-bottom: 15px;
+}
+
+ion-input {
+  --background: #ffffff;
+
+  --color: var(--cafe-texto);
+
+  --placeholder-color: #9a8985;
+
+  --highlight-color-focused: var(--rosa-acento);
+
+  --border-color: var(--rosa-claro);
+
+  --border-radius: 8px;
+
+  color: var(--cafe-texto);
+}
+
+.campos-pequenos {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+.campos-pequenos .campo {
+  min-width: 0;
+}
+
+/* =========================================
+   MENSAJES DE MÉTODO
+   ========================================= */
+
+.mensaje-metodo {
+  width: 100%;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 15px;
+
+  box-sizing: border-box;
+
+  background: var(--rosa-nieve);
+
+  border: 1px solid var(--rosa-claro);
+
+  border-radius: 10px;
+
+  margin-top: -5px;
+}
+
+.icono-mensaje {
+  font-size: 24px;
+
+  flex-shrink: 0;
+}
+
+.mensaje-metodo p {
+  margin: 0 0 6px;
+
+  color: var(--cafe-secundario);
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+.mensaje-metodo strong {
+  display: block;
+
+  color: var(--cafe-chocolate);
+
+  font-size: 13px;
+}
+
+.dato-bancario {
+  display: block;
+
+  margin-top: 4px;
+
+  color: var(--cafe-secundario);
+
+  font-size: 12px;
+}
+
+/* =========================================
+   ERROR
+   ========================================= */
+
+.mensaje-error {
+  width: 100%;
+
+  margin-top: 18px;
+
+  padding: 12px 15px;
+
+  box-sizing: border-box;
+
+  background: #fff0f3;
+
+  border: 1px solid var(--rosa-claro);
+
+  border-radius: 8px;
+
+  color: #b52d54;
+
+  font-size: 13px;
+
+  text-align: center;
+}
+
+/* =========================================
+   BOTÓN CONFIRMAR
+   ========================================= */
+
+.boton-confirmar {
+  margin-top: 25px;
+
+  --background: var(--rosa-principal);
+
+  --background-hover: var(--rosa-acento);
+
+  --background-activated: var(--rosa-acento);
+
+  --color: var(--cafe-oscuro);
+
+  --border-radius: 10px;
+
+  height: 50px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.boton-confirmar[disabled] {
+  opacity: 0.55;
+}
+
+/* =========================================
+   CELULAR
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .encabezado {
+    padding: 0 12px;
+  }
+
+  .contenido {
+    width: 92%;
+
+    margin-top: 25px;
+  }
+
+  .contenido h2 {
+    font-size: 20px;
+  }
+
+  .metodo {
+    min-height: 75px;
+
+    padding: 12px;
+  }
+
+  .icono {
+    width: 45px;
+    height: 45px;
+
+    font-size: 22px;
+  }
+
+  .formulario-tarjeta {
+    padding: 18px 15px;
+  }
+
+  .campos-pequenos {
+    gap: 8px;
+  }
+
+}
