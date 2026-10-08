@@ -1,21 +1,37 @@
+/* eslint-disable @angular-eslint/prefer-inject */
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent } from '@ionic/angular';
+import { 
+  IonContent, 
+  IonHeader, 
+  IonToolbar, 
+  IonTitle, 
+  IonList, 
+  IonItem, 
+  IonLabel 
+} from '@ionic/angular';
 import { DataService } from '../services/data';
 
 @Component({
   selector: 'app-categorias',
-  templateUrl: './categorias.page.html', // Corregido: apunta a su propio html
+  templateUrl: './categorias.page.html',
   styleUrls: ['./categorias.page.scss'],
   standalone: true,
   imports: [
-    CommonModule,
-    IonContent
+    CommonModule, 
+    FormsModule, 
+    IonContent, 
+    IonHeader, 
+    IonToolbar, 
+    IonTitle, 
+    IonList, 
+    IonItem, 
+    IonLabel
   ]
 })
-export class CategoriasPage implements OnInit { // Asegura el nombre correcto
-
+export class CategoriasPage implements OnInit {
   categorias: string[] = [];
 
   constructor(
@@ -27,8 +43,10 @@ export class CategoriasPage implements OnInit { // Asegura el nombre correcto
     this.categorias = this.dataService.getCategorias();
   }
 
-  seleccionarCategoria(categoria: string): void {
-    this.router.navigate(['/home'], { queryParams: { categoria } });
-  }
-
+seleccionarCategoria(categoria: string): void {
+  this.dataService.setCategoriaFiltro(categoria);
+  this.router.navigate(['/home'], {
+    queryParams: { categoria: categoria }
+  });
+}
 }

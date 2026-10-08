@@ -1,66 +1,42 @@
-<ion-content>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title style="color: #333; font-weight: bold;">Mi Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <div class="perfil">
+<ion-content class="ion-padding">
+  @if (usuario) {
+    <ion-card>
+      <ion-card-header>
+        <div style="font-size: 50px; text-align: center;">👤</div>
+        <ion-card-title class="ion-text-center">{{ usuario.nombre }}</ion-card-title>
+        <ion-card-subtitle class="ion-text-center">{{ usuario.correo }}</ion-card-subtitle>
+      </ion-card-header>
 
-    <div class="encabezado">
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-label>
+            <h3>Identificador</h3>
+            <p>ID: #{{ usuario.id }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
 
-      <button
-        class="boton-regresar"
-        (click)="regresar()">
-        ←
-      </button>
-
-      <h1>Mi perfil</h1>
-
-    </div>
-
-    <div class="contenido">
-
-      <div class="avatar">
-        👤
-      </div>
-
-      @if (usuario) {
-
-        <h2>{{ usuario.nombre }}</h2>
-
-        <p class="correo">
-          {{ usuario.correo }}
-        </p>
-
-        <div class="informacion">
-
-          <div class="dato">
-            <span class="etiqueta">Nombre</span>
-            <span>{{ usuario.nombre }}</span>
-          </div>
-
-          <div class="dato">
-            <span class="etiqueta">Correo electrónico</span>
-            <span>{{ usuario.correo }}</span>
-          </div>
-
-        </div>
-
-      } @else {
-
-        <h2>Usuario</h2>
-
-        <p class="correo">
-          No hay una sesión activa.
-        </p>
-
-      }
+    <ion-button expand="block" color="danger" (click)="cerrarSesion()">
+      Cerrar Sesión
+    </ion-button>
+  } @else {
+    <div style="text-align: center; margin-top: 25vh;">
+      <p style="color: #333333; font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem;">
+        No has iniciado sesión.
+      </p>
 
       <ion-button
-        expand="block"
-        class="boton-cerrar"
-        (click)="cerrarSesion()">
-        Cerrar sesión
+        (click)="irALogin()"
+        style="--background: #f78da7; --color: #2b2b2b; font-weight: bold; border-radius: 8px;">
+        IR A INICIAR SESIÓN
       </ion-button>
-
     </div>
-
-  </div>
-
+  }
 </ion-content>

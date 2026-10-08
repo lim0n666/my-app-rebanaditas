@@ -226,5 +226,12 @@ ion-content {
   .encabezado {
     padding: 0 12px;
   }
+  ion-toolbar {
+  --color: #333333 !important;
+}
+
+ion-title {
+  color: #333333 !important;
+}
 
 }

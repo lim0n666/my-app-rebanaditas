@@ -6,11 +6,29 @@ import {
   Usuario
 } from '../models/producto.models';
 
-@Injectable({
+
+ @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
+  // ==========================================
+  // FILTRO DE CATEGORÍA COMPARTIDO
+  // ==========================================
+
+  private categoriaFiltroActiva: string = '';
+
+  setCategoriaFiltro(categoria: string): void {
+    this.categoriaFiltroActiva = categoria;
+  }
+
+  getCategoriaFiltro(): string {
+    return this.categoriaFiltroActiva;
+  }
+
+  // ==========================================
+  // ADMINISTRADOR
+  // ==========================================
   // ==========================================
   // ADMINISTRADOR
   // ==========================================
@@ -474,6 +492,7 @@ export class DataService {
   // ==========================================
   // VERIFICAR SI ES ADMINISTRADOR
   // ==========================================
+  
 
   esAdministrador(
     correo: string,

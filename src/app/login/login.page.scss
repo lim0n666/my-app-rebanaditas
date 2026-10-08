@@ -268,5 +268,23 @@ ion-input {
   .titulo h1 {
     font-size: 23px;
   }
+  /* 1. Elimina el fondo gris de autocompletado en navegadores basados en Chromium */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: #333 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* 2. Fuerza fondo transparente para que se vea el contenedor rosa */
+ion-input,
+ion-item,
+input {
+  --background: transparent !important;
+  background: transparent !important;
+  color: #333 !important;
+}
 
 }
