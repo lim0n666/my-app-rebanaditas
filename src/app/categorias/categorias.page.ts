@@ -1,7 +1,17 @@
+/* eslint-disable @angular-eslint/prefer-inject */
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent } from '@ionic/angular';
+import { 
+  IonContent, 
+  IonHeader, 
+  IonToolbar, 
+  IonTitle, 
+  IonList, 
+  IonItem, 
+  IonLabel 
+} from '@ionic/angular';
 import { DataService } from '../services/data';
 
 @Component({
@@ -10,12 +20,18 @@ import { DataService } from '../services/data';
   styleUrls: ['./categorias.page.scss'],
   standalone: true,
   imports: [
-    CommonModule,
-    IonContent
+    CommonModule, 
+    FormsModule, 
+    IonContent, 
+    IonHeader, 
+    IonToolbar, 
+    IonTitle, 
+    IonList, 
+    IonItem, 
+    IonLabel
   ]
 })
 export class CategoriasPage implements OnInit {
-
   categorias: string[] = [];
 
   constructor(
@@ -27,8 +43,10 @@ export class CategoriasPage implements OnInit {
     this.categorias = this.dataService.getCategorias();
   }
 
-  seleccionarCategoria(categoria: string): void {
-    // Navega a la nueva página pasando la categoría en la URL
-    this.router.navigate(['/productos-por-categoria', categoria]);
-  }
+seleccionarCategoria(categoria: string): void {
+  this.dataService.setCategoriaFiltro(categoria);
+  this.router.navigate(['/home'], {
+    queryParams: { categoria: categoria }
+  });
+}
 }

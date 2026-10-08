@@ -1,58 +1,24 @@
-<!-- ========================================== -->
 <!-- MENÚ LATERAL -->
-<!-- ========================================== -->
-
 <ion-menu contentId="main-content" side="start" type="overlay">
-
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title>
-        Rebanaditas
-      </ion-title>
+      <ion-title>Rebanaditas</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
-
     <div class="menu-presentacion">
-      <div class="menu-logo">
-        🍰
-      </div>
-      <h2>
-        Postres que enamoran
-      </h2>
+      <div class="menu-logo">🍰</div>
+      <h2>Postres que enamoran</h2>
+      <p>Síguenos en nuestras redes</p>
     </div>
 
-    <!-- Redes Sociales con Mejor Formato -->
-    <div class="contenedor-redes-sociales">
-      <p class="titulo-redes">
-        ¡Síguenos en nuestras redes!
-      </p>
+    <ion-list>
+      <ion-item button (click)="abrirInstagram()">
+        <span class="icono-menu">📸</span>
+        <ion-label>Síguenos en Instagram</ion-label>
+      </ion-item>
 
-      <div class="botones-redes">
-        <button type="button" class="btn-red instagram" (click)="abrirInstagram()">
-          <span class="icono">📷</span> Instagram
-        </button>
-
-        <button type="button" class="btn-red facebook" (click)="abrirFacebook()">
-          <span class="icono">📘</span> Facebook
-        </button>
-
-        <button type="button" class="btn-red tiktok" (click)="abrirTiktok()">
-          <span class="icono">🎵</span> TikTok
-        </button>
-
-        <button type="button" class="btn-red twitter" (click)="abrirTwitter()">
-          <span class="icono">🐦</span> X (Twitter)
-        </button>
-      </div>
-    </div>
-
-    <!-- ========================================== -->
-    <!-- OPCIONES DEL MENÚ -->
-    <!-- ========================================== -->
-
-    <ion-list lines="none">
       @if (esAdmin) {
         <ion-item button (click)="irAProductos()">
           <span class="icono-menu">⚙️</span>
@@ -61,338 +27,144 @@
       }
     </ion-list>
 
-    <!-- ========================================== -->
-    <!-- CERRAR SESIÓN -->
-    <!-- ========================================== -->
-
     <div class="menu-salida">
-      <ion-list lines="none">
-        <ion-item button (click)="cerrarSesion()">
-          <span class="icono-menu">🚪</span>
-          <ion-label>Cerrar sesión</ion-label>
-        </ion-item>
-      </ion-list>
+      <ion-item button (click)="cerrarSesion()">
+        <span class="icono-menu">🚪</span>
+        <ion-label>Cerrar sesión</ion-label>
+      </ion-item>
     </div>
-
   </ion-content>
-
 </ion-menu>
 
 
-<!-- ========================================== -->
 <!-- ENCABEZADO PRINCIPAL -->
-<!-- ========================================== -->
-
 <ion-header>
-
   <ion-toolbar color="primary">
-
     <ion-buttons slot="start">
       <ion-menu-button aria-label="Abrir menú"></ion-menu-button>
     </ion-buttons>
-
-    <ion-title>
-      Postres que enamoran
-    </ion-title>
-
-
+    <ion-title>Postres que enamoran</ion-title>
   </ion-toolbar>
-
 </ion-header>
 
 
-<!-- ========================================== -->
 <!-- CONTENIDO PRINCIPAL -->
-<!-- ========================================== -->
-
 <ion-content id="main-content">
 
-  <!-- ========================================== -->
   <!-- BUSCADOR -->
-  <!-- ========================================== -->
-
   <ion-searchbar
     placeholder="Buscar postre..."
     [(ngModel)]="textoBusqueda"
     (ionInput)="buscarProducto($event)">
   </ion-searchbar>
 
-
-  <!-- ========================================== -->
   <!-- FILTROS -->
-  <!-- ========================================== -->
-
   <div class="contenedor-filtros">
-
-    <ion-button
-      fill="outline"
-      size="small"
-      (click)="abrirFiltros()">
-
+    <ion-button fill="outline" size="small" (click)="abrirFiltros()">
       ⚙️ Filtros
-
     </ion-button>
-
-    <span>
-      {{ productosFiltrados.length }} productos
-    </span>
-
+    <span>{{ productosFiltrados.length }} productos</span>
   </div>
 
-
-  <!-- ========================================== -->
   <!-- PRODUCTOS -->
-  <!-- ========================================== -->
-
   <ion-grid class="grid-productos">
-
     <ion-row>
-
-      @for (
-        producto of productosFiltrados;
-        track producto.id
-      ) {
-
-        <ion-col
-          size="4"
-          class="col-producto">
-
-          <ion-card
-            class="tarjeta-producto"
-            (click)="verProducto(producto)">
-
-            <ion-img
-              [src]="producto.imagen"
-              [alt]="producto.nombre">
-            </ion-img>
-
+      @for (producto of productosFiltrados; track producto.id) {
+        <ion-col size="4" class="col-producto">
+          <ion-card class="tarjeta-producto" (click)="verProducto(producto)">
+            <ion-img [src]="producto.imagen" [alt]="producto.nombre"></ion-img>
             <ion-card-content>
-
-              <h2>
-                {{ producto.nombre }}
-              </h2>
-
-              <strong>
-                ${{ producto.precio }}
-              </strong>
-
+              <h2>{{ producto.nombre }}</h2>
+              <strong>${{ producto.precio }}</strong>
             </ion-card-content>
-
           </ion-card>
-
         </ion-col>
-
       }
-
     </ion-row>
-
   </ion-grid>
 
-
-  <!-- ========================================== -->
   <!-- SIN RESULTADOS -->
-  <!-- ========================================== -->
-
   @if (productosFiltrados.length === 0) {
-
     <div class="sin-resultados">
-
-      <div class="icono-vacio">
-        🍰
-      </div>
-
-      <h2>
-        No encontramos postres
-      </h2>
-
-      <p>
-        Intenta cambiar la búsqueda o los filtros.
-      </p>
-
-      <ion-button
-        fill="outline"
-        (click)="limpiarFiltros()">
-
+      <div class="icono-vacio">🍰</div>
+      <h2>No encontramos postres</h2>
+      <p>Intenta cambiar la búsqueda o los filtros.</p>
+      <ion-button fill="outline" (click)="limpiarFiltros()">
         Limpiar filtros
-
       </ion-button>
-
     </div>
-
   }
 
-
-  <!-- ========================================== -->
   <!-- MODAL DE FILTROS -->
-  <!-- ========================================== -->
-
-  <ion-modal
-    [isOpen]="mostrarFiltros"
-    (didDismiss)="cerrarFiltros()">
-
+  <ion-modal [isOpen]="mostrarFiltros" (didDismiss)="cerrarFiltros()">
     <ng-template>
-
       <ion-header>
-
         <ion-toolbar>
-
-          <ion-title>
-            Filtrar productos
-          </ion-title>
-
+          <ion-title>Filtrar productos</ion-title>
           <ion-buttons slot="end">
-
-            <ion-button
-              (click)="cerrarFiltros()">
-
-              Cerrar
-
-            </ion-button>
-
+            <ion-button (click)="cerrarFiltros()">Cerrar</ion-button>
           </ion-buttons>
-
         </ion-toolbar>
-
       </ion-header>
 
-
       <ion-content class="ion-padding">
-
         <ion-list>
-
-          <!-- ========================================== -->
-          <!-- CATEGORÍA -->
-          <!-- ========================================== -->
-
           <ion-item>
-
             <ion-select
               label="Categoría"
               labelPlacement="stacked"
               placeholder="Todas"
               [(ngModel)]="categoriaSeleccionada"
               (ionChange)="cambiarCategoria($event)">
-
-              <ion-select-option value="">
-                Todas
-              </ion-select-option>
-
-              @for (
-                categoria of categorias;
-                track categoria
-              ) {
-
-                <ion-select-option
-                  [value]="categoria">
-
+              <ion-select-option value="">Todas</ion-select-option>
+              @for (categoria of categorias; track categoria) {
+                <ion-select-option [value]="categoria">
                   {{ categoria }}
-
                 </ion-select-option>
-
               }
-
             </ion-select>
-
           </ion-item>
 
-
-          <!-- ========================================== -->
-          <!-- SABOR -->
-          <!-- ========================================== -->
-
           <ion-item>
-
             <ion-select
               label="Sabor"
               labelPlacement="stacked"
               placeholder="Todos"
               [(ngModel)]="saborSeleccionado"
               (ionChange)="cambiarSabor($event)">
-
-              <ion-select-option value="">
-                Todos
-              </ion-select-option>
-
-              @for (
-                sabor of sabores;
-                track sabor
-              ) {
-
-                <ion-select-option
-                  [value]="sabor">
-
+              <ion-select-option value="">Todos</ion-select-option>
+              @for (sabor of sabores; track sabor) {
+                <ion-select-option [value]="sabor">
                   {{ sabor }}
-
                 </ion-select-option>
-
               }
-
             </ion-select>
-
-          </ion-item>
-
-
-          <!-- ========================================== -->
-          <!-- PRECIO -->
-          <!-- ========================================== -->
-
-          <ion-item>
-
-            <ion-label>
-
-              Precio máximo:
-              ${{ precioMaximo }}
-
-            </ion-label>
-
           </ion-item>
 
           <ion-item>
+            <ion-label>Precio máximo: ${{ precioMaximo }}</ion-label>
+          </ion-item>
 
+          <ion-item>
             <ion-range
-              min="0"
-              [max]="precioMaximoDisponible"
+              min="20"
+              max="500"
               step="5"
               [value]="precioMaximo"
               (ionInput)="cambiarPrecio($event)">
             </ion-range>
-
           </ion-item>
-
         </ion-list>
 
-
-        <!-- ========================================== -->
-        <!-- APLICAR FILTROS -->
-        <!-- ========================================== -->
-
-        <ion-button
-          expand="block"
-          class="boton-aplicar"
-          (click)="aplicarFiltros()">
-
+        <ion-button expand="block" class="boton-aplicar" (click)="cerrarFiltros()">
           Aplicar filtros
-
         </ion-button>
 
-
-        <!-- ========================================== -->
-        <!-- LIMPIAR FILTROS -->
-        <!-- ========================================== -->
-
-        <ion-button
-          expand="block"
-          fill="clear"
-          (click)="limpiarFiltros()">
-
+        <ion-button expand="block" fill="clear" (click)="limpiarFiltros()">
           Limpiar filtros
-
         </ion-button>
-
       </ion-content>
-
     </ng-template>
-
   </ion-modal>
 
 </ion-content>

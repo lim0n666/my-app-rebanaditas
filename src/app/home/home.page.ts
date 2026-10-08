@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {
-  Router,
-  ActivatedRoute
-} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import {
   IonContent,
@@ -68,6 +65,11 @@ import { DataService } from '../services/data';
 })
 export class HomePage implements OnInit {
 
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly dataService = inject(DataService);
+  private readonly cd = inject(ChangeDetectorRef); 
+
   productos: Producto[] = [];
   productosFiltrados: Producto[] = [];
 
@@ -78,48 +80,53 @@ export class HomePage implements OnInit {
   categoriaSeleccionada = '';
   saborSeleccionado = '';
 
-  precioMaximo = 100;
-  precioMaximoDisponible = 100;
+  precioMaximo = 500;
 
   mostrarFiltros = false;
-
   esAdmin = false;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private dataService: DataService
-  ) {
-    // Escucha los cambios en los parámetros de la URL en tiempo real
+
+
+  constructor() {}
+
+  ngOnInit(): void {
+    this.cargarProductos();
+
+    // Escucha cambios en los queryParams de la URL
     this.route.queryParams.subscribe(params => {
-      const categoriaParam = params['categoria'];
-      if (categoriaParam) {
-        this.categoriaSeleccionada = categoriaParam;
-      } else {
-        this.categoriaSeleccionada = '';
-      }
+      this.categoriaSeleccionada = params && params['categoria'] ? params['categoria'] : '';
       this.aplicarFiltros();
     });
   }
 
-  ngOnInit(): void {
+  // Reactiva la carga y filtros cada vez que vuelves a esta pestaña en Ionic
+ ionViewWillEnter(): void {
     this.cargarProductos();
+
+    // 1. Revisamos si viene guardada la categoría desde el servicio
+    const categoriaServicio = this.dataService.getCategoriaFiltro();
+    const categoriaParam = this.route.snapshot.queryParamMap.get('categoria');
+
+    if (categoriaServicio) {
+      this.categoriaSeleccionada = categoriaServicio;
+      this.dataService.setCategoriaFiltro(''); // Se limpia para que no quede fija
+    } else if (categoriaParam) {
+      this.categoriaSeleccionada = categoriaParam;
+    }
+
+    // 2. Filtramos la lista
+    this.aplicarFiltros();
+
+    // 3. Forzamos a Angular a actualizar la pantalla de inmediato
+    this.cd.detectChanges();
   }
 
   cargarProductos(): void {
     this.productos = this.dataService.getProductos();
     this.productosFiltrados = [...this.productos];
-
     this.categorias = this.dataService.getCategorias();
     this.sabores = this.dataService.getSabores();
     this.esAdmin = this.dataService.usuarioEsAdministrador();
-
-    if (this.productos.length > 0) {
-      this.precioMaximoDisponible = Math.max(
-        ...this.productos.map(producto => producto.precio)
-      );
-      this.precioMaximo = this.precioMaximoDisponible;
-    }
   }
 
   buscarProducto(event: any): void {
@@ -145,31 +152,33 @@ export class HomePage implements OnInit {
   aplicarFiltros(): void {
     let resultado = [...this.productos];
 
-    // BÚSQUEDA
+    // Búsqueda por texto
     if (this.textoBusqueda.trim() !== '') {
       resultado = resultado.filter(producto =>
         producto.nombre.toLowerCase().includes(this.textoBusqueda.toLowerCase())
       );
     }
 
-    // CATEGORÍA (Ignorando mayúsculas/minúsculas para mayor compatibilidad)
-    if (this.categoriaSeleccionada !== '') {
-      resultado = resultado.filter(producto =>
-        producto.categoria.toLowerCase() === this.categoriaSeleccionada.toLowerCase()
+    // Filtro por categoría normalizado
+    if (this.categoriaSeleccionada && this.categoriaSeleccionada.trim() !== '') {
+      resultado = resultado.filter(
+        producto =>
+          producto.categoria?.trim().toLowerCase() ===
+          this.categoriaSeleccionada.trim().toLowerCase()
       );
     }
 
-    // SABOR
-    if (this.saborSeleccionado !== '') {
-      resultado = resultado.filter(producto =>
-        producto.sabor === this.saborSeleccionado
+    // Filtro por sabor normalizado
+    if (this.saborSeleccionado && this.saborSeleccionado.trim() !== '') {
+      resultado = resultado.filter(
+        producto =>
+          producto.sabor?.trim().toLowerCase() ===
+          this.saborSeleccionado.trim().toLowerCase()
       );
     }
 
-    // PRECIO
-    resultado = resultado.filter(producto =>
-      producto.precio <= this.precioMaximo
-    );
+    // Filtro por precio
+    resultado = resultado.filter(producto => producto.precio <= this.precioMaximo);
 
     this.productosFiltrados = resultado;
   }
@@ -185,7 +194,7 @@ export class HomePage implements OnInit {
   limpiarFiltros(): void {
     this.categoriaSeleccionada = '';
     this.saborSeleccionado = '';
-    this.precioMaximo = this.precioMaximoDisponible;
+    this.precioMaximo = 500;
     this.textoBusqueda = '';
     this.productosFiltrados = [...this.productos];
   }
@@ -198,20 +207,11 @@ export class HomePage implements OnInit {
     window.open('https://www.instagram.com/sweet_rebanaditas/', '_blank');
   }
 
-  abrirFacebook(): void {
-    window.open('https://www.facebook.com/sweet_rebanaditas/', '_blank');
-  }
-
-  abrirTiktok(): void {
-    window.open('https://www.tiktok.com/@sweet_rebanaditas', '_blank');
-  }
-
-  abrirTwitter(): void {
-    window.open('https://www.twitter.com/sweet_rebanaditas/', '_blank');
-  }
-
   irAProductos(): void {
-    this.router.navigateByUrl('/home');
+    if (!this.esAdmin) {
+      return;
+    }
+    this.router.navigateByUrl('/productos');
   }
 
   cerrarSesion(): void {
