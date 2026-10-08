@@ -2,115 +2,81 @@
 <!-- MENÚ LATERAL -->
 <!-- ========================================== -->
 
-<ion-menu
-  contentId="main-content"
-  side="start"
-  type="overlay">
+<ion-menu contentId="main-content" side="start" type="overlay">
 
   <ion-header>
-
     <ion-toolbar color="primary">
-
       <ion-title>
         Rebanaditas
       </ion-title>
-
     </ion-toolbar>
-
   </ion-header>
-
 
   <ion-content>
 
     <div class="menu-presentacion">
-
       <div class="menu-logo">
         🍰
       </div>
-
       <h2>
         Postres que enamoran
       </h2>
-
-      <p>
-        Síguenos en nuestras redes
-      </p>
-
     </div>
 
+    <!-- Redes Sociales con Mejor Formato -->
+    <div class="contenedor-redes-sociales">
+      <p class="titulo-redes">
+        ¡Síguenos en nuestras redes!
+      </p>
 
-    <ion-list>
+      <div class="botones-redes">
+        <button type="button" class="btn-red instagram" (click)="abrirInstagram()">
+          <span class="icono">📷</span> Instagram
+        </button>
 
-      <!-- ========================================== -->
-      <!-- SÍGUENOS -->
-      <!-- ========================================== -->
+        <button type="button" class="btn-red facebook" (click)="abrirFacebook()">
+          <span class="icono">📘</span> Facebook
+        </button>
 
-      <ion-item
-        button
-        (click)="abrirInstagram()">
+        <button type="button" class="btn-red tiktok" (click)="abrirTiktok()">
+          <span class="icono">🎵</span> TikTok
+        </button>
 
-        <span class="icono-menu">
-          📸
-        </span>
+        <button type="button" class="btn-red twitter" (click)="abrirTwitter()">
+          <span class="icono">🐦</span> X (Twitter)
+        </button>
+      </div>
+    </div>
 
-        <ion-label>
-          Síguenos en Instagram
-        </ion-label>
+    <!-- ========================================== -->
+    <!-- OPCIONES DEL MENÚ -->
+    <!-- ========================================== -->
 
-      </ion-item>
-
-
-      <!-- ========================================== -->
-      <!-- GESTIONAR PRODUCTOS - SOLO ADMIN -->
-      <!-- ========================================== -->
-
+    <ion-list lines="none">
       @if (esAdmin) {
-
-        <ion-item
-          button
-          (click)="irAProductos()">
-
-          <span class="icono-menu">
-            ⚙️
-          </span>
-
-          <ion-label>
-            Gestionar productos
-          </ion-label>
-
+        <ion-item button (click)="irAProductos()">
+          <span class="icono-menu">⚙️</span>
+          <ion-label>Gestionar productos</ion-label>
         </ion-item>
-
       }
-
     </ion-list>
-
 
     <!-- ========================================== -->
     <!-- CERRAR SESIÓN -->
     <!-- ========================================== -->
 
     <div class="menu-salida">
-
-      <ion-item
-        button
-        (click)="cerrarSesion()">
-
-        <span class="icono-menu">
-          🚪
-        </span>
-
-        <ion-label>
-          Cerrar sesión
-        </ion-label>
-
-      </ion-item>
-
+      <ion-list lines="none">
+        <ion-item button (click)="cerrarSesion()">
+          <span class="icono-menu">🚪</span>
+          <ion-label>Cerrar sesión</ion-label>
+        </ion-item>
+      </ion-list>
     </div>
 
   </ion-content>
 
 </ion-menu>
-
 
 
 <!-- ========================================== -->
@@ -122,22 +88,17 @@
   <ion-toolbar color="primary">
 
     <ion-buttons slot="start">
-
-      <ion-menu-button
-        aria-label="Abrir menú">
-      </ion-menu-button>
-
+      <ion-menu-button aria-label="Abrir menú"></ion-menu-button>
     </ion-buttons>
-
 
     <ion-title>
       Postres que enamoran
     </ion-title>
 
+
   </ion-toolbar>
 
 </ion-header>
-
 
 
 <!-- ========================================== -->
@@ -145,7 +106,6 @@
 <!-- ========================================== -->
 
 <ion-content id="main-content">
-
 
   <!-- ========================================== -->
   <!-- BUSCADOR -->
@@ -156,7 +116,6 @@
     [(ngModel)]="textoBusqueda"
     (ionInput)="buscarProducto($event)">
   </ion-searchbar>
-
 
 
   <!-- ========================================== -->
@@ -174,13 +133,11 @@
 
     </ion-button>
 
-
     <span>
       {{ productosFiltrados.length }} productos
     </span>
 
   </div>
-
 
 
   <!-- ========================================== -->
@@ -209,13 +166,11 @@
               [alt]="producto.nombre">
             </ion-img>
 
-
             <ion-card-content>
 
               <h2>
                 {{ producto.nombre }}
               </h2>
-
 
               <strong>
                 ${{ producto.precio }}
@@ -234,14 +189,11 @@
   </ion-grid>
 
 
-
   <!-- ========================================== -->
   <!-- SIN RESULTADOS -->
   <!-- ========================================== -->
 
-  @if (
-    productosFiltrados.length === 0
-  ) {
+  @if (productosFiltrados.length === 0) {
 
     <div class="sin-resultados">
 
@@ -249,16 +201,13 @@
         🍰
       </div>
 
-
       <h2>
         No encontramos postres
       </h2>
 
-
       <p>
         Intenta cambiar la búsqueda o los filtros.
       </p>
-
 
       <ion-button
         fill="outline"
@@ -273,7 +222,6 @@
   }
 
 
-
   <!-- ========================================== -->
   <!-- MODAL DE FILTROS -->
   <!-- ========================================== -->
@@ -284,9 +232,6 @@
 
     <ng-template>
 
-
-      <!-- ENCABEZADO DEL MODAL -->
-
       <ion-header>
 
         <ion-toolbar>
@@ -294,7 +239,6 @@
           <ion-title>
             Filtrar productos
           </ion-title>
-
 
           <ion-buttons slot="end">
 
@@ -312,13 +256,9 @@
       </ion-header>
 
 
-
-      <!-- CONTENIDO DEL MODAL -->
-
       <ion-content class="ion-padding">
 
         <ion-list>
-
 
           <!-- ========================================== -->
           <!-- CATEGORÍA -->
@@ -336,7 +276,6 @@
               <ion-select-option value="">
                 Todas
               </ion-select-option>
-
 
               @for (
                 categoria of categorias;
@@ -357,7 +296,6 @@
           </ion-item>
 
 
-
           <!-- ========================================== -->
           <!-- SABOR -->
           <!-- ========================================== -->
@@ -374,7 +312,6 @@
               <ion-select-option value="">
                 Todos
               </ion-select-option>
-
 
               @for (
                 sabor of sabores;
@@ -395,7 +332,6 @@
           </ion-item>
 
 
-
           <!-- ========================================== -->
           <!-- PRECIO -->
           <!-- ========================================== -->
@@ -411,12 +347,11 @@
 
           </ion-item>
 
-
           <ion-item>
 
             <ion-range
-              min="20"
-              max="500"
+              min="0"
+              [max]="precioMaximoDisponible"
               step="5"
               [value]="precioMaximo"
               (ionInput)="cambiarPrecio($event)">
@@ -427,7 +362,6 @@
         </ion-list>
 
 
-
         <!-- ========================================== -->
         <!-- APLICAR FILTROS -->
         <!-- ========================================== -->
@@ -435,12 +369,11 @@
         <ion-button
           expand="block"
           class="boton-aplicar"
-          (click)="cerrarFiltros()">
+          (click)="aplicarFiltros()">
 
           Aplicar filtros
 
         </ion-button>
-
 
 
         <!-- ========================================== -->

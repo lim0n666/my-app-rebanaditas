@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import {
+  Router,
+  ActivatedRoute
+} from '@angular/router';
 
 import {
   IonContent,
@@ -76,7 +78,8 @@ export class HomePage implements OnInit {
   categoriaSeleccionada = '';
   saborSeleccionado = '';
 
-  precioMaximo = 500;
+  precioMaximo = 100;
+  precioMaximoDisponible = 100;
 
   mostrarFiltros = false;
 
@@ -87,137 +90,88 @@ export class HomePage implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService
   ) {
-    // Escuchamos cada vez que la navegación finaliza para actualizar el filtro entre pestañas
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.verificarCategoriaQuery();
+    // Escucha los cambios en los parámetros de la URL en tiempo real
+    this.route.queryParams.subscribe(params => {
+      const categoriaParam = params['categoria'];
+      if (categoriaParam) {
+        this.categoriaSeleccionada = categoriaParam;
+      } else {
+        this.categoriaSeleccionada = '';
+      }
+      this.aplicarFiltros();
     });
   }
 
   ngOnInit(): void {
     this.cargarProductos();
-    this.verificarCategoriaQuery();
-  }
-
-  verificarCategoriaQuery(): void {
-    const categoriaParam = this.route.snapshot.queryParamMap.get('categoria');
-    
-    if (categoriaParam) {
-      this.categoriaSeleccionada = categoriaParam;
-    } else {
-      this.categoriaSeleccionada = '';
-    }
-    this.aplicarFiltros();
   }
 
   cargarProductos(): void {
+    this.productos = this.dataService.getProductos();
+    this.productosFiltrados = [...this.productos];
 
-    this.productos =
-      this.dataService.getProductos();
+    this.categorias = this.dataService.getCategorias();
+    this.sabores = this.dataService.getSabores();
+    this.esAdmin = this.dataService.usuarioEsAdministrador();
 
-    this.productosFiltrados =
-      [...this.productos];
-
-    this.categorias =
-      this.dataService.getCategorias();
-
-    this.sabores =
-      this.dataService.getSabores();
-
-    this.esAdmin =
-      this.dataService.usuarioEsAdministrador();
+    if (this.productos.length > 0) {
+      this.precioMaximoDisponible = Math.max(
+        ...this.productos.map(producto => producto.precio)
+      );
+      this.precioMaximo = this.precioMaximoDisponible;
+    }
   }
 
   buscarProducto(event: any): void {
-
-    this.textoBusqueda =
-      event.detail.value || '';
-
+    this.textoBusqueda = event.detail.value || '';
     this.aplicarFiltros();
   }
 
   cambiarCategoria(event: any): void {
-
-    this.categoriaSeleccionada =
-      event.detail.value || '';
-
+    this.categoriaSeleccionada = event.detail.value || '';
     this.aplicarFiltros();
   }
 
   cambiarSabor(event: any): void {
-
-    this.saborSeleccionado =
-      event.detail.value || '';
-
+    this.saborSeleccionado = event.detail.value || '';
     this.aplicarFiltros();
   }
 
   cambiarPrecio(event: any): void {
-
-    this.precioMaximo =
-      Number(event.detail.value);
-
+    this.precioMaximo = Number(event.detail.value);
     this.aplicarFiltros();
   }
 
   aplicarFiltros(): void {
-
-    let resultado =
-      [...this.productos];
+    let resultado = [...this.productos];
 
     // BÚSQUEDA
-    if (
-      this.textoBusqueda.trim() !== ''
-    ) {
-
-      resultado =
-        resultado.filter(
-          producto =>
-            producto.nombre
-              .toLowerCase()
-              .includes(
-                this.textoBusqueda.toLowerCase()
-              )
-        );
+    if (this.textoBusqueda.trim() !== '') {
+      resultado = resultado.filter(producto =>
+        producto.nombre.toLowerCase().includes(this.textoBusqueda.toLowerCase())
+      );
     }
 
-    // CATEGORÍA
-    if (
-      this.categoriaSeleccionada !== ''
-    ) {
-
-      resultado =
-        resultado.filter(
-          producto =>
-            producto.categoria ===
-            this.categoriaSeleccionada
-        );
+    // CATEGORÍA (Ignorando mayúsculas/minúsculas para mayor compatibilidad)
+    if (this.categoriaSeleccionada !== '') {
+      resultado = resultado.filter(producto =>
+        producto.categoria.toLowerCase() === this.categoriaSeleccionada.toLowerCase()
+      );
     }
 
     // SABOR
-    if (
-      this.saborSeleccionado !== ''
-    ) {
-
-      resultado =
-        resultado.filter(
-          producto =>
-            producto.sabor ===
-            this.saborSeleccionado
-        );
+    if (this.saborSeleccionado !== '') {
+      resultado = resultado.filter(producto =>
+        producto.sabor === this.saborSeleccionado
+      );
     }
 
     // PRECIO
-    resultado =
-      resultado.filter(
-        producto =>
-          producto.precio <=
-          this.precioMaximo
-      );
+    resultado = resultado.filter(producto =>
+      producto.precio <= this.precioMaximo
+    );
 
-    this.productosFiltrados =
-      resultado;
+    this.productosFiltrados = resultado;
   }
 
   abrirFiltros(): void {
@@ -229,54 +183,39 @@ export class HomePage implements OnInit {
   }
 
   limpiarFiltros(): void {
-
     this.categoriaSeleccionada = '';
     this.saborSeleccionado = '';
-    this.precioMaximo = 500;
+    this.precioMaximo = this.precioMaximoDisponible;
     this.textoBusqueda = '';
-
-    this.productosFiltrados =
-      [...this.productos];
+    this.productosFiltrados = [...this.productos];
   }
 
   verProducto(producto: Producto): void {
-
-    this.router.navigate([
-      '/detalle-producto',
-      producto.id
-    ]);
+    this.router.navigate(['/detalle-producto', producto.id]);
   }
 
   abrirInstagram(): void {
-
-    window.open(
-      'https://www.instagram.com/sweet_rebanaditas/',
-      '_blank'
-    );
+    window.open('https://www.instagram.com/sweet_rebanaditas/', '_blank');
   }
 
-  // ==========================================
-  // GESTIONAR PRODUCTOS
-  // ==========================================
+  abrirFacebook(): void {
+    window.open('https://www.facebook.com/sweet_rebanaditas/', '_blank');
+  }
+
+  abrirTiktok(): void {
+    window.open('https://www.tiktok.com/@sweet_rebanaditas', '_blank');
+  }
+
+  abrirTwitter(): void {
+    window.open('https://www.twitter.com/sweet_rebanaditas/', '_blank');
+  }
 
   irAProductos(): void {
-
-    if (!this.esAdmin) {
-      return;
-    }
-
-    this.router.navigateByUrl('/productos');
+    this.router.navigateByUrl('/home');
   }
-
-  // ==========================================
-  // CERRAR SESIÓN
-  // ==========================================
 
   cerrarSesion(): void {
-
     this.dataService.cerrarSesion();
-
     this.router.navigateByUrl('/login');
   }
-
 }

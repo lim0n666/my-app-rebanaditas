@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/categorias"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ nombreCategoria }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="contenedor-productos-categoria">
+    <h2>Todos los postres de {{ nombreCategoria }}</h2>
+
+    <ion-grid class="grid-productos">
+      <ion-row>
+        @for (producto of productosDeLaCategoria; track producto.id) {
+          <ion-col size="12" size-md="4" class="col-producto">
+            <ion-card class="tarjeta-producto" (click)="verDetalleProducto(producto)">
+              <ion-img [src]="producto.imagen" [alt]="producto.nombre"></ion-img>
+              <ion-card-content>
+                <h2>{{ producto.nombre }}</h2>
+                <strong>${{ producto.precio }}</strong>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        } @empty {
+          <div class="sin-resultados">
+            <p>No hay productos disponibles en esta categoría por el momento.</p>
+          </div>
+        }
+      </ion-row>
+    </ion-grid>
+  </div>
+
+</ion-content>

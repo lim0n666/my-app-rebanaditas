@@ -1,0 +1,125 @@
+.contenedor-productos-categoria {
+  padding: 10px;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+  }
+}
+
+.tarjeta-producto {
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  ion-img {
+    height: 160px;
+    object-fit: cover;
+  }
+
+  ion-card-content {
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin: 0 0 8px 0;
+    }
+
+    strong {
+      color: var(--ion-color-primary);
+      font-size: 16px;
+    }
+  }
+}
+
+.sin-resultados {
+  text-align: center;
+  width: 100%;
+  padding: 40px;
+  color: #666;
+}
+
+
+
+
+/* ========================================== */
+/* ESTILOS DE LA PÁGINA DE PRODUCTOS POR CATEGORÍA */
+/* ========================================== */
+
+.contenedor-productos-categoria {
+  padding: 16px;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 20px;
+  }
+}
+
+/* Cuadrícula idéntica a la del Home */
+.grid-productos {
+  padding: 0;
+}
+
+.col-producto {
+  padding: 8px;
+}
+
+.tarjeta-producto {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  margin: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #f0f0f0;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  ion-img {
+    height: 150px;
+    object-fit: cover;
+    background-color: #f9f9f9;
+  }
+
+  ion-card-content {
+    padding: 14px;
+    background: #ffffff;
+
+    h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #2c2c2c;
+      margin: 0 0 6px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    strong {
+      color: var(--ion-color-primary, #eb445a);
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+}
+
+.sin-resultados {
+  text-align: center;
+  width: 100%;
+  padding: 50px 20px;
+  color: #777;
+  font-size: 15px;
+}

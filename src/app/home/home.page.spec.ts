@@ -94,6 +94,7 @@ export class HomePage {
   // ==========================================
 
   esAdmin = false;
+precioMaximoDisponible: any;
 
   constructor(
     private router: Router,

@@ -37,6 +37,11 @@ export const routes: Routes = [
         path: 'categorias',
         loadComponent: () => import('./categorias/categorias.page').then(m => m.CategoriasPage)
       },
+      // NUEVA RUTA PARA PRODUCTOS POR CATEGORÍA
+      {
+        path: 'productos-por-categoria/:nombre',
+        loadComponent: () => import('./productos-por-categoria/productos-por-categoria.page').then(m => m.ProductosPorCategoriaPage)
+      },
       {
         path: 'carrito',
         loadComponent: () => import('./carrito/carrito.page').then(m => m.CarritoPage)
@@ -45,7 +50,6 @@ export const routes: Routes = [
         path: 'perfil',
         loadComponent: () => import('./perfil/perfil.page').then(m => m.PerfilPage)
       },
-      // MOVEMOS DETALLE AQUÍ ADENTRO:
       {
         path: 'detalle-producto/:id',
         loadComponent: () => import('./detalle-producto/detalle-producto.page').then(m => m.DetalleProductoPage)

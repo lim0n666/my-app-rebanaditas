@@ -6,7 +6,7 @@ import { DataService } from '../services/data';
 
 @Component({
   selector: 'app-categorias',
-  templateUrl: './categorias.page.html', // Corregido: apunta a su propio html
+  templateUrl: './categorias.page.html',
   styleUrls: ['./categorias.page.scss'],
   standalone: true,
   imports: [
@@ -14,7 +14,7 @@ import { DataService } from '../services/data';
     IonContent
   ]
 })
-export class CategoriasPage implements OnInit { // Asegura el nombre correcto
+export class CategoriasPage implements OnInit {
 
   categorias: string[] = [];
 
@@ -28,7 +28,7 @@ export class CategoriasPage implements OnInit { // Asegura el nombre correcto
   }
 
   seleccionarCategoria(categoria: string): void {
-    this.router.navigate(['/home'], { queryParams: { categoria } });
+    // Navega a la nueva página pasando la categoría en la URL
+    this.router.navigate(['/productos-por-categoria', categoria]);
   }
-
 }
