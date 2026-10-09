@@ -32,10 +32,12 @@ export class LoginPage {
   mensajeError = '';
   mostrarPassword = false;
 
-  constructor(
-    private router: Router,
-    private dataService: DataService
-  ) {}
+  // Inyección de dependencias para gestionar la navegación
+// y acceder a los servicios de datos de la aplicación.
+constructor(
+  private router: Router,
+  private dataService: DataService
+) {}
 
   iniciarSesion(): void {
 
