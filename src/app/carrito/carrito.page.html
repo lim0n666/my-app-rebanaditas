@@ -43,6 +43,7 @@
                   {{ item.cantidad }}
                 </span>
 
+                <!-- Botón para sumar una unidad al producto -->
                 <button
                   class="boton-cantidad"
                   (click)="aumentarCantidad(item)">
@@ -57,6 +58,7 @@
 
         }
 
+        <!-- Resumen del costo total acumulado -->
         <div class="total">
           <span>Total</span>
           <strong>
