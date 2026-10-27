@@ -120,7 +120,7 @@ export class HomePage implements OnInit {
     // 3. Forzamos a Angular a actualizar la pantalla de inmediato
     this.cd.detectChanges();
   }
-
+// Carga el catálogo completo, opciones para los filtros y verifica el rol de administrador
   cargarProductos(): void {
     this.productos = this.dataService.getProductos();
     this.productosFiltrados = [...this.productos];

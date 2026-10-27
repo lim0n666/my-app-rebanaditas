@@ -18,26 +18,38 @@
             <p color="medium">${{ item.producto.precio }}</p>
           </ion-label>
 
-          <div slot="end" style="display: flex; align-items: center;">
-            <button type="button" (click)="disminuirCantidad(item)">
-              -
-            </button>
-            <span>{{ item.cantidad }}</span>
-            <button type="button" (click)="aumentarCantidad(item)">
-              +
-            </button>
+              <div class="cantidad">
+
+                <button
+                  class="boton-cantidad"
+                  (click)="disminuirCantidad(item)">
+                  −
+                </button>
+
+                <span>
+                  {{ item.cantidad }}
+                </span>
+
+                <button
+                  class="boton-cantidad"
+                  (click)="aumentarCantidad(item)">
+                  +
+                </button>
+
+              </div>
+
+            </div>
+
           </div>
-        </ion-item>
-      }
-    </ion-list>
-    <ion-item lines= "none">
-      <ion-label>
-      <h2><strong>Total</strong></h2>
-      </ion-label>
-      <ion-note slot = "end" color = "dark">
-      <strong>${{ obtenerTotal() }}</strong>
-    </ion-note>
-    </ion-item>
+
+        }
+
+        <div class="total">
+          <span>Total</span>
+          <strong>
+            ${{ obtenerTotal() }}
+          </strong>
+        </div>
 
   <ion-button expand="block" class="ion-margin-top" (click)="irAMetodosPago()">
       Continuar compra
