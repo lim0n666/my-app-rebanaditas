@@ -1,63 +1,46 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>
-      Postres que enamoran
-    </ion-title>
+    <ion-title>Postres que enamoran</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-
   @if (producto) {
-
-    <div class="detalle">
-
-      <!-- IMAGEN DEL PRODUCTO -->
-      <div class="imagen-producto">
-        <img [src]="producto.imagen" [alt]="producto.nombre">
-      </div>
-
-      <!-- INFORMACIÓN -->
-      <div class="informacion">
-
-        <h2>
-          {{ producto.nombre }}
-        </h2>
-
-        <div class="precio">
+    <ion-card>
+      <img [src]="producto.imagen" [alt]="producto.nombre" />
+      
+      <ion-card-header>
+        <ion-card-title>{{ producto.nombre }}</ion-card-title>
+        <ion-card-subtitle color="success" style="font-size: 1.2rem;">
           ${{ producto.precio }}
-        </div>
+        </ion-card-subtitle>
+      </ion-card-header>
 
-        <h3>
-          Detalles del producto
-        </h3>
+      <ion-card-content>
+        <ion-text color="dark">
+          <p><strong>Detalles del producto</strong></p>
+          <p>{{ producto.descripcion }}</p>
+        </ion-text>
 
-        <p>
-          {{ producto.descripcion }}
-        </p>
+        <!-- ion-grid para colocar los controles y el botón lado a lado -->
+        <ion-grid class="ion-no-padding ion-margin-top">
+          <ion-row class="ion-align-items-center">
+            
+            <ion-col size="5" style="display: flex; align-items: center; justify-content: space-between; padding-right: 10px;">
+              <ion-button fill="outline" size="small" (click)="disminuirCantidad()">-</ion-button>
+              <ion-text><strong>{{ cantidad }}</strong></ion-text>
+              <ion-button fill="outline" size="small" (click)="aumentarCantidad()">+</ion-button>
+            </ion-col>
+            
+            <ion-col size="7">
+              <ion-button expand="block" (click)="agregarAlCarrito()">
+                Agregar al carrito
+              </ion-button>
+            </ion-col>
 
-        <!-- CONTENEDOR: CANTIDAD Y BOTÓN LADO A LADO -->
-        <div class="acciones-carrito">
-          
-          <div class="selector-cantidad">
-            <ion-button fill="outline" size="small" (click)="disminuirCantidad()">-</ion-button>
-            <span class="cantidad-num">{{ cantidad }}</span>
-            <ion-button fill="outline" size="small" (click)="aumentarCantidad()">+</ion-button>
-          </div>
-
-          <ion-button
-            expand="block"
-            class="boton-carrito"
-            (click)="agregarAlCarrito()">
-            Agregar al carrito
-          </ion-button>
-
-        </div>
-
-      </div>
-
-    </div>
-
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
   }
-
 </ion-content>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -33,11 +33,9 @@ export class LoginPage {
   mostrarPassword = false;
 
   // Inyección de dependencias para gestionar la navegación
-// y acceder a los servicios de datos de la aplicación.
-constructor(
-  private router: Router,
-  private dataService: DataService
-) {}
+  // y acceder a los servicios de datos de la aplicación.
+  private readonly router = inject(Router);
+  private readonly dataService = inject(DataService);
 
   iniciarSesion(): void {
 

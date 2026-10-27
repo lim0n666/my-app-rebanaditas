@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent } from '@ionic/angular';
 import { DataService } from '../services/data';
+
+import { 
+  IonHeader, IonToolbar, IonTitle, IonContent, 
+  IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonCardTitle 
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-categorias',
@@ -11,24 +15,22 @@ import { DataService } from '../services/data';
   standalone: true,
   imports: [
     CommonModule,
-    IonContent
+    IonHeader, IonToolbar, IonTitle, IonContent,
+    IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonCardTitle
   ]
 })
 export class CategoriasPage implements OnInit {
-
+  
   categorias: string[] = [];
-
-  constructor(
-    private dataService: DataService,
-    private router: Router
-  ) {}
+  private dataService = inject(DataService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.categorias = this.dataService.getCategorias();
   }
 
   seleccionarCategoria(categoria: string): void {
-    // Navega a la nueva página pasando la categoría en la URL
-    this.router.navigate(['/productos-por-categoria', categoria]);
+    // Aquí va tu lógica para navegar a los productos de esa categoría
+    console.log('Categoría seleccionada:', categoria);
   }
 }

@@ -1,11 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-import {
-  IonContent,
-  IonButton
-} from '@ionic/angular';
+import { IonHeader, IonItem, IonLabel, IonToolbar, IonTitle, IonList, IonNote, IonContent, IonThumbnail, IonButton } from '@ionic/angular';
 
 import { ItemCarrito } from '../models/producto.models';
 import { DataService } from '../services/data';
@@ -15,18 +12,27 @@ import { DataService } from '../services/data';
   templateUrl: './carrito.page.html',
   styleUrls: ['./carrito.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonButton,
     CommonModule,
+    IonHeader,
+    IonItem,
+    IonLabel,
+    IonToolbar,
+    IonTitle,
+    IonList,
+    IonNote,
     IonContent,
-    IonButton
-  ]
+    IonThumbnail]
 })
-export class CarritoPage {
+export class CarritoPage implements OnInit {
 
   carrito: ItemCarrito[] = [];
 
   constructor(
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private dataService: DataService,
+     
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private router: Router
   ) {}
 

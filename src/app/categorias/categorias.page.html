@@ -1,42 +1,46 @@
+//Coreccion de otro archivo xd
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Categorías</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="ion-padding">
-
-  <div class="categorias-pagina">
-
-    <!-- ENCABEZADO -->
-    <header class="encabezado">
-      <h1>Categorías de Postres</h1>
-      <p>Elige tu categoría favorita para consentirte hoy</p>
-    </header>
-
-    <!-- GRID DE CATEGORÍAS -->
-    <section class="seccion-categorias">
-      <div class="grid-categorias">
-
-        @for (categoria of categorias; track categoria) {
-          <article class="tarjeta-categoria" (click)="seleccionarCategoria(categoria)">
-            <div class="contenido-categoria">
-              
-              <!-- Icono dinámico según la categoría -->
-             <div class="icono-categoria">
-  @if (categoria === 'Pasteles') { 🎂 }
-  @else if (categoria === 'Carlotas') { 🍋 }
-  @else if (categoria === 'Pays') { 🥧 }
-  @else if (categoria === 'Helados') { 🍨 }
-  @else if (categoria === 'Gelatinas') { 🍮 }
-  @else if (categoria === 'Brownies') { 🍫 }
-  @else { 🥤 }
-</div>
-
-              <h3>{{ categoria }}</h3>
-              <p>Explorar deliciosos {{ categoria.toLowerCase() }}</p>
-
-            </div>
-          </article>
-        }
-
-      </div>
-    </section>
-
+  
+  <div class="ion-text-center ion-margin-bottom">
+    <h2>Categorías de Postres</h2>
+    <p color="medium">Elige tu categoría favorita para consentirte hoy</p>
   </div>
+
+  <ion-grid>
+    <ion-row>
+      @for (categoria of categorias; track categoria) {
+        <!-- size="6" divide la pantalla en 2 columnas (12 es el total) -->
+        <ion-col size="6">
+          <ion-card button (click)="seleccionarCategoria(categoria)">
+            <ion-card-content class="ion-text-center">
+              
+              <div style="font-size: 3rem; margin-bottom: 10px;">
+                @if (categoria === 'Pasteles') { 🎂 }
+                @else if (categoria === 'Carlotas') { 🍋 }
+                @else if (categoria === 'Pays') { 🥧 }
+                @else if (categoria === 'Helados') { 🍨 }
+                @else if (categoria === 'Gelatinas') { 🍮 }
+                @else if (categoria === 'Brownies') { 🍫 }
+                @else { 🥤 }
+              </div>
+
+              <ion-card-title style="font-size: 1.1rem;">{{ categoria }}</ion-card-title>
+              <p style="font-size: 0.8rem; margin-top: 5px; color: gray;">
+                Explorar deliciosos {{ categoria.toLowerCase() }}
+              </p>
+
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

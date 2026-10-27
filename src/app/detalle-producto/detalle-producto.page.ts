@@ -1,14 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
+// Importamos todas las etiquetas que usamos en el HTML del detalle
 import {
   IonContent,
   IonHeader,
   IonToolbar,
   IonTitle,
   IonButton,
-  ToastController // <--- 1. Importar ToastController
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonText,
+  IonGrid,
+  IonRow,
+  IonCol,
+  ToastController
 } from '@ionic/angular';
 
 import { Producto } from '../models/producto.models';
@@ -19,24 +29,39 @@ import { DataService } from '../services/data';
   templateUrl: './detalle-producto.page.html',
   styleUrls: ['./detalle-producto.page.scss'],
   standalone: true,
+  // Añadimos las etiquetas al arreglo para que Angular las reconozca
   imports: [
     CommonModule,
     IonContent,
     IonHeader,
     IonToolbar,
     IonTitle,
-    IonButton
+    IonButton,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonText,
+    IonGrid,
+    IonRow,
+    IonCol
   ]
 })
-export class DetalleProductoPage {
+export class DetalleProductoPage implements OnInit {
+  // ... mantén toda tu lógica de la clase, el constructor y el Toast exactamente igual
 
   producto: Producto | undefined;
   cantidad: number = 1;
 
   constructor(
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private route: ActivatedRoute,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private router: Router,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private dataService: DataService,
+    // eslint-disable-next-line @angular-eslint/prefer-inject
     private toastController: ToastController // <--- 2. Inyectar ToastController
   ) {}
 

@@ -1,4 +1,4 @@
-<!-- MENÚ LATERAL -->
+
 <ion-menu contentId="main-content" side="start" type="overlay">
   <ion-header>
     <ion-toolbar color="primary">
@@ -7,36 +7,36 @@
   </ion-header>
 
   <ion-content>
-    <div class="menu-presentacion">
-      <div class="menu-logo">🍰</div>
-      <h2>Postres que enamoran</h2>
-      <p>Síguenos en nuestras redes</p>
+    <div class="ion-text-center ion-padding">
+      <div style="font-size: 4rem;">🍰</div>
+      <h2 style="color: var(--ion-color-primary); font-weight: bold; margin-bottom: 5px;">Postres que enamoran</h2>
+      <p style="color: gray; margin-top: 0;">Síguenos en nuestras redes</p>
     </div>
 
     <ion-list>
       <ion-item button (click)="abrirInstagram()">
-        <span class="icono-menu">📸</span>
+        <span slot="start" style="font-size: 1.5rem;">📸</span>
         <ion-label>Síguenos en Instagram</ion-label>
       </ion-item>
 
       @if (esAdmin) {
         <ion-item button (click)="irAProductos()">
-          <span class="icono-menu">⚙️</span>
+          <span slot="start" style="font-size: 1.5rem;">⚙️</span>
           <ion-label>Gestionar productos</ion-label>
         </ion-item>
       }
     </ion-list>
 
-    <div class="menu-salida">
-      <ion-item button (click)="cerrarSesion()">
-        <span class="icono-menu">🚪</span>
-        <ion-label>Cerrar sesión</ion-label>
+    <!-- Botón de salida al final -->
+    <ion-list class="ion-margin-top">
+      <ion-item button lines="none" (click)="cerrarSesion()">
+        <span slot="start" style="font-size: 1.5rem;">🚪</span>
+        <ion-label color="danger">Cerrar sesión</ion-label>
       </ion-item>
-    </div>
+    </ion-list>
   </ion-content>
 </ion-menu>
 
-<!--commit de Fatima-->
 <!-- ENCABEZADO PRINCIPAL -->
 <ion-header>
   <ion-toolbar color="primary">
@@ -46,7 +46,6 @@
     <ion-title>Postres que enamoran</ion-title>
   </ion-toolbar>
 </ion-header>
-
 
 <!-- CONTENIDO PRINCIPAL -->
 <ion-content id="main-content">
@@ -58,24 +57,31 @@
     (ionInput)="buscarProducto($event)">
   </ion-searchbar>
 
-  <!-- FILTROS -->
-  <div class="contenedor-filtros">
-    <ion-button fill="outline" size="small" (click)="abrirFiltros()">
+  <!-- FILTROS NATIVOS -->
+  <ion-item lines="none">
+    <ion-button slot="start" fill="outline" size="small" (click)="abrirFiltros()">
       ⚙️ Filtros
     </ion-button>
-    <span>{{ productosFiltrados.length }} productos</span>
-  </div>
+    <ion-label slot="end" color="medium" style="text-align: right;">
+      {{ productosFiltrados.length }} productos
+    </ion-label>
+  </ion-item>
 
-  <!-- PRODUCTOS -->
-  <ion-grid class="grid-productos">
+ <!-- PRODUCTOS -->
+  <ion-grid class="ion-no-padding">
     <ion-row>
       @for (producto of productosFiltrados; track producto.id) {
-        <ion-col size="4" class="col-producto">
-          <ion-card class="tarjeta-producto" (click)="verProducto(producto)">
-            <ion-img [src]="producto.imagen" [alt]="producto.nombre"></ion-img>
-            <ion-card-content>
-              <h2>{{ producto.nombre }}</h2>
-              <strong>${{ producto.precio }}</strong>
+        <ion-col size="6">
+          <ion-card class="ion-no-margin" style="margin: 5px;" button (click)="verProducto(producto)">
+            
+            <!-- Imagen con altura fija y object-fit para que no se deforme ni desborde -->
+            <img [src]="producto.imagen" [alt]="producto.nombre" style="width: 100%; height: 140px; object-fit: cover;" />
+            
+            <ion-card-content class="ion-text-center">
+              <h2 style="font-weight: bold; font-size: 1rem; margin-bottom: 5px;">{{ producto.nombre }}</h2>
+              <ion-label color="success">
+                <strong>${{ producto.precio }}</strong>
+              </ion-label>
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -85,11 +91,11 @@
 
   <!-- SIN RESULTADOS -->
   @if (productosFiltrados.length === 0) {
-    <div class="sin-resultados">
-      <div class="icono-vacio">🍰</div>
-      <h2>No encontramos postres</h2>
-      <p>Intenta cambiar la búsqueda o los filtros.</p>
-      <ion-button fill="outline" (click)="limpiarFiltros()">
+    <div class="ion-text-center ion-padding" style="margin-top: 50px;">
+      <div style="font-size: 4rem;">🍰</div>
+      <h2 style="color: var(--ion-color-dark);">No encontramos postres</h2>
+      <p style="color: gray;">Intenta cambiar la búsqueda o los filtros.</p>
+      <ion-button fill="outline" class="ion-margin-top" (click)="limpiarFiltros()">
         Limpiar filtros
       </ion-button>
     </div>
@@ -141,8 +147,8 @@
             </ion-select>
           </ion-item>
 
-          <ion-item>
-            <ion-label>Precio máximo: ${{ precioMaximo }}</ion-label>
+          <ion-item lines="none">
+            <ion-label>Precio máximo: <strong>${{ precioMaximo }}</strong></ion-label>
           </ion-item>
 
           <ion-item>
@@ -156,11 +162,11 @@
           </ion-item>
         </ion-list>
 
-        <ion-button expand="block" class="boton-aplicar" (click)="cerrarFiltros()">
+        <ion-button expand="block" class="ion-margin-top" (click)="cerrarFiltros()">
           Aplicar filtros
         </ion-button>
 
-        <ion-button expand="block" fill="clear" (click)="limpiarFiltros()">
+        <ion-button expand="block" fill="clear" color="medium" (click)="limpiarFiltros()">
           Limpiar filtros
         </ion-button>
       </ion-content>
