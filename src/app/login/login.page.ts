@@ -8,8 +8,12 @@ import { DataService } from '../services/data';
 import {
   IonContent,
   IonInput,
-  IonButton
+  IonButton,
+  IonText,
+  IonIcon
 } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { personOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +21,8 @@ import {
   styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
+    IonIcon,
+    IonText,
     CommonModule,
     FormsModule,
     IonContent,
@@ -25,27 +31,28 @@ import {
   ]
 })
 export class LoginPage {
-
   correo = '';
   password = '';
 
   mensajeError = '';
   mostrarPassword = false;
 
-  // Inyección de dependencias para gestionar la navegación
-  // y acceder a los servicios de datos de la aplicación.
   private readonly router = inject(Router);
   private readonly dataService = inject(DataService);
 
+  constructor() {
+    addIcons({ personOutline });
+  }
+  
   iniciarSesion(): void {
 
     this.mensajeError = '';
 
+    const correo = this.correo.trim();
+    const password = this.password.trim();
+
     // Validar campos vacíos
-    if (
-      this.correo.trim() === '' ||
-      this.password.trim() === ''
-    ) {
+    if (correo === '' || password === '') {
       this.mensajeError = 'Completa todos los campos.';
       return;
     }
@@ -56,17 +63,14 @@ export class LoginPage {
 
     if (
       this.dataService.esAdministrador(
-        this.correo.trim(),
-        this.password
+        correo,
+        password
       )
     ) {
-
       const administrador =
         this.dataService.getAdministrador();
 
       this.dataService.setUsuarioActual(administrador);
-
-      // CORREGIDO: Redirige a /home en lugar de /app/home
       this.router.navigate(['/home']);
 
       return;
@@ -80,11 +84,10 @@ export class LoginPage {
       this.dataService.getUsuarios().find(
         usuario =>
           usuario.correo.trim().toLowerCase() ===
-          this.correo.trim().toLowerCase()
+          correo.toLowerCase()
       );
 
     if (!usuarioEncontrado) {
-
       this.mensajeError =
         'El correo no está registrado.';
 
@@ -96,10 +99,8 @@ export class LoginPage {
     // ==========================================
 
     if (
-      usuarioEncontrado.password !==
-      this.password
+      usuarioEncontrado.password !== password
     ) {
-
       this.mensajeError =
         'La contraseña es incorrecta.';
 
@@ -118,7 +119,6 @@ export class LoginPage {
     // IR AL HOME
     // ==========================================
 
-    // CORREGIDO: Redirige a /home en lugar de /app/home
     this.router.navigate(['/home']);
   }
 

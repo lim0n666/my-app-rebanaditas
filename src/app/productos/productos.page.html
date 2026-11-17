@@ -1,3 +1,4 @@
+<!-- MODIFICADO: conserva botones para agregar, editar y borrar productos vía API. -->
 <ion-header>
 
   <ion-toolbar color="primary">
@@ -25,7 +26,6 @@
 <ion-content class="ion-padding">
 
   <div class="administracion">
-
     <!-- ========================================== -->
     <!-- ENCABEZADO -->
     <!-- ========================================== -->
@@ -48,15 +48,13 @@
     <!-- ========================================== -->
 
     <div class="formulario-producto">
-
-
       <!-- NOMBRE -->
 
       <ion-item>
 
         <ion-input
           [(ngModel)]="nuevoNombre"
-          label="Nombre del postre"
+          label="Nombre del producto"
           labelPlacement="floating"
           placeholder="Ej. Carlota de mango">
         </ion-input>
@@ -77,8 +75,6 @@
         </ion-input>
 
       </ion-item>
-
-
       <!-- CATEGORÍA -->
 
       <ion-item>
@@ -97,7 +93,7 @@
             <ion-select-option
               [value]="categoria">
 
-              {{ categoria }}
+              {{ nombreCategoria(categoria) }}
 
             </ion-select-option>
 
@@ -106,8 +102,6 @@
         </ion-select>
 
       </ion-item>
-
-
       <!-- SABOR -->
 
       <ion-item>
@@ -131,8 +125,7 @@
             </ion-select-option>
 
           }
-
-        </ion-select>
+          </ion-select>
 
       </ion-item>
 
@@ -151,22 +144,17 @@
         </ion-textarea>
 
       </ion-item>
-
-
       <!-- IMAGEN -->
 
-      <div class="campo-imagen">
-
-        <label class="etiqueta-imagen">
-          Imagen del producto
-        </label>
-
-        <input
-          type="file"
-          accept="image/*"
-          (change)="seleccionarImagen($event)">
-
-      </div>
+      <ion-item>
+        <ion-input
+          [(ngModel)]="nuevaImagen"
+          type="url"
+          label="URL de la imagen"
+          labelPlacement="floating"
+          placeholder="https://...">
+        </ion-input>
+      </ion-item>
 
 
       <!-- VISTA PREVIA -->
@@ -186,8 +174,6 @@
         </div>
 
       }
-
-
       <!-- MENSAJE -->
 
       @if (mensaje) {
@@ -206,15 +192,14 @@
       <ion-button
         expand="block"
         class="boton-agregar"
+        [disabled]="guardando"
         (click)="agregarProducto()">
 
-        AGREGAR PRODUCTO
+        {{ guardando ? 'GUARDANDO…' : (productoEditandoId === null ? 'AGREGAR PRODUCTO' : 'GUARDAR CAMBIOS') }}
 
       </ion-button>
 
     </div>
-
-
     <!-- ========================================== -->
     <!-- LISTA DE PRODUCTOS -->
     <!-- ========================================== -->
@@ -239,7 +224,6 @@
         track producto.id;
         let i = $index
       ) {
-
         <ion-item
           class="producto-item">
 
@@ -268,10 +252,9 @@
             <p>
               ${{ producto.precio }}
             </p>
-
             <p>
               Categoría:
-              {{ producto.categoria }}
+              {{ nombreCategoria(producto.categoria) }}
             </p>
 
             <p>
@@ -289,14 +272,20 @@
           <!-- ELIMINAR -->
 
           <ion-button
+            fill="outline"
+            slot="end"
+            (click)="editarProducto(producto)">
+            Editar
+          </ion-button>
+
+          <ion-button
             color="danger"
             fill="clear"
             slot="end"
             (click)="eliminarProducto(i)">
 
             Eliminar
-
-          </ion-button>
+            </ion-button>
 
         </ion-item>
 
@@ -324,5 +313,5 @@
     }
 
   </div>
-
 </ion-content>
+

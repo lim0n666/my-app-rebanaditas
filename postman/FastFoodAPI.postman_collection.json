@@ -1,0 +1,48 @@
+{
+  "info": {
+    "name": "Rebanaditas - Fast Food API CRUD",
+    "description": "Pruebas secuenciales GET, POST, PUT y DELETE para el CRUD de productos. Ejecutar en orden para crear y después editar/eliminar el producto de prueba.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://devsapihub.com/api-fast-food" },
+    { "key": "productId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "GET - Listar productos",
+      "request": { "method": "GET", "url": "{{baseUrl}}" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('responde correctamente', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });", "pm.test('devuelve una lista', function () { pm.expect(pm.response.json()).to.be.an('array'); });"] } }]
+    },
+    {
+      "name": "POST - Crear producto de prueba",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Producto de prueba Rebanaditas\",\n  \"price\": 25,\n  \"image\": \"https://placehold.co/600x400.jpg\",\n  \"category\": \"pastel\"\n}" },
+        "url": "{{baseUrl}}/product"
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('crea el producto', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });", "const producto = pm.response.json();", "pm.expect(producto).to.have.property('id');", "pm.environment.set('productId', producto.id);"] } }]
+    },
+    {
+      "name": "GET - Consultar producto creado",
+      "request": { "method": "GET", "url": "{{baseUrl}}/{{productId}}" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('encuentra el producto de prueba', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });", "pm.expect(pm.response.json()).to.have.property('id');"] } }]
+    },
+    {
+      "name": "PUT - Editar producto de prueba",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"id\": {{productId}},\n  \"name\": \"Producto de prueba editado\",\n  \"price\": 30,\n  \"image\": \"https://placehold.co/600x400.jpg\",\n  \"category\": \"pastel\"\n}" },
+        "url": "{{baseUrl}}/product/{{productId}}"
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('actualiza el producto', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });", "pm.expect(pm.response.json().name).to.eql('Producto de prueba editado');"] } }]
+    },
+    {
+      "name": "DELETE - Eliminar producto de prueba",
+      "request": { "method": "DELETE", "url": "{{baseUrl}}/product/{{productId}}" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('elimina el producto', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"] } }]
+    }
+  ]
+}

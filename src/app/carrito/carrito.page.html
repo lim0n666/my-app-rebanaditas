@@ -1,66 +1,59 @@
-//Corección y uso de etiquetas ionic
 <ion-header>
-  <ion-toolbar color = "primary">
-  <ion-title>Mi carrito</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Mi carrito</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class = "ioni-padding">
+<ion-content class="ion-padding">
   @if (carrito.length > 0) {
     <ion-list>
       @for (item of carrito; track item.producto.id) {
         <ion-item>
-          <ion-thumbnail slot = "start">
-          <img [src]="item.producto.imagen" [alt]="item.producto.nombre" />
+          <ion-thumbnail slot="start">
+            <img [src]="item.producto.imagen" [alt]="item.producto.nombre" />
           </ion-thumbnail>
+          
           <ion-label>
             <h2>{{ item.producto.nombre }}</h2>
             <p color="medium">${{ item.producto.precio }}</p>
           </ion-label>
 
-              <div class="cantidad">
-
-                <button
-                  class="boton-cantidad"
-                  (click)="disminuirCantidad(item)">
-                  −
-                </button>
-
-                <span>
-                  {{ item.cantidad }}
-                </span>
-
-                <button
-                  class="boton-cantidad"
-                  (click)="aumentarCantidad(item)">
-                  +
-                </button>
-
-              </div>
-
-            </div>
-
+          <div slot="end" style="display: flex; align-items: center;">
+            <ion-button fill="clear" size="small" (click)="disminuirCantidad(item)">
+              -
+            </ion-button>
+            <span>{{ item.cantidad }}</span>
+            <ion-button fill="clear" size="small" (click)="aumentarCantidad(item)">
+              +
+            </ion-button>
           </div>
+        </ion-item>
+      }
+    </ion-list>
 
-        }
+    <ion-item lines="none">
+      <ion-label>
+        <h2><strong>Total</strong></h2>
+      </ion-label>
+      <ion-note slot="end" color="dark">
+        <strong>${{ obtenerTotal() }}</strong>
+      </ion-note>
+    </ion-item>
 
-        <div class="total">
-          <span>Total</span>
-          <strong>
-            ${{ obtenerTotal() }}
-          </strong>
-        </div>
-
-  <ion-button expand="block" class="ion-margin-top" (click)="irAMetodosPago()">
+    <ion-button expand="block" class="ion-margin-top" (click)="irAMetodosPago()">
       Continuar compra
     </ion-button>
 
+    <ion-button expand="block" fill="outline" class="ion-margin-top" (click)="regresar()">
+      Agregar más productos
+    </ion-button>
+
   } @else {
-    <div style="text-align: center; padding-top: 50px;">
-      <div style="font-size: 4rem;">🛒</div>
+    <div class="ion-text-center ion-margin-top" style="padding-top: 50px;">
+      <div class="icono-decorativo"><ion-icon name="ice-cream-outline" aria-hidden="true"></ion-icon></div>
       <h2>Tu carrito está vacío</h2>
       <p>Agrega tus postres favoritos para continuar.</p>
-      <ion-button type="button" style="margin-top: 16px;" (click)="regresar()">
+      <ion-button fill="outline" class="ion-margin-top" (click)="regresar()">
         Ver postres
       </ion-button>
     </div>

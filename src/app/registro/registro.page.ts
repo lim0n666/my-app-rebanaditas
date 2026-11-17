@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,8 +6,7 @@ import { Router } from '@angular/router';
 import {
   IonContent,
   IonInput,
-  IonButton
-} from '@ionic/angular';
+  IonButton, IonIcon } from '@ionic/angular';
 
 import { DataService } from '../services/data';
 
@@ -16,7 +15,7 @@ import { DataService } from '../services/data';
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonIcon, 
     CommonModule,
     FormsModule,
     IonContent,
@@ -33,10 +32,8 @@ export class RegistroPage {
 
   mensajeError = '';
 
-  constructor(
-    private router: Router,
-    private dataService: DataService
-  ) {}
+  private readonly router = inject(Router);
+  private readonly dataService = inject(DataService);
 
   registrarse(): void {
     this.mensajeError = '';

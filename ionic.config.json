@@ -1,7 +1,7 @@
 {
   "name": "my-app-rebanaditas",
+  "type": "angular",
   "integrations": {
     "capacitor": {}
-  },
-  "type": "angular-standalone"
+  }
 }

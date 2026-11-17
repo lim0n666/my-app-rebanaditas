@@ -1,4 +1,3 @@
-
 <ion-menu contentId="main-content" side="start" type="overlay">
   <ion-header>
     <ion-toolbar color="primary">
@@ -8,20 +7,37 @@
 
   <ion-content>
     <div class="ion-text-center ion-padding">
-      <div style="font-size: 4rem;">🍰</div>
+      <div style="width: 72px; height: 72px; margin: 0 auto 10px; border-radius: 50%; background: #ffe4ef; display: flex; align-items: center; justify-content: center;">
+        <ion-icon name="ice-cream-outline" style="font-size: 40px; color: var(--ion-color-primary);"></ion-icon>
+      </div>
       <h2 style="color: var(--ion-color-primary); font-weight: bold; margin-bottom: 5px;">Postres que enamoran</h2>
       <p style="color: gray; margin-top: 0;">Síguenos en nuestras redes</p>
     </div>
 
     <ion-list>
-      <ion-item button (click)="abrirInstagram()">
-        <span slot="start" style="font-size: 1.5rem;">📸</span>
-        <ion-label>Síguenos en Instagram</ion-label>
+      <ion-item button (click)="abrirRedSocial('https://www.instagram.com/sweet_rebanaditas/')">
+        <ion-icon slot="start" name="logo-instagram" style="color: #E1306C;"></ion-icon>
+        <ion-label>Instagram</ion-label>
+      </ion-item>
+
+      <ion-item button (click)="abrirRedSocial('https://www.facebook.com/')">
+        <ion-icon slot="start" name="logo-facebook" style="color: #1877F2;"></ion-icon>
+        <ion-label>Facebook</ion-label>
+      </ion-item>
+
+      <ion-item button (click)="abrirRedSocial('https://twitter.com/')">
+        <ion-icon slot="start" name="logo-twitter" style="color: #1DA1F2;"></ion-icon>
+        <ion-label>Twitter / X</ion-label>
+      </ion-item>
+
+      <ion-item button (click)="abrirRedSocial('https://www.youtube.com/')">
+        <ion-icon slot="start" name="logo-youtube" style="color: #FF0000;"></ion-icon>
+        <ion-label>YouTube</ion-label>
       </ion-item>
 
       @if (esAdmin) {
         <ion-item button (click)="irAProductos()">
-          <span slot="start" style="font-size: 1.5rem;">⚙️</span>
+          <ion-icon slot="start" name="pricetags-outline" color="primary"></ion-icon>
           <ion-label>Gestionar productos</ion-label>
         </ion-item>
       }
@@ -30,7 +46,7 @@
     <!-- Botón de salida al final -->
     <ion-list class="ion-margin-top">
       <ion-item button lines="none" (click)="cerrarSesion()">
-        <span slot="start" style="font-size: 1.5rem;">🚪</span>
+        <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
         <ion-label color="danger">Cerrar sesión</ion-label>
       </ion-item>
     </ion-list>
@@ -46,7 +62,6 @@
     <ion-title>Postres que enamoran</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <!-- CONTENIDO PRINCIPAL -->
 <ion-content id="main-content">
 
@@ -68,6 +83,12 @@
   </ion-item>
 
  <!-- PRODUCTOS -->
+  @if (cargando) {
+    <p class="ion-text-center ion-padding">Cargando productos…</p>
+  }  
+  @if (mensajeError) {
+    <p class="ion-text-center ion-padding" role="alert">{{ mensajeError }}</p>
+  }
   <ion-grid class="ion-no-padding">
     <ion-row>
       @for (producto of productosFiltrados; track producto.id) {
@@ -75,7 +96,11 @@
           <ion-card class="ion-no-margin" style="margin: 5px;" button (click)="verProducto(producto)">
             
             <!-- Imagen con altura fija y object-fit para que no se deforme ni desborde -->
-            <img [src]="producto.imagen" [alt]="producto.nombre" style="width: 100%; height: 140px; object-fit: cover;" />
+            <img
+  [src]="producto.imagen"
+  [alt]="producto.nombre"
+  (error)="imagenRespaldo($event)"
+  style="width: 100%; height: 140px; object-fit: cover;" />
             
             <ion-card-content class="ion-text-center">
               <h2 style="font-weight: bold; font-size: 1rem; margin-bottom: 5px;">{{ producto.nombre }}</h2>
@@ -88,11 +113,10 @@
       }
     </ion-row>
   </ion-grid>
-
   <!-- SIN RESULTADOS -->
-  @if (productosFiltrados.length === 0) {
+  @if (!cargando && !mensajeError && productosFiltrados.length === 0) {
     <div class="ion-text-center ion-padding" style="margin-top: 50px;">
-      <div style="font-size: 4rem;">🍰</div>
+      <div class="icono-decorativo"><ion-icon name="ice-cream-outline" aria-hidden="true"></ion-icon></div>
       <h2 style="color: var(--ion-color-dark);">No encontramos postres</h2>
       <p style="color: gray;">Intenta cambiar la búsqueda o los filtros.</p>
       <ion-button fill="outline" class="ion-margin-top" (click)="limpiarFiltros()">
@@ -112,7 +136,6 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-
       <ion-content class="ion-padding">
         <ion-list>
           <ion-item>
@@ -125,12 +148,11 @@
               <ion-select-option value="">Todas</ion-select-option>
               @for (categoria of categorias; track categoria) {
                 <ion-select-option [value]="categoria">
-                  {{ categoria }}
+                  {{ nombreCategoria(categoria) }}
                 </ion-select-option>
               }
             </ion-select>
           </ion-item>
-
           <ion-item>
             <ion-select
               label="Sabor"
@@ -172,5 +194,5 @@
       </ion-content>
     </ng-template>
   </ion-modal>
-
 </ion-content>
+

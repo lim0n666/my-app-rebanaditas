@@ -1,31 +1,29 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { 
-  IonTabs, 
-  IonTabBar, 
-  IonTabButton, 
-  IonIcon, 
-  IonLabel 
-} from '@ionic/angular';
+import { IonTabs, IonTabBar, IonTabButton, IonLabel, IonIcon } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { home, grid, cart, person } from 'ionicons/icons';
+import {
+  homeOutline,
+  gridOutline,
+  cartOutline,
+  receiptOutline,
+  personOutline
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: './tabs.page.html',
   styleUrls: ['./tabs.page.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    IonTabs,
-    IonTabBar,
-    IonTabButton,
-    IonIcon,
-    IonLabel
-  ]
+  imports: [IonTabs, IonTabBar, IonTabButton, IonLabel, IonIcon]
 })
 export class TabsPage {
   constructor() {
-    addIcons({ home, grid, cart, person });
+    addIcons({
+      homeOutline,
+      gridOutline,
+      cartOutline,
+      receiptOutline,
+      personOutline
+    });
   }
 }

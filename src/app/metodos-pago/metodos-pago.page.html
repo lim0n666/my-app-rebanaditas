@@ -1,285 +1,124 @@
-<ion-content>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Método de pago</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <div class="metodos-pago">
+<ion-content class="ion-padding">
+  <h2 style="font-weight: bold; margin-bottom: 16px;">Selecciona tu método de pago</h2>
 
-    <div class="encabezado">
+  <ion-radio-group [(ngModel)]="metodoSeleccionado">
+    <!-- Opción 1: Efectivo -->
+    <ion-card
+      button
+      (click)="metodoSeleccionado = 'Efectivo'"
+      [style.border]="metodoSeleccionado === 'Efectivo' ? '2px solid var(--ion-color-primary)' : '1px solid #e0e0e0'"
+      style="margin: 0 0 12px 0; border-radius: 12px;">
+      <ion-item lines="none">
+        <ion-icon name="cash-outline" slot="start" color="success" style="font-size: 28px;"></ion-icon>
+        <ion-label>
+          <h3 style="font-weight: bold;">Efectivo</h3>
+          <p style="font-size: 0.85rem; color: gray;">Pago contra entrega al recibir tu postre</p>
+        </ion-label>
+        <ion-radio slot="end" value="Efectivo"></ion-radio>
+      </ion-item>
+    </ion-card>
 
-      <button
-        class="boton-regresar"
-        type="button"
-        (click)="regresar()">
-        ←
-      </button>
+    <!-- Opción 2: Tarjeta Sandbox -->
+    <ion-card
+      button
+      (click)="metodoSeleccionado = 'Tarjeta Sandbox'"
+      [style.border]="metodoSeleccionado === 'Tarjeta Sandbox' ? '2px solid var(--ion-color-primary)' : '1px solid #e0e0e0'"
+      style="margin: 0 0 12px 0; border-radius: 12px;">
+      <ion-item lines="none">
+        <ion-icon name="card-outline" slot="start" color="primary" style="font-size: 28px;"></ion-icon>
+        <ion-label>
+          <h3 style="font-weight: bold;">Tarjeta Crédito / Débito</h3>
+          <p style="font-size: 0.85rem; color: gray;">Pasarela Sandbox Stripe (confirmación inmediata)</p>
+        </ion-label>
+        <ion-radio slot="end" value="Tarjeta Sandbox"></ion-radio>
+      </ion-item>
+    </ion-card>
 
-      <h1>Métodos de pago</h1>
+    <!-- Opción 3: Transferencia / Mercado Pago -->
+    <ion-card
+      button
+      (click)="metodoSeleccionado = 'Transferencia / Mercado Pago'"
+      [style.border]="metodoSeleccionado === 'Transferencia / Mercado Pago' ? '2px solid var(--ion-color-primary)' : '1px solid #e0e0e0'"
+      style="margin: 0 0 12px 0; border-radius: 12px;">
+      <ion-item lines="none">
+        <ion-icon name="swap-horizontal-outline" slot="start" color="tertiary" style="font-size: 28px;"></ion-icon>
+        <ion-label>
+          <h3 style="font-weight: bold;">Transferencia / Mercado Pago</h3>
+          <p style="font-size: 0.85rem; color: gray;">CLABE interbancaria o Wallet digital</p>
+        </ion-label>
+        <ion-radio slot="end" value="Transferencia / Mercado Pago"></ion-radio>
+      </ion-item>
+    </ion-card>
+  </ion-radio-group>
 
-    </div>
+  <!-- Formulario Sandbox cuando elige Tarjeta -->
+  @if (metodoSeleccionado === 'Tarjeta Sandbox') {
+    <ion-card class="ion-margin-top" style="border-radius: 12px;">
+      <ion-card-header>
+        <ion-card-title>Pasarela Sandbox (Prueba)</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><small>Usa <strong>4242 4242 4242 4242</strong> (Éxito) o <strong>4000 0000 0000 0002</strong> (Fallo).</small></p>
+        <ion-item>
+          <ion-input label="Titular" labelPlacement="stacked" name="ccname" autocomplete="cc-name" placeholder="Nombre en la tarjeta" [(ngModel)]="titularTarjeta"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Número de tarjeta" labelPlacement="stacked" name="cardnumber" autocomplete="cc-number" maxlength="19" placeholder="4242 4242 4242 4242" [(ngModel)]="numeroTarjeta"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Expiración (MM/AA)" labelPlacement="stacked" name="cc-exp" autocomplete="cc-exp" maxlength="5" placeholder="12/28" [(ngModel)]="expiracionTarjeta"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="CVV" labelPlacement="stacked" name="cvc" autocomplete="cc-csc" type="password" maxlength="4" placeholder="123" [(ngModel)]="cvvTarjeta"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  }
 
-    // commit de Fatima 
+  <!-- Datos cuando elige Transferencia / Mercado Pago -->
+  @if (metodoSeleccionado === 'Transferencia / Mercado Pago') {
+    <ion-card class="ion-margin-top" style="border-radius: 12px;">
+      <ion-card-header>
+        <ion-card-title>Transferencia / Mercado Pago</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>CLABE Sandbox: <strong>646180157000000004</strong></p>
+        <p>Beneficiario: <strong>Rebanaditas Repostería S.A.</strong></p>
+        <ion-item>
+          <ion-input label="Referencia / Comprobante" labelPlacement="stacked" name="reference" placeholder="Ej. MP-984512" [(ngModel)]="referenciaTransferencia"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  }
 
-
-    <div class="contenido">
-
-      <h2>Selecciona un método de pago</h2>
-
-      <p class="subtitulo">
-        Elige cómo deseas realizar tu compra.
-      </p>
-
-
-      <div class="metodos">
-
-        <!-- TARJETA -->
-
-        <button
-          type="button"
-          class="metodo"
-          [class.seleccionado]="metodoSeleccionado === 'Tarjeta'"
-          (click)="seleccionarMetodo('Tarjeta')">
-
-          <div class="icono">
-            💳
-          </div>
-
-          <div class="informacion">
-
-            <strong>
-              Tarjeta
-            </strong>
-
-            <span>
-              Crédito o débito
-            </span>
-
-          </div>
-
-          @if (metodoSeleccionado === 'Tarjeta') {
-
-            <div class="check">
-              ✓
-            </div>
-
-          }
-
-        </button>
-
-
-        <!-- FORMULARIO TARJETA -->
-
-        @if (metodoSeleccionado === 'Tarjeta') {
-
-          <div class="formulario-tarjeta">
-
-            <h3>Datos de la tarjeta</h3>
-
-            <div class="campo">
-
-              <ion-input
-                type="text"
-                label="Número de tarjeta"
-                labelPlacement="floating"
-                placeholder="0000 0000 0000 0000"
-                maxlength="19"
-                [(ngModel)]="numeroTarjeta">
-              </ion-input>
-
-            </div>
-
-
-            <div class="campo">
-
-              <ion-input
-                type="text"
-                label="Nombre del titular"
-                labelPlacement="floating"
-                placeholder="Nombre completo"
-                [(ngModel)]="nombreTitular">
-              </ion-input>
-
-            </div>
-
-
-            <div class="campos-pequenos">
-
-              <div class="campo">
-
-                <ion-input
-                  type="text"
-                  label="Fecha de vencimiento"
-                  labelPlacement="floating"
-                  placeholder="MM/AA"
-                  maxlength="5"
-                  [(ngModel)]="fechaVencimiento">
-                </ion-input>
-
-              </div>
-
-
-              <div class="campo">
-
-                <ion-input
-                  type="password"
-                  label="CVV"
-                  labelPlacement="floating"
-                  placeholder="000"
-                  maxlength="3"
-                  [(ngModel)]="cvv">
-                </ion-input>
-
-              </div>
-
-            </div>
-
-          </div>
-
+  @if (estadoPago) {
+    <ion-card color="light" class="ion-margin-top">
+      <ion-card-content>
+        <p><strong>Estado de transacción:</strong> {{ estadoPago }}</p>
+        @if (folioRecibo) {
+          <p><strong>Folio de recibo:</strong> {{ folioRecibo }}</p>
         }
+      </ion-card-content>
+    </ion-card>
+  }
 
+  @if (mensajeError) {
+    <p class="ion-padding-top">
+      <ion-note color="danger">{{ mensajeError }}</ion-note>
+    </p>
+  }
 
-        <!-- EFECTIVO -->
+  <ion-button expand="block" class="ion-margin-top" [disabled]="procesando" (click)="confirmarCompra()">
+    {{ procesando ? 'Procesando pago con pasarela…' : 'Confirmar y pagar' }}
+  </ion-button>
 
-        <button
-          type="button"
-          class="metodo"
-          [class.seleccionado]="metodoSeleccionado === 'Efectivo'"
-          (click)="seleccionarMetodo('Efectivo')">
-
-          <div class="icono">
-            💵
-          </div>
-
-          <div class="informacion">
-
-            <strong>
-              Efectivo
-            </strong>
-
-            <span>
-              Pago al recibir tu pedido
-            </span>
-
-          </div>
-
-          @if (metodoSeleccionado === 'Efectivo') {
-
-            <div class="check">
-              ✓
-            </div>
-
-          }
-
-        </button>
-
-
-        <!-- INFORMACIÓN EFECTIVO -->
-
-        @if (metodoSeleccionado === 'Efectivo') {
-
-          <div class="mensaje-metodo">
-
-            <span class="icono-mensaje">
-              💵
-            </span>
-
-            <p>
-              Realizarás el pago en efectivo
-              cuando recibas tu pedido.
-            </p>
-
-          </div>
-
-        }
-
-
-        <!-- TRANSFERENCIA -->
-
-        <button
-          type="button"
-          class="metodo"
-          [class.seleccionado]="metodoSeleccionado === 'Transferencia'"
-          (click)="seleccionarMetodo('Transferencia')">
-
-          <div class="icono">
-            🏦
-          </div>
-
-          <div class="informacion">
-
-            <strong>
-              Transferencia
-            </strong>
-
-            <span>
-              Transferencia bancaria
-            </span>
-
-          </div>
-
-          @if (metodoSeleccionado === 'Transferencia') {
-
-            <div class="check">
-              ✓
-            </div>
-
-          }
-
-        </button>
-
-
-        <!-- INFORMACIÓN DE TRANSFERENCIA -->
-
-        @if (metodoSeleccionado === 'Transferencia') {
-
-          <div class="mensaje-metodo">
-
-            <span class="icono-mensaje">
-              🏦
-            </span>
-
-            <div>
-
-              <p>
-                Realiza una transferencia bancaria
-                para completar tu compra.
-              </p>
-
-              <strong>
-                Banco: Rebanaditas
-              </strong>
-
-              <span class="dato-bancario">
-                CLABE: 000000000000000000
-              </span>
-
-            </div>
-
-          </div>
-
-        }
-
-      </div>
-
-
-      @if (mensajeError) {
-
-        <div class="mensaje-error">
-          {{ mensajeError }}
-        </div>
-
-      }
-
-
-      <ion-button
-        expand="block"
-        class="boton-confirmar"
-        [disabled]="metodoSeleccionado === ''"
-        (click)="confirmarCompra()">
-
-        Confirmar compra
-
-      </ion-button>
-
-    </div>
-
-  </div>
-
+  <ion-button expand="block" fill="clear" (click)="volverAlCarrito()">
+    Volver al carrito
+  </ion-button>
 </ion-content>

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+/* eslint-disable @angular-eslint/prefer-inject */
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-// Importamos todas las etiquetas que usamos en el HTML del detalle
 import {
   IonContent,
   IonHeader,
@@ -23,13 +23,13 @@ import {
 
 import { Producto } from '../models/producto.models';
 import { DataService } from '../services/data';
+import { FastFoodApiService } from '../services/fast-food-api.service';
 
 @Component({
   selector: 'app-detalle-producto',
   templateUrl: './detalle-producto.page.html',
   styleUrls: ['./detalle-producto.page.scss'],
   standalone: true,
-  // Añadimos las etiquetas al arreglo para que Angular las reconozca
   imports: [
     CommonModule,
     IonContent,
@@ -49,33 +49,49 @@ import { DataService } from '../services/data';
   ]
 })
 export class DetalleProductoPage implements OnInit {
-  // ... mantén toda tu lógica de la clase, el constructor y el Toast exactamente igual
-
   producto: Producto | undefined;
-  cantidad: number = 1;
+  cantidad = 1;
+  cargando = true;
+  mensajeError = '';
 
   constructor(
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private route: ActivatedRoute,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private router: Router,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
     private dataService: DataService,
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    private toastController: ToastController // <--- 2. Inyectar ToastController
+    private api: FastFoodApiService,
+    private toastController: ToastController,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    const id = Number(
-      this.route.snapshot.paramMap.get('id')
-    );
+    this.cargarDetalle();
+  }
 
-    this.producto =
-      this.dataService
-        .getProductos()
-        .find(
-          producto => producto.id === id
-        );
+  ionViewWillEnter(): void {
+    this.cargarDetalle();
+  }
+
+  private cargarDetalle(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.cargando = true;
+
+    this.api.obtener(id).subscribe({
+      next: producto => {
+        this.producto = producto;
+        this.cargando = false;
+        this.cd.detectChanges();
+      },
+      error: error => {
+        this.producto = undefined;
+        this.mensajeError = error.message;
+        this.cargando = false;
+        this.cd.detectChanges();
+      }
+    });
+  }
+
+  volverHome(): void {
+    this.router.navigateByUrl('/home');
   }
 
   aumentarCantidad(): void {
@@ -93,20 +109,16 @@ export class DetalleProductoPage implements OnInit {
       return;
     }
 
-    // 3. Guardamos en el servicio
-    this.dataService.agregarAlCarrito(
-      this.producto,
-      this.cantidad
-    );
+    this.dataService.agregarAlCarrito(this.producto, this.cantidad);
 
-    // 4. Eliminamos la redirección a /carrito y en su lugar mostramos un Toast
     const toast = await this.toastController.create({
       message: `¡Se agregaron ${this.cantidad} producto(s) al carrito!`,
-      duration: 2000, // Se quita solo después de 2 segundos
+      duration: 1500,
       position: 'bottom',
       color: 'success'
     });
 
     await toast.present();
+    void this.router.navigateByUrl('/carrito');
   }
 }

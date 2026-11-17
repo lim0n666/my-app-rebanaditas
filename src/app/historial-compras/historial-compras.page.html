@@ -1,0 +1,78 @@
+<!-- MODIFICADO: presenta historial persistente, filtro, edición y eliminación de compras. -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Historial de compras</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <section aria-label="Filtrar compras por fecha">
+    <ion-item>
+      <ion-input type="date" label="Desde" labelPlacement="stacked" [(ngModel)]="desde"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="date" label="Hasta" labelPlacement="stacked" [(ngModel)]="hasta"></ion-input>
+    </ion-item>
+    <ion-button expand="block" (click)="cargarVentas()">Filtrar</ion-button>
+    <ion-button expand="block" fill="clear" (click)="limpiarFiltros()">Limpiar fechas</ion-button>
+  </section>
+
+  @if (mensaje) {
+    <p role="status" class="ion-padding-start">{{ mensaje }}</p>
+  }
+
+  @if (ventas.length === 0) {
+    <div class="ion-text-center ion-padding">
+      <h2>Aún no hay compras registradas</h2>
+      <p>Las compras confirmadas aparecerán aquí.</p>
+    </div>
+  }
+
+  @for (venta of ventas; track venta.id) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Compra #{{ venta.id }}</ion-card-title>
+        <ion-label>{{ formatearFecha(venta.fecha) }} · {{ venta.estado }}</ion-label>
+      </ion-card-header>
+      <ion-card-content>
+        @if (ventaEditandoId === venta.id) {
+          <ion-item>
+            <ion-input type="date" label="Fecha" labelPlacement="stacked" [(ngModel)]="fechaEditada"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-select label="Estado" labelPlacement="stacked" [(ngModel)]="estadoEditado">
+              <ion-select-option value="pendiente">Pendiente</ion-select-option>
+              <ion-select-option value="pagada">Pagada</ion-select-option>
+              <ion-select-option value="cancelada">Cancelada</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <h3>Artículos</h3>
+          @for (item of itemsEditables; track item.productoId) {
+            <ion-item>
+              <ion-label>
+                <h3>{{ item.nombre }}</h3>
+                <p>${{ item.precioUnitario }} cada uno</p>
+              </ion-label>
+              <ion-input slot="end" type="number" min="1" label="Cantidad" [(ngModel)]="item.cantidad" (ionChange)="actualizarCantidad(item)"></ion-input>
+            </ion-item>
+          }
+          <ion-button expand="block" (click)="guardarEdicion(venta)">Guardar cambios</ion-button>
+          <ion-button expand="block" fill="clear" (click)="cancelarEdicion()">Cancelar</ion-button>
+        } @else {
+          @for (item of venta.items; track item.productoId) {
+            <ion-item lines="none">
+              <ion-label>{{ item.nombre }} × {{ item.cantidad }}</ion-label>
+              <span>${{ item.subtotal | number:'1.2-2' }}</span>
+            </ion-item>
+          }
+          <p>Subtotal: <strong>${{ venta.subtotal | number:'1.2-2' }}</strong></p>
+          <p>IVA (16%): <strong>${{ venta.iva | number:'1.2-2' }}</strong></p>
+          <p>Total: <strong>${{ venta.total | number:'1.2-2' }}</strong></p>
+          <p>Método de pago: {{ venta.metodoPago }}</p>
+          <ion-button fill="outline" (click)="iniciarEdicion(venta)">Editar</ion-button>
+          <ion-button color="danger" fill="clear" (click)="eliminarVenta(venta)">Eliminar</ion-button>
+        }
+      </ion-card-content>
+    </ion-card>
+  }
+</ion-content>

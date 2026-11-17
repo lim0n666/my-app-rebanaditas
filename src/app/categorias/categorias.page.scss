@@ -79,3 +79,13 @@
     }
   }
 }
+
+/* Estilos para las tarjetas Ionic que usa el template. */
+ion-card {
+  --background: #ffffff;
+  color: #3e2723;
+}
+
+ion-card-title {
+  color: #3b2327;
+}

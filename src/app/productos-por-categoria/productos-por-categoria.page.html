@@ -1,3 +1,4 @@
+<!-- MODIFICADO: muestra productos por categoría desde Fast Food API. -->
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
@@ -9,8 +10,15 @@
 
 <ion-content class="ion-padding">
 
+  @if (cargando) {
+    <p class="ion-text-center">Cargando productos…</p>
+  }
+  @if (mensajeError) {
+    <p class="ion-text-center" role="alert">{{ mensajeError }}</p>
+  }
+
   <div class="contenedor-productos-categoria">
-    <h2>Todos los postres de {{ nombreCategoria }}</h2>
+    <h2>Productos de {{ nombreCategoria }}</h2>
 
     <ion-grid class="grid-productos">
       <ion-row>
@@ -25,12 +33,14 @@
             </ion-card>
           </ion-col>
         } @empty {
-          <div class="sin-resultados">
-            <p>No hay productos disponibles en esta categoría por el momento.</p>
-          </div>
+          @if (!cargando && !mensajeError) {
+            <div class="sin-resultados">
+              <p>No hay productos disponibles en esta categoría por el momento.</p>
+            </div>
+          }
         }
       </ion-row>
     </ion-grid>
   </div>
-
 </ion-content>
+

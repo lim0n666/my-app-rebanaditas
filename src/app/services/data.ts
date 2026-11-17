@@ -1,3 +1,4 @@
+// MODIFICADO: permite vaciar el carrito después de registrar la compra.
 import { Injectable } from '@angular/core';
 
 import {
@@ -13,7 +14,7 @@ import {
 export class DataService {
 
   // ==========================================
-  // FILTRO DE CATEGORÍA COMPARTIDO
+  // FILTRO DE CATEGORÃA COMPARTIDO
   // ==========================================
 
   private categoriaFiltroActiva: string = '';
@@ -45,312 +46,276 @@ export class DataService {
   // ==========================================
 
   private listaProductos: Producto[] = [
-
     {
       id: 1,
       nombre: 'Arroz con leche',
       precio: 35,
       categoria: 'Helados',
       sabor: 'Canela',
-      imagen: 'assets/productos/arroz con leche (1).png',
-      descripcion:
-        'Tradicional y cremoso con un delicioso toque de canela.'
+      imagen: 'assets/productos-imagenes/arroz-con-leche.png',
+      descripcion: 'Tradicional y cremoso con un delicioso toque de canela.'
     },
-
     {
       id: 2,
       nombre: 'Pay de limón',
       precio: 40,
       categoria: 'Pays',
       sabor: 'Limón',
-      imagen: 'assets/productos/pay de limon (1).png',
-      descripcion:
-        'Fresco con base crujiente y un delicioso sabor a limón.'
+      imagen: 'assets/productos-imagenes/pay-de-limon.png', 
+      descripcion: 'Fresco con base crujiente y un delicioso sabor a limón.'
     },
-
     {
       id: 3,
       nombre: 'Pastel de chocolate',
       precio: 45,
       categoria: 'Pasteles',
       sabor: 'Chocolate',
-      imagen: 'assets/productos/pastel de chocolate (1).png',
-      descripcion:
-        'Húmedo y delicioso con un intenso sabor a chocolate.'
+      imagen: 'assets/productos-imagenes/pastel-de-chocolate.png',
+      descripcion: 'Húmedo y delicioso con un intenso sabor a chocolate.'
     },
-
     {
       id: 4,
       nombre: 'Cheesecake de fresa',
       precio: 50,
       categoria: 'Pasteles',
       sabor: 'Fresa',
-      imagen: 'assets/productos/cheesecake de fresa (1).png',
-      descripcion:
-        'Cremoso cheesecake acompañado de fresas.'
+      imagen: 'assets/productos-imagenes/cheesecake-fresa.png',
+      descripcion: 'Cremoso cheesecake acompañado de fresas.'
     },
-
     {
       id: 5,
       nombre: 'Flan napolitano',
       precio: 38,
       categoria: 'Pasteles',
       sabor: 'Vainilla',
-      imagen: 'assets/productos/flan napolitano (1).png',
-      descripcion:
-        'Suave y cremoso con una deliciosa capa de caramelo.'
+      imagen: 'assets/productos-imagenes/flan-napolitano.png',
+      descripcion: 'Suave y cremoso con una deliciosa capa de caramelo.'
     },
-
     {
       id: 6,
-      nombre: 'Pastel de browmie',
+      nombre: 'Pastel de brownie',
       precio: 30,
       categoria: 'Pasteles',
       sabor: 'Chocolate',
-      imagen: 'assets/productos/brownie (1).png',
-      descripcion:
-        'Delicioso pastel de brownie de chocolate con una textura suave.'
+      imagen: 'assets/productos-imagenes/pastel-brownie.png',
+      descripcion: 'Delicioso pastel de brownie de chocolate con una textura suave.'
     },
-
     {
       id: 7,
       nombre: 'Pastel de tres leches',
       precio: 45,
       categoria: 'Pasteles',
       sabor: 'Vainilla',
-      imagen: 'assets/productos/pastel de tres leches (1).png',
-      descripcion:
-        'Esponjoso pastel bañado en una deliciosa mezcla de tres leches.'
+      imagen: 'assets/productos-imagenes/pastel-tres-leches.png',
+      descripcion: 'Esponjoso pastel bañado en una deliciosa mezcla de tres leches.'
     },
-
     {
       id: 8,
       nombre: 'Chocoflan',
       precio: 48,
       categoria: 'Pasteles',
       sabor: 'Chocolate',
-      imagen: 'assets/productos/chocoflan (1).png',
-      descripcion:
-        'Deliciosa combinación de pastel de chocolate y flan.'
+      imagen: 'assets/productos-imagenes/chocoflan.png',
+      descripcion: 'Deliciosa combinación de pastel de chocolate y flan.'
     },
-
     {
       id: 9,
       nombre: 'Fresas con crema',
       precio: 40,
       categoria: 'Helados',
       sabor: 'Fresa',
-      imagen: 'assets/productos/fresas con crema (1).png',
-      descripcion:
-        'Fresas frescas acompañadas de una cremosa preparación.'
+      imagen: 'assets/productos-imagenes/fresas-con-crema.png',
+      descripcion: 'Fresas frescas acompañadas de una cremosa preparación.'
     },
-
     {
       id: 10,
       nombre: 'Pastel de fresa',
       precio: 50,
       categoria: 'Pasteles',
       sabor: 'Fresa',
-      imagen: 'assets/productos/pastel de fresa (1).png',
-      descripcion:
-        'Delicioso pastel decorado con fresas y crema.'
+      imagen: 'assets/productos-imagenes/pastel-fresas.png',
+      descripcion: 'Delicioso pastel decorado con fresas y crema.'
     },
-    // ==========================================
-  // HELADOS (5 productos)
-  // ==========================================
-  {
-    id: 11,
-    nombre: 'Helado artesanal de vainilla',
-    precio: 35,
-    categoria: 'Helados',
-    sabor: 'Vainilla',
-    imagen: 'assets/productos/helado_vainilla.jpg',
-    descripcion: 'Cremoso helado elaborado con vainilla natural de Papantla.'
-  },
-  {
-    id: 12,
-    nombre: 'Helado de chocolate oscuro',
-    precio: 40,
-    categoria: 'Helados',
-    sabor: 'Chocolate',
-    imagen: 'assets/productos/helado_chocolate.jpg',
-    descripcion: 'Intenso helado de chocolate semi-amargo con trocitos de cacao.'
-  },
-  {
-    id: 13,
-    nombre: 'Nieve de mango con chamoy',
-    precio: 35,
-    categoria: 'Helados',
-    sabor: 'Mango',
-    imagen: 'assets/productos/helado_mango.jpg',
-    descripcion: 'Refrescante nieve de mango natural acompañada de un toque de chamoy.'
-  },
-  {
-    id: 14,
-    nombre: 'Helado de galleta Oreo',
-    precio: 45,
-    categoria: 'Helados',
-    sabor: 'Galleta',
-    imagen: 'assets/productos/helado_oreo.jpg',
-    descripcion: 'Deliciosa base de crema con generosos trozos crujientes de galleta Oreo.'
-  },
-  {
-    id: 15,
-    nombre: 'Helado de pistache',
-    precio: 48,
-    categoria: 'Helados',
-    sabor: 'Pistache',
-    imagen: 'assets/productos/helado_pistache.jpg',
-    descripcion: 'Exquisito helado artesanal con auténticos trocitos de pistache tostado.'
-  },
-
-  // ==========================================
-  // GELATINAS (5 productos)
-  // ==========================================
-  {
-    id: 16,
-    nombre: 'Gelatina mosaico cremosa',
-    precio: 30,
-    categoria: 'Gelatinas',
-    sabor: 'Frutas variadas',
-    imagen: 'assets/productos/gelatina_mosaico.jpg',
-    descripcion: 'Clásica gelatina de cubitos de colores sobre una rica base de tres leches.'
-  },
-  {
-    id: 17,
-    nombre: 'Gelatina de fresa',
-    precio: 28,
-    categoria: 'Gelatinas',
-    sabor: 'Fresa',
-    imagen: 'assets/productos/gelatina_fresa.jpg',
-    descripcion: 'Suave gelatina de sabor fresa dulce.'
-  },
-  {
-    id: 18,
-    nombre: 'Gelatina de café capuchino',
-    precio: 32,
-    categoria: 'Gelatinas',
-    sabor: 'Café',
-    imagen: 'assets/productos/gelatina_cafe.jpg',
-    descripcion: 'Deliciosa gelatina con un toque aromático de café y veta de cajeta.'
-  },
-  {
-    id: 19,
-    nombre: 'Gelatina de rompope',
-    precio: 35,
-    categoria: 'Gelatinas',
-    sabor: 'Rompope',
-    imagen: 'assets/productos/gelatina_rompope.jpg',
-    descripcion: 'Tradicional gelatina sabor rompope con un toque ligero de canela.'
-  },
-  {
-    id: 20,
-    nombre: 'Gelatina cristalina de frutas',
-    precio: 30,
-    categoria: 'Gelatinas',
-    sabor: 'Frutos tropicales',
-    imagen: 'assets/productos/gelatina_frutas.jpg',
-    descripcion: 'Refrescante gelatina transparente rellena de trozos de durazno y piña.'
-  },
-
-  // ==========================================
-  // BROWNIES (5 productos)
-  // ==========================================
-  {
-    id: 21,
-    nombre: 'Brownie clásico de chocolate',
-    precio: 38,
-    categoria: 'Brownies',
-    sabor: 'Chocolate',
-    imagen: 'assets/productos/brownie_clasico.jpg',
-    descripcion: 'Esponjoso por dentro y con una capa crujiente perfecta por fuera.'
-  },
-  {
-    id: 22,
-    nombre: 'Brownie con nuez',
-    precio: 42,
-    categoria: 'Brownies',
-    sabor: 'Chocolate y Nuez',
-    imagen: 'assets/productos/brownie_nuez.jpg',
-    descripcion: 'Nuestro brownie tradicional enriquecido con trocitos de nuez tostada.'
-  },
-  {
-    id: 23,
-    nombre: 'Brownie con relleno de queso crema',
-    precio: 45,
-    categoria: 'Brownies',
-    sabor: 'Chocolate y Queso',
-    imagen: 'assets/productos/brownie_cheesecake.jpg',
-    descripcion: 'Combinación marmoleada de chocolate intenso y cremoso cheesecake.'
-  },
-  {
-    id: 24,
-    nombre: 'Brownie bañado en caramelo',
-    precio: 45,
-    categoria: 'Brownies',
-    sabor: 'Chocolate y Caramelo',
-    imagen: 'assets/productos/brownie_caramelo.jpg',
-    descripcion: 'Brownie de chocolate fudge decorado con un hilo de caramelo salado.'
-  },
-  {
-    id: 25,
-    nombre: 'Brownie cubierto de chocolate blanco',
-    precio: 46,
-    categoria: 'Brownies',
-    sabor: 'Doble Chocolate',
-    imagen: 'assets/productos/brownie_blanco.jpg',
-    descripcion: 'Delicioso brownie oscuro cubierto con una capa generosa de chocolate blanco.'
-  },
-
-  // ==========================================
-  // BEBIDAS (5 productos)
-  // ==========================================
-  {
-    id: 26,
-    nombre: 'Café americano caliente',
-    precio: 30,
-    categoria: 'Bebidas',
-    sabor: 'Café',
-    imagen: 'assets/productos/cafe_americano.jpg',
-    descripcion: 'Café de grano recién molido, ideal para acompañar cualquier postre.'
-  },
-  {
-    id: 27,
-    nombre: 'Capuchino con canela',
-    precio: 45,
-    categoria: 'Bebidas',
-    sabor: 'Café y Canela',
-    imagen: 'assets/productos/capuchino.jpg',
-    descripcion: 'Espumoso café con leche espumada y un espolvoreado de canela fina.'
-  },
-  {
-    id: 28,
-    nombre: 'Malteada de chocolate',
-    precio: 55,
-    categoria: 'Bebidas',
-    sabor: 'Chocolate',
-    imagen: 'assets/productos/malteada_chocolate.jpg',
-    descripcion: 'Bebida cremosa batida con helado de chocolate y decorada con crema batida.'
-  },
-  {
-    id: 29,
-    nombre: 'Té chai frappé',
-    precio: 50,
-    categoria: 'Bebidas',
-    sabor: 'Chai',
-    imagen: 'assets/productos/te_chai.jpg',
-    descripcion: 'Refrescante mezcla helada de té chai especiado con leche y hielo frappé.'
-  },
-  {
-    id: 30,
-    nombre: 'Limonada mineral con frutos rojos',
-    precio: 40,
-    categoria: 'Bebidas',
-    sabor: 'Frutos rojos',
-    imagen: 'assets/productos/limonada.jpg',
-    descripcion: 'Agua mineral con jugo de limón fresco y un toque de jarabe de frutos rojos.'
-  }
-
+    {
+      id: 11,
+      nombre: 'Helado artesanal de vainilla',
+      precio: 35,
+      categoria: 'Helados',
+      sabor: 'Vainilla',
+      imagen: 'assets/productos-imagenes/helado-vainilla.png',
+      descripcion: 'Cremoso helado elaborado con vainilla natural de Papantla.'
+    },
+    {
+      id: 12,
+      nombre: 'Helado de chocolate oscuro',
+      precio: 40,
+      categoria: 'Helados',
+      sabor: 'Chocolate',
+      imagen: 'assets/productos-imagenes/helado-chocolate.png',
+      descripcion: 'Intenso helado de chocolate semi-amargo con trocitos de cacao.'
+    },
+    {
+      id: 13,
+      nombre: 'Nieve de mango con chamoy',
+      precio: 35,
+      categoria: 'Helados',
+      sabor: 'Mango',
+      imagen: 'assets/productos-imagenes/nieve-mango-chamoy.png',
+      descripcion: 'Refrescante nieve de mango natural acompañada de un toque de chamoy.'
+    },
+    {
+      id: 14,
+      nombre: 'Helado de galleta Oreo',
+      precio: 45,
+      categoria: 'Helados',
+      sabor: 'Galleta',
+      imagen: 'assets/productos-imagenes/helado-galleta-oreo.png',
+      descripcion: 'Deliciosa base de crema con generosos trozos crujientes de galleta Oreo.'
+    },
+    {
+      id: 15,
+      nombre: 'Helado de pistache',
+      precio: 48,
+      categoria: 'Helados',
+      sabor: 'Pistache',
+      imagen: 'assets/productos-imagenes/helado-pistache.png',
+      descripcion: 'Exquisito helado artesanal con auténticos trocitos de pistache tostado.'
+    },
+    {
+      id: 16,
+      nombre: 'Gelatina mosaico cremosa',
+      precio: 30,
+      categoria: 'Gelatinas',
+      sabor: 'Frutas variadas',
+      imagen: 'assets/productos-imagenes/gelatina-mosaico.png',
+      descripcion: 'Clásica gelatina de cubitos de colores sobre una rica base de tres leches.'
+    },
+    {
+      id: 17,
+      nombre: 'Gelatina de fresa',
+      precio: 28,
+      categoria: 'Gelatinas',
+      sabor: 'Fresa',
+      imagen: 'assets/productos-imagenes/gelatina-fresa.png',
+      descripcion: 'Suave gelatina de sabor fresa dulce.'
+    },
+    {
+      id: 18,
+      nombre: 'Gelatina de café capuchino',
+      precio: 32,
+      categoria: 'Gelatinas',
+      sabor: 'Café',
+      imagen: 'assets/productos-imagenes/gelatina-cafe-capucchino.png',
+      descripcion: 'Deliciosa gelatina con un toque aromático de café y veta de cajeta.'
+    },
+    {
+      id: 19,
+      nombre: 'Gelatina de rompope',
+      precio: 35,
+      categoria: 'Gelatinas',
+      sabor: 'Rompope',
+      imagen: 'assets/productos-imagenes/gelatina-rompope.png',
+      descripcion: 'Tradicional gelatina sabor rompope con un toque ligero de canela.'
+    },
+    {
+      id: 20,
+      nombre: 'Gelatina cristalina de frutas',
+      precio: 30,
+      categoria: 'Gelatinas',
+      sabor: 'Frutos tropicales',
+      imagen: 'assets/productos-imagenes/gelatina-cristal-frutas.png',
+      descripcion: 'Refrescante gelatina transparente rellena de trozos de durazno y piña.'
+    },
+    {
+      id: 21,
+      nombre: 'Brownie clásico de chocolate',
+      precio: 38,
+      categoria: 'Brownies',
+      sabor: 'Chocolate',
+      imagen: 'assets/productos-imagenes/brownie-chocolate.png',
+      descripcion: 'Esponjoso por dentro y con una capa crujiente perfecta por fuera.'
+    },
+    {
+      id: 22,
+      nombre: 'Brownie con nuez',
+      precio: 42,
+      categoria: 'Brownies',
+      sabor: 'Chocolate y Nuez',
+      imagen: 'assets/productos-imagenes/brownie-nuez.png',
+      descripcion: 'Nuestro brownie tradicional enriquecido con trocitos de nuez tostada.'
+    },
+    {
+      id: 23,
+      nombre: 'Brownie con relleno de queso crema',
+      precio: 45,
+      categoria: 'Brownies',
+      sabor: 'Chocolate y Queso',
+      imagen: 'assets/productos-imagenes/brownie-relleno-queso-crema.png',
+      descripcion: 'Combinación marmoleada de chocolate intenso y cremoso cheesecake.'
+    },
+    {
+      id: 24,
+      nombre: 'Brownie bañado en caramelo',
+      precio: 45,
+      categoria: 'Brownies',
+      sabor: 'Chocolate y Caramelo',
+      imagen: 'assets/productos-imagenes/brownie-bañado-caramelo.png',
+      descripcion: 'Brownie de chocolate fudge decorado con un hilo de caramelo salado.'
+    },
+    {
+      id: 25,
+      nombre: 'Brownie cubierto de chocolate blanco',
+      precio: 46,
+      categoria: 'Brownies',
+      sabor: 'Doble Chocolate',
+      imagen: 'assets/productos-imagenes/brownie-cubierto-chocolate-blanco.png',
+      descripcion: 'Delicioso brownie oscuro cubierto con una capa generosa de chocolate blanco.'
+    },
+    {
+      id: 26,
+      nombre: 'Café americano caliente',
+      precio: 30,
+      categoria: 'Bebidas',
+      sabor: 'Café',
+      imagen: 'assets/productos-imagenes/cafe-americano-caliente.png',
+      descripcion: 'Café de grano recién molido, ideal para acompañar cualquier postre.'
+    },
+    {
+      id: 27,
+      nombre: 'Capuchino con canela',
+      precio: 45,
+      categoria: 'Bebidas',
+      sabor: 'Café y Canela',
+      imagen: 'assets/productos-imagenes/capuchino-canela.png',
+      descripcion: 'Espumoso café con leche espumada y un espolvoreado de canela fina.'
+    },
+    {
+      id: 28,
+      nombre: 'Malteada de chocolate',
+      precio: 55,
+      categoria: 'Bebidas',
+      sabor: 'Chocolate',
+      imagen: 'assets/productos-imagenes/malteada-chocolate.png',
+      descripcion: 'Bebida cremosa batida con helado de chocolate y decorada con crema batida.'
+    },
+    {
+      id: 29,
+      nombre: 'Té chai frappé',
+      precio: 50,
+      categoria: 'Bebidas',
+      sabor: 'Chai',
+      imagen: 'assets/productos-imagenes/te-chai-frappe.png',
+      descripcion: 'Refrescante mezcla helada de té chai especiado con leche y hielo frappé.'
+    },
+    {
+      id: 30,
+      nombre: 'Limonada mineral con frutos rojos',
+      precio: 40,
+      categoria: 'Bebidas',
+      sabor: 'Frutos rojos',
+      imagen: 'assets/productos-imagenes/limonada-mineral-frutos-rojos.png',
+      descripcion: 'Agua mineral con jugo de limón fresco y un toque de jarabe de frutos rojos.'
+    }
   ];
 
   // ==========================================
@@ -422,7 +387,20 @@ export class DataService {
 
   private carrito: ItemCarrito[] = [];
 
-  constructor() {}
+  private readonly sessionStorageKey = 'rebanaditas.usuarioActual';
+
+  constructor() {
+    try {
+      const guardado = sessionStorage.getItem(this.sessionStorageKey);
+      if (!guardado) return;
+      const datos = JSON.parse(guardado) as Pick<Usuario, 'id' | 'nombre' | 'correo'>;
+      if (datos.id && datos.nombre && datos.correo) {
+        this.usuarioActual = { ...datos, password: '' };
+      }
+    } catch {
+      try { sessionStorage.removeItem(this.sessionStorageKey); } catch { /* almacenamiento bloqueado */ }
+    }
+  }
 
   // ==========================================
   // OBTENER PRODUCTOS
@@ -435,7 +413,7 @@ export class DataService {
   }
 
   // ==========================================
-  // OBTENER CATEGORÍAS
+  // OBTENER CATEGORÃAS
   // ==========================================
 
   getCategorias(): string[] {
@@ -467,6 +445,10 @@ export class DataService {
 
     return this.carrito;
 
+  }
+
+  vaciarCarrito(): void {
+    this.carrito = [];
   }
 
   // ==========================================
@@ -514,8 +496,22 @@ export class DataService {
   setUsuarioActual(
     usuario: Usuario
   ): void {
-
-    this.usuarioActual = usuario;
+    // Solo se guardan datos de perfil; la contraseña no se conserva en el navegador.
+    this.usuarioActual = {
+      id: usuario.id,
+      nombre: usuario.nombre,
+      correo: usuario.correo,
+      password: ''
+    };
+    try {
+      sessionStorage.setItem(this.sessionStorageKey, JSON.stringify({
+        id: usuario.id,
+        nombre: usuario.nombre,
+        correo: usuario.correo
+      }));
+    } catch {
+      // La sesión continúa en memoria si el navegador bloquea el almacenamiento.
+    }
 
   }
 
@@ -528,6 +524,7 @@ export class DataService {
   cerrarSesion(): void {
 
     this.usuarioActual = undefined;
+    try { sessionStorage.removeItem(this.sessionStorageKey); } catch { /* almacenamiento bloqueado */ }
 
   }
 

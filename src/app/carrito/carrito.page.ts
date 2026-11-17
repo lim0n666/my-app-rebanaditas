@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { IonHeader, IonItem, IonLabel, IonToolbar, IonTitle, IonList, IonNote, IonContent, IonThumbnail, IonButton } from '@ionic/angular';
+import { IonHeader, IonItem, IonLabel, IonToolbar, IonTitle, IonList, IonNote, IonContent, IonThumbnail, IonButton, IonIcon } from '@ionic/angular';
 
 import { ItemCarrito } from '../models/producto.models';
 import { DataService } from '../services/data';
@@ -12,7 +13,7 @@ import { DataService } from '../services/data';
   templateUrl: './carrito.page.html',
   styleUrls: ['./carrito.page.scss'],
   standalone: true,
-  imports: [IonButton,
+  imports: [IonIcon, IonButton,
     CommonModule,
     IonHeader,
     IonItem,
@@ -24,7 +25,7 @@ import { DataService } from '../services/data';
     IonContent,
     IonThumbnail]
 })
-export class CarritoPage implements OnInit {
+export class CarritoPage {
 
   carrito: ItemCarrito[] = [];
 
@@ -36,8 +37,7 @@ export class CarritoPage implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-
+  ionViewWillEnter(): void {
     this.carrito =
       this.dataService.getCarrito();
 
@@ -107,5 +107,4 @@ export class CarritoPage implements OnInit {
     );
 
   }
-
 }

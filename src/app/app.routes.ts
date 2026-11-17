@@ -1,3 +1,4 @@
+// MODIFICADO: agrega la ruta del historial de compras.
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -45,6 +46,10 @@ export const routes: Routes = [
       {
         path: 'carrito',
         loadComponent: () => import('./carrito/carrito.page').then(m => m.CarritoPage)
+      },
+      {
+        path: 'historial-compras',
+        loadComponent: () => import('./historial-compras/historial-compras.page').then(m => m.HistorialComprasPage)
       },
       {
         path: 'perfil',

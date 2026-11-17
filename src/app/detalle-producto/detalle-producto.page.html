@@ -1,3 +1,4 @@
+
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Postres que enamoran</ion-title>
@@ -5,6 +6,15 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  @if (cargando) {
+    <p class="ion-text-center ion-padding">Cargando producto…</p>
+  }
+  @if (mensajeError) {
+    <div class="ion-text-center ion-padding" role="alert">
+      <p>{{ mensajeError }}</p>
+      <ion-button fill="outline" (click)="volverHome()">Volver a postres</ion-button>
+    </div>
+  }
   @if (producto) {
     <ion-card>
       <img [src]="producto.imagen" [alt]="producto.nombre" />
@@ -21,8 +31,7 @@
           <p><strong>Detalles del producto</strong></p>
           <p>{{ producto.descripcion }}</p>
         </ion-text>
-
-        <!-- ion-grid para colocar los controles y el botón lado a lado -->
+<!-- ion-grid para colocar los controles y el botÃ³n lado a lado -->
         <ion-grid class="ion-no-padding ion-margin-top">
           <ion-row class="ion-align-items-center">
             

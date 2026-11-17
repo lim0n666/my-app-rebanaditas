@@ -34,12 +34,13 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+/* La app usa una paleta clara; evita mezclarla con el tema oscuro del sistema. */
 /* =========================================
    PALETA DE COLORES - REBANADITAS
    ========================================= */
 
 :root {
+  color-scheme: light;
 
   /* Rosa */
   --rosa-principal: #F48FB1;
@@ -78,6 +79,13 @@
   --ion-color-dark-rgb: 46, 31, 29;
   --ion-color-dark-contrast: #ffffff;
   --ion-color-dark-contrast-rgb: 255, 255, 255;
+
+  --ion-text-color: #3E2723;
+  --ion-text-color-rgb: 62, 39, 35;
+  --ion-background-color: #FFF9FA;
+  --ion-background-color-rgb: 255, 249, 250;
+  --ion-card-background: #ffffff;
+  --ion-item-background: #ffffff;
 }
 
 
