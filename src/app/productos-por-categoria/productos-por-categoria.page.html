@@ -1,4 +1,3 @@
-<!-- MODIFICADO: muestra productos por categoría desde Fast Food API. -->
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
@@ -9,10 +8,15 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-loading
+    class="custom-loading"
+    [isOpen]="cargando || cargandoProducto"
+    [message]="mensajeLoading"
+    [duration]="650"
+    spinner="crescent"
+    (didDismiss)="onLoadingDismiss()">
+  </ion-loading>
 
-  @if (cargando) {
-    <p class="ion-text-center">Cargando productos…</p>
-  }
   @if (mensajeError) {
     <p class="ion-text-center" role="alert">{{ mensajeError }}</p>
   }
@@ -43,4 +47,3 @@
     </ion-grid>
   </div>
 </ion-content>
-

@@ -13,7 +13,8 @@ import {
   IonCard,
   IonCardContent,
   IonCardTitle,
-  IonIcon
+  IonIcon,
+  IonLoading
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
@@ -44,11 +45,16 @@ import {
     IonCard,
     IonCardContent,
     IonCardTitle,
-    IonIcon
+    IonIcon,
+    IonLoading
   ]
 })
 export class CategoriasPage {
+[x: string]: any;
   categorias: string[] = [...FAST_FOOD_DESSERT_CATEGORIES];
+  mostrandoLoading = false;
+  mensajeLoading = 'Cargando categorías...';
+
   private readonly router = inject(Router);
 
   constructor() {
@@ -62,6 +68,14 @@ export class CategoriasPage {
       cafeOutline,
       restaurantOutline
     });
+  }
+
+  ionViewWillEnter(): void {
+    this.mensajeLoading = 'Cargando categorías...';
+    this.mostrandoLoading = true;
+    setTimeout(() => {
+      this.mostrandoLoading = false;
+    }, 650);
   }
 
   nombreCategoria(categoria: string): string {
@@ -88,6 +102,14 @@ export class CategoriasPage {
   }
 
   seleccionarCategoria(categoria: string): void {
-    this.router.navigate(['/productos-por-categoria', categoria]);
+    this.mensajeLoading = `Cargando ${this.nombreCategoria(categoria).toLowerCase()}...`;
+    this.mostrandoLoading = true;
+
+    setTimeout(() => {
+      this.mostrandoLoading = false;
+      this.router.navigate(['/productos-por-categoria', categoria]);
+    }, 650);
+    
   }
+
 }

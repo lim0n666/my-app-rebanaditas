@@ -22,7 +22,7 @@
 
         <!-- CORREO -->
         <div class="campo">
-          <ion-input
+          <ion-input maxlength="50"
             type="email"
             label="Correo electrónico"
             labelPlacement="floating"
@@ -32,7 +32,7 @@
         </div>
         <!-- CONTRASEÑA -->
         <div class="campo">
-          <ion-input
+          <ion-input maxlength="20"
             [type]="mostrarPassword ? 'text' : 'password'"
             label="Contraseña"
             labelPlacement="floating"

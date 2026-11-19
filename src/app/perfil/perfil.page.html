@@ -1,40 +1,118 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title style="color: #333; font-weight: bold;">Mi Perfil</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/menu"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="color: #2b2b2b; font-weight: bold;">Mi Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="ion-padding perfil-bg">
   @if (usuario) {
-    <ion-card>
-      <ion-card-header>
-        <div class="icono-decorativo"><ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon></div>
-        <ion-card-title class="ion-text-center">{{ usuario.nombre }}</ion-card-title>
-        <ion-card-subtitle class="ion-text-center">{{ usuario.correo }}</ion-card-subtitle>
-      </ion-card-header>
+    <!-- TARJETA PRINCIPAL DE PERFIL -->
+    <div class="perfil-card">
+      <div class="avatar-circulo">
+        <span>{{ obtenerInicial() }}</span>
+      </div>
 
-      <ion-card-content>
-        <ion-item lines="none">
-          <ion-label>
-            <h3>Identificador</h3>
-            <p>ID: #{{ usuario.id }}</p>
-          </ion-label>
+      <h2 class="nombre-titulo">{{ usuario.nombre }}</h2>
+      <p class="correo-subtitulo">{{ usuario.correo }}</p>
+
+      <span class="badge-rol">
+        {{ esAdmin() ? 'Administrador' : 'Cliente Verificado' }}
+      </span>
+    </div>
+
+    <!-- DATOS PERSONALES EDITABLES -->
+    <div class="seccion-card">
+      <div class="seccion-header">
+        <h3>Datos de la cuenta</h3>
+        @if (!editando) {
+          <ion-button fill="clear" size="small" color="primary" (click)="activarEdicion()">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Editar
+          </ion-button>
+        }
+      </div>
+
+      <ion-list lines="full" class="lista-datos">
+        <!-- NOMBRE (EDITABLE) -->
+        <ion-item>
+          <ion-icon name="person-outline" slot="start" color="primary"></ion-icon>
+          <ion-label position="stacked">Nombre completo</ion-label>
+          <ion-input
+            [(ngModel)]="nombreEditable"
+            [readonly]="!editando"
+            maxlength="80"
+            placeholder="Tu nombre completo">
+          </ion-input>
         </ion-item>
-      </ion-card-content>
-    </ion-card>
 
-    <ion-button expand="block" color="danger" (click)="cerrarSesion()">
+        <!-- TELÉFONO (EDITABLE) -->
+        <ion-item>
+          <ion-icon name="call-outline" slot="start" color="primary"></ion-icon>
+          <ion-label position="stacked">Teléfono de contacto</ion-label>
+          <ion-input
+            type="tel"
+            [(ngModel)]="telefonoEditable"
+            [readonly]="!editando"
+            maxlength="15"
+            placeholder="Ej. 272 123 4567">
+          </ion-input>
+        </ion-item>
+
+        <!-- CORREO (PROTEGIDO - SOLO LECTURA) -->
+        <ion-item>
+          <ion-icon name="mail-outline" slot="start" color="medium"></ion-icon>
+          <ion-label position="stacked">Correo electrónico (no editable)</ion-label>
+          <ion-input [value]="usuario.correo" readonly="true"></ion-input>
+          <ion-icon name="lock-closed-outline" slot="end" color="medium" size="small"></ion-icon>
+        </ion-item>
+
+        <!-- CONTRASEÑA (PROTEGIDA - SOLO LECTURA) -->
+        <ion-item lines="none">
+          <ion-icon name="shield-checkmark-outline" slot="start" color="medium"></ion-icon>
+          <ion-label position="stacked">Contraseña (encriptada SHA-256)</ion-label>
+          <ion-input value="••••••••••••" readonly="true"></ion-input>
+          <ion-icon name="lock-closed-outline" slot="end" color="medium" size="small"></ion-icon>
+        </ion-item>
+      </ion-list>
+
+      @if (editando) {
+        <div class="acciones-edicion">
+          <ion-button expand="block" color="primary" (click)="guardarCambios()">
+            <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+            Guardar cambios
+          </ion-button>
+          <ion-button expand="block" fill="outline" color="medium" (click)="cancelarEdicion()">
+            Cancelar
+          </ion-button>
+        </div>
+      }
+    </div>
+
+    <!-- TARJETA DE CONTACTO Y AYUDA -->
+    <div class="seccion-card ayuda-card">
+      <h3>Ayuda y contacto Rebanaditas</h3>
+      <p>¿Tienes dudas con tu pedido o entrega en Orizaba?</p>
+      <div class="fila-ayuda">
+        <ion-icon name="logo-whatsapp" color="success"></ion-icon>
+        <span>WhatsApp Repostería: <strong>272 100 2030</strong></span>
+      </div>
+      <div class="fila-ayuda">
+        <ion-icon name="time-outline" color="primary"></ion-icon>
+        <span>Horario: Lunes a Sábado · 9:00 AM – 8:00 PM</span>
+      </div>
+    </div>
+
+    <ion-button expand="block" fill="outline" color="danger" class="btn-cerrar" (click)="cerrarSesion()">
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
       Cerrar Sesión
     </ion-button>
   } @else {
-    <div style="text-align: center; margin-top: 25vh;">
-      <p style="color: #333333; font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem;">
-        No has iniciado sesión.
-      </p>
-
-      <ion-button
-        (click)="irALogin()"
-        style="--background: #f78da7; --color: #2b2b2b; font-weight: bold; border-radius: 8px;">
+    <div class="sin-sesion">
+      <p>No has iniciado sesión.</p>
+      <ion-button (click)="irALogin()" class="btn-login">
         IR A INICIAR SESIÓN
       </ion-button>
     </div>

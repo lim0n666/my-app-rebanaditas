@@ -7,16 +7,29 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
+  IonButtons,
+  IonBackButton,
+  IonList,
   IonItem,
   IonLabel,
+  IonInput,
   IonButton,
-  IonIcon
+  IonIcon,
+  ToastController
 } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import {
+  createOutline,
+  personOutline,
+  callOutline,
+  mailOutline,
+  lockClosedOutline,
+  shieldCheckmarkOutline,
+  checkmarkCircleOutline,
+  logoWhatsapp,
+  timeOutline,
+  logOutOutline
+} from 'ionicons/icons';
 import { DataService } from '../services/data';
 import { Usuario } from '../models/producto.models';
 
@@ -26,29 +39,47 @@ import { Usuario } from '../models/producto.models';
   styleUrls: ['./perfil.page.scss'],
   standalone: true,
   imports: [
-    IonIcon,
     CommonModule,
     FormsModule,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonCardContent,
+    IonButtons,
+    IonBackButton,
+    IonList,
     IonItem,
     IonLabel,
-    IonButton
+    IonInput,
+    IonButton,
+    IonIcon
   ]
 })
 export class PerfilPage implements OnInit {
   usuario: Usuario | undefined;
+  editando = false;
+  nombreEditable = '';
+  telefonoEditable = '';
 
   private readonly dataService = inject(DataService);
   private readonly router = inject(Router);
+  private readonly toastCtrl = inject(ToastController);
   private readonly cd = inject(ChangeDetectorRef);
+
+  constructor() {
+    addIcons({
+      createOutline,
+      personOutline,
+      callOutline,
+      mailOutline,
+      lockClosedOutline,
+      shieldCheckmarkOutline,
+      checkmarkCircleOutline,
+      logoWhatsapp,
+      timeOutline,
+      logOutOutline
+    });
+  }
 
   ngOnInit(): void {
     this.cargarUsuario();
@@ -60,7 +91,67 @@ export class PerfilPage implements OnInit {
 
   cargarUsuario(): void {
     this.usuario = this.dataService.getUsuarioActual();
+    if (this.usuario) {
+      this.nombreEditable = this.usuario.nombre || '';
+      const telGuardado = localStorage.getItem(`rebanaditas_tel_${this.usuario.correo}`);
+      this.telefonoEditable = (this.usuario as any).telefono || telGuardado || '';
+    }
+    this.editando = false;
     this.cd.detectChanges();
+  }
+
+  obtenerInicial(): string {
+    return (this.usuario?.nombre || 'U').trim().charAt(0).toUpperCase();
+  }
+
+  esAdmin(): boolean {
+    return (this.usuario?.correo || '').toLowerCase() === 'admin@rebanaditas.com';
+  }
+
+  activarEdicion(): void {
+    this.editando = true;
+  }
+
+  cancelarEdicion(): void {
+    if (this.usuario) {
+      this.nombreEditable = this.usuario.nombre;
+      const telGuardado = localStorage.getItem(`rebanaditas_tel_${this.usuario.correo}`);
+      this.telefonoEditable = (this.usuario as any).telefono || telGuardado || '';
+    }
+    this.editando = false;
+  }
+
+  async guardarCambios(): Promise<void> {
+    if (!this.usuario) return;
+
+    const nombreLimpio = this.nombreEditable.trim();
+    const telLimpio = this.telefonoEditable.trim();
+
+    if (nombreLimpio.length < 3) {
+      const toastError = await this.toastCtrl.create({
+        message: 'El nombre debe tener al menos 3 caracteres.',
+        duration: 2000,
+        color: 'danger'
+      });
+      await toastError.present();
+      return;
+    }
+
+    this.usuario.nombre = nombreLimpio;
+    (this.usuario as any).telefono = telLimpio;
+
+    localStorage.setItem(`rebanaditas_tel_${this.usuario.correo}`, telLimpio);
+    this.dataService.setUsuarioActual(this.usuario);
+
+    this.editando = false;
+    this.cd.detectChanges();
+
+    const toast = await this.toastCtrl.create({
+      message: 'Perfil actualizado correctamente.',
+      duration: 2000,
+      color: 'success'
+    });
+    await toast.present();
   }
 
   irALogin(): void {

@@ -5,6 +5,14 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+<ion-loading
+    class="custom-loading"
+    [isOpen]="mostrandoLoading"
+    [message]="mensajeLoading"
+    [duration]="650"
+    spinner="crescent"
+    (didDismiss)="mostrandoLoading = false">
+  </ion-loading>
   <div class="ion-text-center ion-margin-bottom">
     <h2 style="font-weight: bold;">Categorías de productos</h2>
     <p style="color: gray;">Explora las categorías del catálogo</p>
@@ -36,4 +44,3 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-

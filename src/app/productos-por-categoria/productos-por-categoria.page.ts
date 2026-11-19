@@ -13,7 +13,8 @@ import {
   IonCol,
   IonCard,
   IonImg,
-  IonCardContent
+  IonCardContent,
+  IonLoading
 } from '@ionic/angular';
 import { Producto } from '../models/producto.models';
 import { FastFoodApiService } from '../services/fast-food-api.service';
@@ -36,7 +37,8 @@ import { FastFoodApiService } from '../services/fast-food-api.service';
     IonCol,
     IonCard,
     IonImg,
-    IonCardContent
+    IonCardContent,
+    IonLoading
   ]
 })
 export class ProductosPorCategoriaPage implements OnInit {
@@ -45,6 +47,8 @@ export class ProductosPorCategoriaPage implements OnInit {
   productosDeLaCategoria: Producto[] = [];
   mensajeError = '';
   cargando = false;
+  cargandoProducto = false;
+  mensajeLoading = 'Cargando productos...';
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -99,6 +103,7 @@ export class ProductosPorCategoriaPage implements OnInit {
   }
 
   cargarProductosDeCategoria(): void {
+    this.mensajeLoading = `Cargando ${this.nombreCategoria.toLowerCase()}...`;
     this.cargando = true;
     this.mensajeError = '';
 
@@ -138,6 +143,17 @@ export class ProductosPorCategoriaPage implements OnInit {
   }
 
   verDetalleProducto(producto: Producto): void {
-    this.router.navigate(['/detalle-producto', producto.id]);
+    this.mensajeLoading = 'Cargando producto...';
+    this.cargandoProducto = true;
+
+    setTimeout(() => {
+      this.cargandoProducto = false;
+      this.router.navigate(['/detalle-producto', producto.id]);
+    }, 650);
+  }
+  onLoadingDismiss(): void {
+    this.cargando = false;
+    this.cargandoProducto = false;
+    this.cd.detectChanges();
   }
 }

@@ -105,3 +105,9 @@ ion-content {
 button {
   font-family: inherit;
 }
+ion-loading.custom-loading {
+  --background: #fff0f5;
+  --spinner-color: #f4729c;
+  color: #c2185b;
+  font-weight: 600;
+}

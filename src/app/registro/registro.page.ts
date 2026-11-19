@@ -2,20 +2,23 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import {
   IonContent,
   IonInput,
-  IonButton, IonIcon } from '@ionic/angular';
-
-import { DataService } from '../services/data';
+  IonButton,
+  IonIcon,
+  LoadingController,
+  ToastController
+} from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.page.html',
   styleUrls: ['./registro.page.scss'],
   standalone: true,
-  imports: [IonIcon, 
+  imports: [
+    IonIcon,
     CommonModule,
     FormsModule,
     IonContent,
@@ -24,53 +27,76 @@ import { DataService } from '../services/data';
   ]
 })
 export class RegistroPage {
-
   nombre = '';
   correo = '';
   password = '';
   confirmarPassword = '';
-
   mensajeError = '';
 
   private readonly router = inject(Router);
-  private readonly dataService = inject(DataService);
+  private readonly authService = inject(AuthService);
+  private readonly loadingCtrl = inject(LoadingController);
+  private readonly toastCtrl = inject(ToastController);
 
-  registrarse(): void {
+  async registrarse(): Promise<void> {
     this.mensajeError = '';
 
-    if (
-      this.nombre.trim() === '' ||
-      this.correo.trim() === '' ||
-      this.password.trim() === '' ||
-      this.confirmarPassword.trim() === ''
-    ) {
-      this.mensajeError = 'Completa todos los campos.';
+    // 1. Validaciones estrictas en TypeScript
+    const valNombre = this.authService.validarNombre(this.nombre);
+    if (!valNombre.valido) {
+      this.mensajeError = valNombre.mensaje;
       return;
     }
 
-    if (this.password.length < 6) {
-      this.mensajeError =
-        'La contraseña debe tener al menos 6 caracteres.';
+    const valCorreo = this.authService.validarCorreoProfesional(this.correo);
+    if (!valCorreo.valido) {
+      this.mensajeError = valCorreo.mensaje;
       return;
     }
 
-    if (this.password !== this.confirmarPassword) {
+    const valPass = this.authService.validarPassword(this.password);
+    if (!valPass.valido) {
+      this.mensajeError = valPass.mensaje;
+      return;
+    }
+
+    if (this.password.trim() !== this.confirmarPassword.trim()) {
       this.mensajeError = 'Las contraseñas no coinciden.';
       return;
     }
 
-    const registrado = this.dataService.registrarUsuario(
-      this.nombre,
-      this.correo,
-      this.password
-    );
+    // 2. Animación de carga (LoadingController)
+    const loading = await this.loadingCtrl.create({
+      message: 'Encriptando datos y registrando...',
+      spinner: 'crescent'
+    });
+    await loading.present();
 
-    if (!registrado) {
-      this.mensajeError = 'Este correo ya está registrado.';
-      return;
+    try {
+      const resultado = await this.authService.registrarConApi(
+        this.nombre,
+        this.correo,
+        this.password
+      );
+      await loading.dismiss();
+
+      if (!resultado.exito) {
+        this.mensajeError = resultado.mensaje;
+        return;
+      }
+
+      const toast = await this.toastCtrl.create({
+        message: resultado.mensaje,
+        duration: 2200,
+        color: 'success'
+      });
+      await toast.present();
+
+      this.router.navigate(['/login']);
+    } catch {
+      await loading.dismiss();
+      this.mensajeError = 'No se pudo completar el registro. Intenta nuevamente.';
     }
-
-    this.router.navigate(['/login']);
   }
 
   regresarLogin(): void {
