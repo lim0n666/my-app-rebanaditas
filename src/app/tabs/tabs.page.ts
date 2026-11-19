@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
-import { IonTabs, IonTabBar, IonTabButton, IonLabel, IonIcon } from '@ionic/angular';
+import {
+  IonTabs,
+  IonTabBar,
+  IonTabButton,
+  IonLabel,
+  IonIcon
+} from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
   homeOutline,
   gridOutline,
   cartOutline,
-  receiptOutline,
-  personOutline
+  menuOutline
 } from 'ionicons/icons';
 
 @Component({
@@ -22,8 +27,7 @@ export class TabsPage {
       homeOutline,
       gridOutline,
       cartOutline,
-      receiptOutline,
-      personOutline
+      menuOutline
     });
   }
 }

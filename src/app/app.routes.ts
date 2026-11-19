@@ -1,4 +1,3 @@
-// MODIFICADO: agrega la ruta del historial de compras.
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -23,9 +22,6 @@ export const routes: Routes = [
     path: 'metodos-pago',
     loadComponent: () => import('./metodos-pago/metodos-pago.page').then(m => m.MetodosPagoPage)
   },
-  // ==========================================
-  // GRUPO DE TABS (Contenedor inferior fijo)
-  // ==========================================
   {
     path: '',
     loadComponent: () => import('./tabs/tabs.page').then(m => m.TabsPage),
@@ -38,7 +34,6 @@ export const routes: Routes = [
         path: 'categorias',
         loadComponent: () => import('./categorias/categorias.page').then(m => m.CategoriasPage)
       },
-      // NUEVA RUTA PARA PRODUCTOS POR CATEGORÍA
       {
         path: 'productos-por-categoria/:nombre',
         loadComponent: () => import('./productos-por-categoria/productos-por-categoria.page').then(m => m.ProductosPorCategoriaPage)
@@ -48,8 +43,16 @@ export const routes: Routes = [
         loadComponent: () => import('./carrito/carrito.page').then(m => m.CarritoPage)
       },
       {
+        path: 'menu',
+        loadComponent: () => import('./menu/menu.page').then(m => m.MenuPage)
+      },
+      {
         path: 'historial-compras',
         loadComponent: () => import('./historial-compras/historial-compras.page').then(m => m.HistorialComprasPage)
+      },
+      {
+        path: 'comentarios',
+        loadComponent: () => import('./comentarios/comentarios.page').then(m => m.ComentariosPage)
       },
       {
         path: 'perfil',

@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Comentarios y reseñas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Formulario para dejar comentario -->
+  <ion-card style="border-radius: 14px;">
+    <ion-card-header>
+      <ion-card-title style="font-size: 1.15rem; font-weight: bold;">
+        Déjanos tu opinión
+      </ion-card-title>
+      <ion-card-subtitle>
+        Tu experiencia nos ayuda a mejorar nuestros postres
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item fill="outline" class="ion-margin-bottom">
+        <ion-label position="stacked">Tu nombre</ion-label>
+        <ion-input
+          [(ngModel)]="autor"
+          maxlength="60"
+          placeholder="Ej. María López">
+        </ion-input>
+      </ion-item>
+
+      <ion-item fill="outline" class="ion-margin-bottom">
+        <ion-label position="stacked">Calificación</ion-label>
+        <ion-select [(ngModel)]="calificacion" interface="popover">
+          <ion-select-option [value]="5">★★★★★ (5 - Excelente)</ion-select-option>
+          <ion-select-option [value]="4">★★★★☆ (4 - Muy bueno)</ion-select-option>
+          <ion-select-option [value]="3">★★★☆☆ (3 - Bueno)</ion-select-option>
+          <ion-select-option [value]="2">★★☆☆☆ (2 - Regular)</ion-select-option>
+          <ion-select-option [value]="1">★☆☆☆☆ (1 - Malo)</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item fill="outline" class="ion-margin-bottom">
+        <ion-label position="stacked">Comentario o sugerencia</ion-label>
+        <ion-textarea
+          [(ngModel)]="mensaje"
+          rows="3"
+          maxlength="300"
+          placeholder="Cuéntanos qué postre te gustó más o qué te gustaría ver en el menú...">
+        </ion-textarea>
+      </ion-item>
+
+      <ion-button expand="block" color="primary" (click)="enviarComentario()">
+        <ion-icon slot="start" name="send-outline"></ion-icon>
+        Publicar reseña
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Listado de reseñas -->
+  <div class="ion-padding-horizontal ion-margin-top">
+    <h3 style="font-weight: bold; margin-bottom: 8px;">
+      Reseñas recientes ({{ comentarios.length }})
+    </h3>
+  </div>
+
+  @for (item of comentarios; track item.id) {
+    <ion-card style="border-radius: 12px;">
+      <ion-card-content>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <ion-icon name="person-circle-outline" color="primary" style="font-size: 24px;"></ion-icon>
+            <strong>{{ item.autor }}</strong>
+          </div>
+          <span style="font-size: 0.78rem; color: gray;">{{ item.fecha }}</span>
+        </div>
+
+        <div style="margin-bottom: 6px; color: #f59e0b;">
+          @for (estrella of [1, 2, 3, 4, 5]; track estrella) {
+            <ion-icon [name]="estrella <= item.calificacion ? 'star' : 'star-outline'"></ion-icon>
+          }
+        </div>
+
+        <p style="margin: 0; color: #444;">{{ item.mensaje }}</p>
+      </ion-card-content>
+    </ion-card>
+  }
+</ion-content>

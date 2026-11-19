@@ -2,23 +2,17 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { addIcons } from 'ionicons';
 import {
   iceCreamOutline,
-  logoInstagram,
-  logoFacebook,
-  logoTwitter,
-  logoYoutube,
-  pricetagsOutline,
-  logOutOutline
+  personCircleOutline
 } from 'ionicons/icons';
 import {
   IonContent,
   IonHeader,
   IonToolbar,
   IonButtons,
-  IonMenuButton,
   IonTitle,
   IonButton,
   IonSearchbar,
@@ -26,7 +20,6 @@ import {
   IonRow,
   IonCol,
   IonCard,
-  IonImg,
   IonCardContent,
   IonModal,
   IonItem,
@@ -35,7 +28,8 @@ import {
   IonSelectOption,
   IonRange,
   IonLabel,
-  IonMenu, IonIcon } from '@ionic/angular';
+  IonIcon
+} from '@ionic/angular';
 
 import { Producto } from '../models/producto.models';
 import { DataService } from '../services/data';
@@ -46,14 +40,15 @@ import { FastFoodApiService } from '../services/fast-food-api.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonIcon, 
+  imports: [
     CommonModule,
     FormsModule,
+    RouterLink,
+    IonIcon,
     IonContent,
     IonHeader,
     IonToolbar,
     IonButtons,
-    IonMenuButton,
     IonTitle,
     IonButton,
     IonSearchbar,
@@ -61,7 +56,6 @@ import { FastFoodApiService } from '../services/fast-food-api.service';
     IonRow,
     IonCol,
     IonCard,
-    IonImg,
     IonCardContent,
     IonModal,
     IonItem,
@@ -69,12 +63,40 @@ import { FastFoodApiService } from '../services/fast-food-api.service';
     IonSelect,
     IonSelectOption,
     IonRange,
-    IonLabel,
-    IonMenu
+    IonLabel
   ]
 })
 export class HomePage implements OnInit {
-imagenRespaldo(event: Event): void {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly dataService = inject(DataService);
+  private readonly api = inject(FastFoodApiService);
+  private readonly cd = inject(ChangeDetectorRef);
+
+  productos: Producto[] = [];
+  productosFiltrados: Producto[] = [];
+
+  categorias: string[] = [];
+  sabores: string[] = [];
+
+  textoBusqueda = '';
+  categoriaSeleccionada = '';
+  saborSeleccionado = '';
+
+  precioMaximo = 500;
+
+  mostrarFiltros = false;
+  cargando = false;
+  mensajeError = '';
+
+  constructor() {
+    addIcons({
+      iceCreamOutline,
+      personCircleOutline
+    });
+  }
+
+  imagenRespaldo(event: Event): void {
     const img = event.target as HTMLImageElement;
     if (!img || img.dataset['fallback']) return;
     img.dataset['fallback'] = 'true';
@@ -97,78 +119,31 @@ imagenRespaldo(event: Event): void {
       );
   }
 
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
-  private readonly dataService = inject(DataService);
-  private readonly api = inject(FastFoodApiService);
-  private readonly cd = inject(ChangeDetectorRef); 
-
-  productos: Producto[] = [];
-  productosFiltrados: Producto[] = [];
-
-  categorias: string[] = [];
-  sabores: string[] = [];
-
-  textoBusqueda = '';
-  categoriaSeleccionada = '';
-  saborSeleccionado = '';
-
-  precioMaximo = 500;
-
-  mostrarFiltros = false;
-  esAdmin = false;
-  cargando = false;
-  mensajeError = '';
-
-
-
-constructor() {
-    addIcons({
-      iceCreamOutline,
-      logoInstagram,
-      logoFacebook,
-      logoTwitter,
-      logoYoutube,
-      pricetagsOutline,
-      logOutOutline
-    });
-  }
-
-  abrirRedSocial(url: string): void {
-    window.open(url, '_blank');
-  }
-
   ngOnInit(): void {
-    // Escucha cambios en los queryParams de la URL
     this.route.queryParams.subscribe(params => {
       this.categoriaSeleccionada = params && params['categoria'] ? params['categoria'] : '';
       this.aplicarFiltros();
     });
   }
 
-  // Reactiva la carga y filtros cada vez que vuelves a esta pestaÃ±a en Ionic
- ionViewWillEnter(): void {
+  ionViewWillEnter(): void {
     this.cargarProductos();
 
-    // 1. Revisamos si viene guardada la categorÃ­a desde el servicio
     const categoriaServicio = this.dataService.getCategoriaFiltro();
     const categoriaParam = this.route.snapshot.queryParamMap.get('categoria');
 
     if (categoriaServicio) {
       this.categoriaSeleccionada = categoriaServicio;
-      this.dataService.setCategoriaFiltro(''); // Se limpia para que no quede fija
+      this.dataService.setCategoriaFiltro('');
     } else if (categoriaParam) {
       this.categoriaSeleccionada = categoriaParam;
     }
 
-    // 2. Filtramos la lista
     this.aplicarFiltros();
-
-    // 3. Forzamos a Angular a actualizar la pantalla de inmediato
     this.cd.detectChanges();
   }
-cargarProductos(): void {
-    this.esAdmin = this.dataService.usuarioEsAdministrador();
+
+  cargarProductos(): void {
     this.cargando = true;
     this.mensajeError = '';
 
@@ -176,7 +151,6 @@ cargarProductos(): void {
 
     this.api.listar().subscribe({
       next: productos => {
-        // Conservamos los productos del servicio pero asegurando las imágenes reales de assets/productos-imagenes/
         this.productos = productos.map(p => {
           const local = productosLocales.find(
             item => item.id === p.id || item.nombre.toLowerCase() === p.nombre.toLowerCase()
@@ -196,7 +170,6 @@ cargarProductos(): void {
         this.cd.detectChanges();
       },
       error: () => {
-        // Respaldo inmediato con el catálogo local de 30 postres si falla la red
         this.productos = productosLocales;
         this.categorias = this.dataService.getCategorias();
         this.sabores = [...new Set(this.productos.map(p => p.sabor).filter(Boolean))].sort();
@@ -207,7 +180,7 @@ cargarProductos(): void {
     });
   }
 
-nombreCategoria(categoria: string): string {
+  nombreCategoria(categoria: string): string {
     const nombres: Record<string, string> = {
       pastel: 'Pasteles',
       dona: 'Donas',
@@ -239,14 +212,12 @@ nombreCategoria(categoria: string): string {
   aplicarFiltros(): void {
     let resultado = [...this.productos];
 
-    // BÃºsqueda por texto
     if (this.textoBusqueda.trim() !== '') {
       resultado = resultado.filter(producto =>
         producto.nombre.toLowerCase().includes(this.textoBusqueda.toLowerCase())
       );
     }
 
-    // Filtro por categorÃ­a normalizado
     if (this.categoriaSeleccionada && this.categoriaSeleccionada.trim() !== '') {
       resultado = resultado.filter(
         producto =>
@@ -255,7 +226,6 @@ nombreCategoria(categoria: string): string {
       );
     }
 
-    // Filtro por sabor normalizado
     if (this.saborSeleccionado && this.saborSeleccionado.trim() !== '') {
       resultado = resultado.filter(
         producto =>
@@ -264,9 +234,7 @@ nombreCategoria(categoria: string): string {
       );
     }
 
-    // Filtro por precio
     resultado = resultado.filter(producto => producto.precio <= this.precioMaximo);
-
     this.productosFiltrados = resultado;
   }
 
@@ -289,22 +257,4 @@ nombreCategoria(categoria: string): string {
   verProducto(producto: Producto): void {
     this.router.navigate(['/detalle-producto', producto.id]);
   }
-  
-
-  abrirInstagram(): void {
-    window.open('https://www.instagram.com/sweet_rebanaditas/', '_blank');
-  }
-
-  irAProductos(): void {
-    if (!this.esAdmin) {
-      return;
-    }
-    this.router.navigateByUrl('/productos');
-  }
-
-  cerrarSesion(): void {
-    this.dataService.cerrarSesion();
-    this.router.navigateByUrl('/login');
-  }
 }
-
