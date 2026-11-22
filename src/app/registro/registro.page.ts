@@ -41,7 +41,6 @@ export class RegistroPage {
   async registrarse(): Promise<void> {
     this.mensajeError = '';
 
-    // 1. Validaciones estrictas en TypeScript
     const valNombre = this.authService.validarNombre(this.nombre);
     if (!valNombre.valido) {
       this.mensajeError = valNombre.mensaje;
@@ -65,9 +64,8 @@ export class RegistroPage {
       return;
     }
 
-    // 2. Animación de carga (LoadingController)
     const loading = await this.loadingCtrl.create({
-      message: 'Encriptando datos y registrando...',
+      message: 'Generando cuenta y token...',
       spinner: 'crescent'
     });
     await loading.present();
@@ -87,15 +85,16 @@ export class RegistroPage {
 
       const toast = await this.toastCtrl.create({
         message: resultado.mensaje,
-        duration: 2200,
+        duration: 2000,
         color: 'success'
       });
       await toast.present();
 
-      this.router.navigate(['/login']);
+      // Entra directo al Home sin tener que volver a hacer login
+      this.router.navigate(['/home']);
     } catch {
       await loading.dismiss();
-      this.mensajeError = 'No se pudo completar el registro. Intenta nuevamente.';
+      this.mensajeError = 'No se pudo completar el registro.';
     }
   }
 

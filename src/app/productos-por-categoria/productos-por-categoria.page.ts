@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -41,7 +41,7 @@ import { FastFoodApiService } from '../services/fast-food-api.service';
     IonLoading
   ]
 })
-export class ProductosPorCategoriaPage implements OnInit {
+export class ProductosPorCategoriaPage {
   nombreCategoria = '';
   private categoriaSlug = '';
   productosDeLaCategoria: Producto[] = [];
@@ -54,10 +54,6 @@ export class ProductosPorCategoriaPage implements OnInit {
   private router = inject(Router);
   private api = inject(FastFoodApiService);
   private cd = inject(ChangeDetectorRef);
-
-  ngOnInit(): void {
-    this.inicializarCategoria();
-  }
 
   ionViewWillEnter(): void {
     this.inicializarCategoria();
@@ -73,26 +69,16 @@ export class ProductosPorCategoriaPage implements OnInit {
     this.categoriaSlug = raw.toLowerCase();
 
     const nombres: Record<string, string> = {
-      pastel: 'Pasteles',
-      pasteles: 'Pasteles',
-      carlota: 'Carlotas',
-      carlotas: 'Carlotas',
-      pay: 'Pays',
-      pays: 'Pays',
-      helado: 'Helados',
-      helados: 'Helados',
-      gelatina: 'Gelatinas',
-      gelatinas: 'Gelatinas',
-      brownie: 'Brownies',
-      brownies: 'Brownies',
-      bebida: 'Bebidas',
-      bebidas: 'Bebidas',
-      flan: 'Flanes',
-      flanes: 'Flanes',
-      dona: 'Donas',
-      donas: 'Donas',
-      galleta: 'Galletas',
-      galletas: 'Galletas'
+      pastel: 'Pasteles', pasteles: 'Pasteles',
+      carlota: 'Carlotas', carlotas: 'Carlotas',
+      pay: 'Pays', pays: 'Pays',
+      helado: 'Helados', helados: 'Helados',
+      gelatina: 'Gelatinas', gelatinas: 'Gelatinas',
+      brownie: 'Brownies', brownies: 'Brownies',
+      bebida: 'Bebidas', bebidas: 'Bebidas',
+      flan: 'Flanes', flanes: 'Flanes',
+      dona: 'Donas', donas: 'Donas',
+      galleta: 'Galletas', galletas: 'Galletas'
     };
 
     this.nombreCategoria =
@@ -151,6 +137,7 @@ export class ProductosPorCategoriaPage implements OnInit {
       this.router.navigate(['/detalle-producto', producto.id]);
     }, 650);
   }
+
   onLoadingDismiss(): void {
     this.cargando = false;
     this.cargandoProducto = false;

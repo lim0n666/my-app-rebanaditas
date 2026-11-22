@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -43,7 +43,7 @@ import { HistorialVentasService } from '../services/historial-ventas.service';
     IonToolbar
   ]
 })
-export class HistorialComprasPage implements OnInit {
+export class HistorialComprasPage {
   private readonly historial = inject(HistorialVentasService);
   private readonly cd = inject(ChangeDetectorRef);
 
@@ -56,11 +56,8 @@ export class HistorialComprasPage implements OnInit {
   estadoEditado: Venta['estado'] = 'pendiente';
   itemsEditables: VentaDetalle[] = [];
 
-  ngOnInit(): void {
-    this.cargarVentas();
-  }
-
-  ionViewWillEnter(): void {
+  async ionViewWillEnter(): Promise<void> {
+    await this.historial.cargarDesdePreferences();
     this.cargarVentas();
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -49,7 +49,7 @@ import { finalize } from 'rxjs';
     IonBackButton
   ]
 })
-export class ProductosPage implements OnInit {
+export class ProductosPage {
   productos: Producto[] = [];
   categorias: string[] = [];
   sabores: string[] = [];
@@ -70,15 +70,13 @@ export class ProductosPage implements OnInit {
   private readonly api = inject(FastFoodApiService);
   private readonly cd = inject(ChangeDetectorRef);
 
-  ngOnInit(): void {
-    this.inicializarVista();
+  async ionViewWillEnter(): Promise<void> {
+    await this.inicializarVista();
   }
 
-  ionViewWillEnter(): void {
-    this.inicializarVista();
-  }
+  private async inicializarVista(): Promise<void> {
+    await this.dataService.obtenerSesionGuardada();
 
-  private inicializarVista(): void {
     if (!this.dataService.usuarioEsAdministrador()) {
       this.router.navigateByUrl('/home');
       return;

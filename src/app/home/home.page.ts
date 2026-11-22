@@ -1,5 +1,4 @@
-// MODIFICADO: conectado a Fast Food API para catálogo y categorías de postres.
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
@@ -66,7 +65,7 @@ import { FastFoodApiService } from '../services/fast-food-api.service';
     IonLabel
   ]
 })
-export class HomePage implements OnInit {
+export class HomePage {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly dataService = inject(DataService);
@@ -117,13 +116,6 @@ export class HomePage implements OnInit {
           <text x="200" y="242" font-family="Arial, sans-serif" font-size="14" fill="#9c2c63" text-anchor="middle">Postres que enamoran</text>
         </svg>`
       );
-  }
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.categoriaSeleccionada = params && params['categoria'] ? params['categoria'] : '';
-      this.aplicarFiltros();
-    });
   }
 
   ionViewWillEnter(): void {

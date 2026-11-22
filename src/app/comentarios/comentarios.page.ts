@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Preferences } from '@capacitor/preferences';
 import {
   IonHeader,
   IonToolbar,
@@ -25,6 +26,7 @@ import {
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { star, starOutline, sendOutline, chatbubblesOutline, personCircleOutline } from 'ionicons/icons';
+import { DataService } from '../services/data';
 
 export interface ComentarioCliente {
   id: number;
@@ -64,8 +66,9 @@ const CLAVE_COMENTARIOS = 'rebanaditas_comentarios_v1';
     IonSelectOption
   ]
 })
-export class ComentariosPage implements OnInit {
+export class ComentariosPage {
   private readonly toastCtrl = inject(ToastController);
+  private readonly dataService = inject(DataService);
 
   autor = '';
   calificacion = 5;
@@ -82,35 +85,23 @@ export class ComentariosPage implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.detectarUsuarioActivo();
-    this.cargarComentarios();
+  async ionViewWillEnter(): Promise<void> {
+    await this.detectarUsuarioActivo();
+    await this.cargarComentarios();
   }
 
-  private detectarUsuarioActivo(): void {
-    const crudo =
-      sessionStorage.getItem('usuario_activo') ||
-      localStorage.getItem('usuario_activo') ||
-      sessionStorage.getItem('usuarioActual') ||
-      localStorage.getItem('usuarioActual');
-
-    if (!crudo) return;
-
-    try {
-      const usuario = JSON.parse(crudo);
-      if (usuario?.nombre) {
-        this.autor = usuario.nombre;
-      }
-    } catch {
-      // Si no es JSON válido, el usuario puede escribir su nombre manualmente
+  private async detectarUsuarioActivo(): Promise<void> {
+    const usuario = await this.dataService.obtenerSesionGuardada();
+    if (usuario?.nombre) {
+      this.autor = usuario.nombre;
     }
   }
 
-  private cargarComentarios(): void {
-    const guardado = localStorage.getItem(CLAVE_COMENTARIOS);
-    if (guardado) {
+  private async cargarComentarios(): Promise<void> {
+    const { value } = await Preferences.get({ key: CLAVE_COMENTARIOS });
+    if (value) {
       try {
-        this.comentarios = JSON.parse(guardado);
+        this.comentarios = JSON.parse(value);
         return;
       } catch {
         // Si falla el parseo, usa los de ejemplo
@@ -133,11 +124,14 @@ export class ComentariosPage implements OnInit {
         fecha: '17 nov 2026'
       }
     ];
-    this.guardarComentarios();
+    await this.guardarComentarios();
   }
 
-  private guardarComentarios(): void {
-    localStorage.setItem(CLAVE_COMENTARIOS, JSON.stringify(this.comentarios));
+  private async guardarComentarios(): Promise<void> {
+    await Preferences.set({
+      key: CLAVE_COMENTARIOS,
+      value: JSON.stringify(this.comentarios)
+    });
   }
 
   async enviarComentario(): Promise<void> {
@@ -167,7 +161,7 @@ export class ComentariosPage implements OnInit {
     };
 
     this.comentarios = [nuevo, ...this.comentarios];
-    this.guardarComentarios();
+    await this.guardarComentarios();
     this.mensaje = '';
 
     const toast = await this.toastCtrl.create({

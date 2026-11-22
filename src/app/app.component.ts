@@ -27,6 +27,7 @@ import {
   chatbubblesOutline,
   logOutOutline,
 } from 'ionicons/icons';
+import { DataService } from './services/data';
 
 @Component({
   selector: 'app-root',
@@ -51,10 +52,10 @@ import {
   ],
 })
 export class AppComponent {
-  private router = inject(Router);
+  private readonly router = inject(Router);
+  private readonly dataService = inject(DataService);
 
   constructor() {
-    // Registramos todos los íconos que usamos en app.component.html
     addIcons({
       iceCreamOutline,
       timeOutline,
@@ -68,16 +69,12 @@ export class AppComponent {
     });
   }
 
-  abrirRedSocial(url: string) {
+  abrirRedSocial(url: string): void {
     window.open(url, '_blank');
   }
 
-  cerrarSesion() {
-    // Si guardas los datos del usuario o token en localStorage, los limpiamos aquí
-    localStorage.removeItem('usuario');
-    localStorage.removeItem('token');
-    
-    // Redirigimos al login
+  async cerrarSesion(): Promise<void> {
+    await this.dataService.cerrarSesion();
     this.router.navigate(['/login']);
   }
 }

@@ -13,6 +13,7 @@ import {
 import { addIcons } from 'ionicons';
 import { personOutline } from 'ionicons/icons';
 import { AuthService } from '../services/auth.service';
+import { DataService } from '../services/data';
 
 @Component({
   selector: 'app-login',
@@ -37,16 +38,25 @@ export class LoginPage {
 
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly dataService = inject(DataService);
   private readonly loadingCtrl = inject(LoadingController);
 
   constructor() {
     addIcons({ personOutline });
   }
 
+  // Ciclo de vida Ionic: si ya hay sesión/token en Preferences, entra directo a Home
+  async ionViewWillEnter(): Promise<void> {
+    const sesion = await this.dataService.obtenerSesionGuardada();
+    const token = await this.authService.obtenerTokenActual();
+    if (sesion && token) {
+      this.router.navigate(['/home']);
+    }
+  }
+
   async iniciarSesion(): Promise<void> {
     this.mensajeError = '';
 
-    // 1. Validaciones estrictas en TypeScript
     const valCorreo = this.authService.validarCorreoProfesional(this.correo);
     if (!valCorreo.valido) {
       this.mensajeError = valCorreo.mensaje;
@@ -59,7 +69,6 @@ export class LoginPage {
       return;
     }
 
-    // 2. Animación de carga (LoadingController)
     const loading = await this.loadingCtrl.create({
       message: 'Validando credenciales...',
       spinner: 'crescent'
@@ -78,7 +87,7 @@ export class LoginPage {
       this.router.navigate(['/home']);
     } catch {
       await loading.dismiss();
-      this.mensajeError = 'Ocurrió un error al iniciar sesión. Intenta de nuevo.';
+      this.mensajeError = 'Ocurrió un error al iniciar sesión.';
     }
   }
 

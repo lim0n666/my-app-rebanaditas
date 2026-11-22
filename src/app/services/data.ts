@@ -1,38 +1,16 @@
-// MODIFICADO: permite vaciar el carrito después de registrar la compra.
 import { Injectable } from '@angular/core';
-
+import { Preferences } from '@capacitor/preferences';
 import {
   Producto,
   ItemCarrito,
   Usuario
 } from '../models/producto.models';
 
-
- @Injectable({
+@Injectable({
   providedIn: 'root'
 })
 export class DataService {
-
-  // ==========================================
-  // FILTRO DE CATEGORÃA COMPARTIDO
-  // ==========================================
-
   private categoriaFiltroActiva: string = '';
-
-  setCategoriaFiltro(categoria: string): void {
-    this.categoriaFiltroActiva = categoria;
-  }
-
-  getCategoriaFiltro(): string {
-    return this.categoriaFiltroActiva;
-  }
-
-  // ==========================================
-  // ADMINISTRADOR
-  // ==========================================
-  // ==========================================
-  // ADMINISTRADOR
-  // ==========================================
 
   private administrador: Usuario = {
     id: 0,
@@ -40,10 +18,6 @@ export class DataService {
     correo: 'admin@rebanaditas.com',
     password: 'admin123'
   };
-
-  // ==========================================
-  // ARREGLO DE PRODUCTOS
-  // ==========================================
 
   private listaProductos: Producto[] = [
     {
@@ -61,7 +35,7 @@ export class DataService {
       precio: 40,
       categoria: 'Pays',
       sabor: 'Limón',
-      imagen: 'assets/productos-imagenes/pay-de-limon.png', 
+      imagen: 'assets/productos-imagenes/pay-de-limon.png',
       descripcion: 'Fresco con base crujiente y un delicioso sabor a limón.'
     },
     {
@@ -318,384 +292,210 @@ export class DataService {
     }
   ];
 
-  // ==========================================
-  // ARREGLO DE CLIENTES
-  // ==========================================
-
   private usuarios: Usuario[] = [
-
     {
       id: 1,
       nombre: 'Reyna',
       correo: 'reyna@gmail.com',
       password: '123456'
     },
-
     {
       id: 2,
       nombre: 'Cliente',
       correo: 'cliente@gmail.com',
       password: '123456'
     }
-
   ];
-
-  // ==========================================
-  // USUARIO ACTUAL
-  // ==========================================
 
   private usuarioActual: Usuario | undefined;
-
-  // ==========================================
-  // CATEGORÍAS
-  // ==========================================
-
-  private categorias: string[] = [
-    'Pasteles',
-    'Carlotas',
-    'Pays',
-    'Helados',
-    'Gelatinas',
-    'Brownies',
-    'Bebidas'
-  ];
-
-  // ==========================================
-  // SABORES
-  // ==========================================
-
-  private sabores: string[] = [
-    'Chocolate',
-    'Fresa',
-    'Limón',
-    'Vainilla',
-    'Canela',
-    'Mango',
-    'Nuez',
-    'Café',
-    'Galleta',
-    'Pistache',
-    'Rompope',
-    'Frutas variadas',
-    'Frutos rojos',
-    'Chai',
-  ];
-
-  // ==========================================
-  // CARRITO
-  // ==========================================
-
   private carrito: ItemCarrito[] = [];
 
-  private readonly sessionStorageKey = 'rebanaditas.usuarioActual';
+  private readonly sessionPrefKey = 'rebanaditas.usuarioActual';
+  private readonly usuariosPrefKey = 'rebanaditas.usuariosRegistrados';
+  private readonly tokenPrefKey = 'rebanaditas.authToken';
+
+  private sabores: string[] = [
+    'Chocolate', 'Fresa', 'Limón', 'Vainilla', 'Canela',
+    'Mango', 'Nuez', 'Café', 'Galleta', 'Pistache',
+    'Rompope', 'Frutas variadas', 'Frutos rojos', 'Chai'
+  ];
 
   constructor() {
+    this.inicializarDesdePreferences();
+  }
+
+  async inicializarDesdePreferences(): Promise<void> {
     try {
-      const guardado = sessionStorage.getItem(this.sessionStorageKey);
-      if (!guardado) return;
-      const datos = JSON.parse(guardado) as Pick<Usuario, 'id' | 'nombre' | 'correo'>;
-      if (datos.id && datos.nombre && datos.correo) {
-        this.usuarioActual = { ...datos, password: '' };
+      const usuariosGuardados = await Preferences.get({ key: this.usuariosPrefKey });
+      if (usuariosGuardados.value) {
+        const parsed = JSON.parse(usuariosGuardados.value) as Usuario[];
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          this.usuarios = parsed;
+        }
+      }
+
+      const sesionGuardada = await Preferences.get({ key: this.sessionPrefKey });
+      if (sesionGuardada.value) {
+        const datos = JSON.parse(sesionGuardada.value) as Pick<Usuario, 'id' | 'nombre' | 'correo'>;
+        if (datos.nombre && datos.correo) {
+          this.usuarioActual = { ...datos, password: '' };
+        }
       }
     } catch {
-      try { sessionStorage.removeItem(this.sessionStorageKey); } catch { /* almacenamiento bloqueado */ }
+      // Continúa con valores en memoria si Preferences aún no está listo
     }
   }
 
-  // ==========================================
-  // OBTENER PRODUCTOS
-  // ==========================================
+  setCategoriaFiltro(categoria: string): void {
+    this.categoriaFiltroActiva = categoria;
+  }
+
+  getCategoriaFiltro(): string {
+    return this.categoriaFiltroActiva;
+  }
 
   getProductos(): Producto[] {
-
     return this.listaProductos;
-
   }
-
-  // ==========================================
-  // OBTENER CATEGORÃAS
-  // ==========================================
 
   getCategorias(): string[] {
-  return [
-    'Pasteles',
-    'Carlotas',
-    'Pays',
-    'Helados',
-    'Gelatinas',
-    'Brownies',
-    'Bebidas'
-  ];
-}
-  // ==========================================
-  // OBTENER SABORES
-  // ==========================================
-
-  getSabores(): string[] {
-
-    return this.sabores;
-
+    return ['Pasteles', 'Carlotas', 'Pays', 'Helados', 'Gelatinas', 'Brownies', 'Bebidas'];
   }
 
-  // ==========================================
-  // OBTENER CARRITO
-  // ==========================================
+  getSabores(): string[] {
+    return this.sabores;
+  }
 
   getCarrito(): ItemCarrito[] {
-
     return this.carrito;
-
   }
 
   vaciarCarrito(): void {
     this.carrito = [];
   }
 
-  // ==========================================
-  // OBTENER CLIENTES
-  // ==========================================
-
   getUsuarios(): Usuario[] {
-
     return this.usuarios;
-
   }
-
-  // ==========================================
-  // OBTENER ADMINISTRADOR
-  // ==========================================
 
   getAdministrador(): Usuario {
-
     return this.administrador;
-
   }
 
-  // ==========================================
-  // VERIFICAR SI ES ADMINISTRADOR
-  // ==========================================
-  
-
-  esAdministrador(
-    correo: string,
-    password: string
-  ): boolean {
-
+  esAdministrador(correo: string, password: string): boolean {
     return (
-      this.administrador.correo.toLowerCase() ===
-        correo.trim().toLowerCase() &&
+      this.administrador.correo.toLowerCase() === correo.trim().toLowerCase() &&
       this.administrador.password === password
     );
-
   }
 
-  // ==========================================
-  // USUARIO ACTUAL
-  // ==========================================
-
-  setUsuarioActual(
-    usuario: Usuario
-  ): void {
-    // Solo se guardan datos de perfil; la contraseña no se conserva en el navegador.
+  async setUsuarioActual(usuario: Usuario, tokenHash?: string): Promise<void> {
     this.usuarioActual = {
       id: usuario.id,
       nombre: usuario.nombre,
       correo: usuario.correo,
       password: ''
     };
-    try {
-      sessionStorage.setItem(this.sessionStorageKey, JSON.stringify({
+
+    await Preferences.set({
+      key: this.sessionPrefKey,
+      value: JSON.stringify({
         id: usuario.id,
         nombre: usuario.nombre,
         correo: usuario.correo
-      }));
-    } catch {
-      // La sesión continúa en memoria si el navegador bloquea el almacenamiento.
-    }
+      })
+    });
 
+    if (tokenHash) {
+      await Preferences.set({
+        key: this.tokenPrefKey,
+        value: tokenHash
+      });
+    }
   }
 
   getUsuarioActual(): Usuario | undefined {
-
     return this.usuarioActual;
-
   }
 
-  cerrarSesion(): void {
+  async obtenerSesionGuardada(): Promise<Usuario | undefined> {
+    if (this.usuarioActual) {
+      return this.usuarioActual;
+    }
+    const res = await Preferences.get({ key: this.sessionPrefKey });
+    if (res.value) {
+      const datos = JSON.parse(res.value) as Pick<Usuario, 'id' | 'nombre' | 'correo'>;
+      if (datos.correo) {
+        this.usuarioActual = { ...datos, password: '' };
+        return this.usuarioActual;
+      }
+    }
+    return undefined;
+  }
 
+  async cerrarSesion(): Promise<void> {
     this.usuarioActual = undefined;
-    try { sessionStorage.removeItem(this.sessionStorageKey); } catch { /* almacenamiento bloqueado */ }
-
+    await Preferences.remove({ key: this.sessionPrefKey });
+    await Preferences.remove({ key: this.tokenPrefKey });
   }
-
-  // ==========================================
-  // SABER SI EL USUARIO ACTUAL ES ADMIN
-  // ==========================================
 
   usuarioEsAdministrador(): boolean {
-
-    if (!this.usuarioActual) {
-
-      return false;
-
-    }
-
-    return (
-      this.usuarioActual.correo.toLowerCase() ===
-      this.administrador.correo.toLowerCase()
-    );
-
+    if (!this.usuarioActual) return false;
+    return this.usuarioActual.correo.toLowerCase() === this.administrador.correo.toLowerCase();
   }
 
-  // ==========================================
-  // REGISTRAR CLIENTE
-  // ==========================================
-
-  registrarUsuario(
-    nombre: string,
-    correo: string,
-    password: string
-  ): boolean {
-
-    // No permitir registrar el correo
-    // del administrador
-
-    if (
-      correo.trim().toLowerCase() ===
-      this.administrador.correo.toLowerCase()
-    ) {
-
-      return false;
-
+  async registrarUsuario(nombre: string, correo: string, password: string): Promise<Usuario | null> {
+    if (correo.trim().toLowerCase() === this.administrador.correo.toLowerCase()) {
+      return null;
     }
 
-    // Verificar si el correo ya existe
-
-    const correoExiste =
-      this.usuarios.some(
-        usuario =>
-          usuario.correo.toLowerCase() ===
-          correo.trim().toLowerCase()
-      );
+    const correoExiste = this.usuarios.some(
+      usuario => usuario.correo.toLowerCase() === correo.trim().toLowerCase()
+    );
 
     if (correoExiste) {
-
-      return false;
-
+      return null;
     }
-
-    // Crear nuevo cliente
 
     const nuevoUsuario: Usuario = {
-
-      id:
-        this.usuarios.length > 0
-          ? Math.max(
-              ...this.usuarios.map(
-                usuario => usuario.id
-              )
-            ) + 1
-          : 1,
-
+      id: this.usuarios.length > 0 ? Math.max(...this.usuarios.map(u => u.id)) + 1 : 1,
       nombre: nombre.trim(),
-
       correo: correo.trim(),
-
-      password: password
-
+      password
     };
 
-    // Agregar cliente al arreglo
+    this.usuarios.push(nuevoUsuario);
 
-    this.usuarios.push(
-      nuevoUsuario
-    );
+    await Preferences.set({
+      key: this.usuariosPrefKey,
+      value: JSON.stringify(this.usuarios)
+    });
 
-    return true;
-
+    return nuevoUsuario;
   }
 
-  // ==========================================
-  // AGREGAR PRODUCTO
-  // ==========================================
-
-  agregarProducto(
-    producto: Producto
-  ): void {
-
-    this.listaProductos.push(
-      producto
-    );
-
+  agregarProducto(producto: Producto): void {
+    this.listaProductos.push(producto);
   }
-
-  // ==========================================
-  // OBTENER NUEVO ID DE PRODUCTO
-  // ==========================================
 
   obtenerNuevoIdProducto(): number {
-
-    if (
-      this.listaProductos.length === 0
-    ) {
-
-      return 1;
-
-    }
-
-    return (
-      Math.max(
-        ...this.listaProductos.map(
-          producto => producto.id
-        )
-      ) + 1
-    );
-
+    if (this.listaProductos.length === 0) return 1;
+    return Math.max(...this.listaProductos.map(p => p.id)) + 1;
   }
 
-  // ==========================================
-  // ELIMINAR PRODUCTO
-  // ==========================================
-
-  eliminarProducto(
-    id: number
-  ): void {
-
-    const indice =
-      this.listaProductos.findIndex(
-        producto =>
-          producto.id === id
-      );
-
+  eliminarProducto(id: number): void {
+    const indice = this.listaProductos.findIndex(p => p.id === id);
     if (indice !== -1) {
-
-      this.listaProductos.splice(
-        indice,
-        1
-      );
-
+      this.listaProductos.splice(indice, 1);
     }
-
   }
-
-  // ==========================================
-  // AGREGAR AL CARRITO
-  // ==========================================
 
   agregarAlCarrito(producto: Producto, cantidad: number = 1): void {
-  // Buscamos si el producto ya existe en el carrito comparando por su id (accediendo a item.producto.id)
-  const index = this.carrito.findIndex(item => item.producto.id === producto.id);
-  
-  if (index !== -1) {
-    // Si ya existe, sumamos la cantidad
-    this.carrito[index].cantidad += cantidad;
-  } else {
-    // Si es nuevo, lo agregamos respetando la estructura de ItemCarrito
-    this.carrito.push({
-      producto: producto,
-      cantidad: cantidad
-    });
+    const index = this.carrito.findIndex(item => item.producto.id === producto.id);
+    if (index !== -1) {
+      this.carrito[index].cantidad += cantidad;
+    } else {
+      this.carrito.push({ producto, cantidad });
+    }
   }
-}
-
 }

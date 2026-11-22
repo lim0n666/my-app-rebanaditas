@@ -1,5 +1,5 @@
 /* eslint-disable @angular-eslint/prefer-inject */
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -48,7 +48,7 @@ import { FastFoodApiService } from '../services/fast-food-api.service';
     IonCol
   ]
 })
-export class DetalleProductoPage implements OnInit {
+export class DetalleProductoPage {
   producto: Producto | undefined;
   cantidad = 1;
   cargando = true;
@@ -62,10 +62,6 @@ export class DetalleProductoPage implements OnInit {
     private toastController: ToastController,
     private cd: ChangeDetectorRef
   ) {}
-
-  ngOnInit(): void {
-    this.cargarDetalle();
-  }
 
   ionViewWillEnter(): void {
     this.cargarDetalle();
@@ -104,7 +100,7 @@ export class DetalleProductoPage implements OnInit {
     }
   }
 
-  async agregarAlCarrito(): Promise<void> {
+ async agregarAlCarrito(): Promise<void> {
     if (!this.producto) {
       return;
     }
@@ -118,7 +114,7 @@ export class DetalleProductoPage implements OnInit {
       color: 'success'
     });
 
-    await toast.present();
-    void this.router.navigateByUrl('/carrito');
+    void toast.present();
+    await this.router.navigateByUrl('/carrito');
   }
 }

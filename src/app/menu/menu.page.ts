@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   IonHeader,
@@ -29,6 +29,7 @@ import {
   logOutOutline,
   chevronForwardOutline
 } from 'ionicons/icons';
+import { DataService } from '../services/data';
 
 @Component({
   selector: 'app-menu',
@@ -51,8 +52,10 @@ import {
     IonButton
   ]
 })
-export class MenuPage implements OnInit {
+export class MenuPage {
   private readonly router = inject(Router);
+  private readonly dataService = inject(DataService);
+  private readonly cd = inject(ChangeDetectorRef);
 
   nombreUsuario = 'Invitado';
   correoUsuario = '';
@@ -74,55 +77,32 @@ export class MenuPage implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.cargarDatosSesion();
+  async ionViewWillEnter(): Promise<void> {
+    await this.cargarDatosSesion();
   }
 
-  ionViewWillEnter(): void {
-    this.cargarDatosSesion();
-  }
-
- private cargarDatosSesion(): void {
-    // Busca en cualquier clave guardada en sessionStorage o localStorage
-    const storages = [sessionStorage, localStorage];
-
-    for (const storage of storages) {
-      for (let i = 0; i < storage.length; i++) {
-        const clave = storage.key(i);
-        if (!clave) continue;
-
-        const valor = storage.getItem(clave);
-        if (!valor || !valor.startsWith('{')) continue;
-
-        try {
-          const obj = JSON.parse(valor);
-          const correo = (obj?.correo || obj?.email || '').toLowerCase();
-          const nombre = obj?.nombre || obj?.name || obj?.username;
-
-          if (correo || nombre) {
-            this.nombreUsuario = nombre || 'Administrador';
-            this.correoUsuario = correo;
-            this.esAdmin =
-              obj?.rol === 'admin' ||
-              obj?.role === 'admin' ||
-              correo === 'admin@rebanaditas.com';
-            return;
-          }
-        } catch {
-          // Ignora valores que no sean JSON de usuario
-        }
-      }
+  private async cargarDatosSesion(): Promise<void> {
+    const usuario = await this.dataService.obtenerSesionGuardada();
+    if (usuario) {
+      this.nombreUsuario = usuario.nombre || 'Administrador';
+      this.correoUsuario = usuario.correo || '';
+      this.esAdmin =
+        this.dataService.usuarioEsAdministrador() ||
+        this.correoUsuario.toLowerCase() === 'admin@rebanaditas.com';
+    } else {
+      this.nombreUsuario = 'Invitado';
+      this.correoUsuario = '';
+      this.esAdmin = false;
     }
+    this.cd.detectChanges();
   }
 
   abrirRedSocial(url: string): void {
     window.open(url, '_blank', 'noopener,noreferrer');
   }
 
-  cerrarSesion(): void {
-    sessionStorage.clear();
-    localStorage.removeItem('usuario_activo');
-    localStorage.removeItem('usuarioActual');
+  async cerrarSesion(): Promise<void> {
+    await this.dataService.cerrarSesion();
     this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 }

@@ -1,7 +1,8 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Preferences } from '@capacitor/preferences';
 import {
   IonHeader,
   IonToolbar,
@@ -55,7 +56,7 @@ import { Usuario } from '../models/producto.models';
     IonIcon
   ]
 })
-export class PerfilPage implements OnInit {
+export class PerfilPage {
   usuario: Usuario | undefined;
   editando = false;
   nombreEditable = '';
@@ -81,19 +82,17 @@ export class PerfilPage implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.cargarUsuario();
+  async ionViewWillEnter(): Promise<void> {
+    await this.cargarUsuario();
   }
 
-  ionViewWillEnter(): void {
-    this.cargarUsuario();
-  }
-
-  cargarUsuario(): void {
-    this.usuario = this.dataService.getUsuarioActual();
+  async cargarUsuario(): Promise<void> {
+    this.usuario = await this.dataService.obtenerSesionGuardada();
     if (this.usuario) {
       this.nombreEditable = this.usuario.nombre || '';
-      const telGuardado = localStorage.getItem(`rebanaditas_tel_${this.usuario.correo}`);
+      const { value: telGuardado } = await Preferences.get({
+        key: `rebanaditas_tel_${this.usuario.correo}`
+      });
       this.telefonoEditable = (this.usuario as any).telefono || telGuardado || '';
     }
     this.editando = false;
@@ -112,10 +111,12 @@ export class PerfilPage implements OnInit {
     this.editando = true;
   }
 
-  cancelarEdicion(): void {
+  async cancelarEdicion(): Promise<void> {
     if (this.usuario) {
       this.nombreEditable = this.usuario.nombre;
-      const telGuardado = localStorage.getItem(`rebanaditas_tel_${this.usuario.correo}`);
+      const { value: telGuardado } = await Preferences.get({
+        key: `rebanaditas_tel_${this.usuario.correo}`
+      });
       this.telefonoEditable = (this.usuario as any).telefono || telGuardado || '';
     }
     this.editando = false;
@@ -140,8 +141,11 @@ export class PerfilPage implements OnInit {
     this.usuario.nombre = nombreLimpio;
     (this.usuario as any).telefono = telLimpio;
 
-    localStorage.setItem(`rebanaditas_tel_${this.usuario.correo}`, telLimpio);
-    this.dataService.setUsuarioActual(this.usuario);
+    await Preferences.set({
+      key: `rebanaditas_tel_${this.usuario.correo}`,
+      value: telLimpio
+    });
+    await this.dataService.setUsuarioActual(this.usuario);
 
     this.editando = false;
     this.cd.detectChanges();
@@ -158,8 +162,8 @@ export class PerfilPage implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
-  cerrarSesion(): void {
-    this.dataService.cerrarSesion();
+  async cerrarSesion(): Promise<void> {
+    await this.dataService.cerrarSesion();
     this.usuario = undefined;
     this.router.navigateByUrl('/login');
   }

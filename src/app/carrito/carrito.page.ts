@@ -1,9 +1,19 @@
-
-import { Component } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
-import { IonHeader, IonItem, IonLabel, IonToolbar, IonTitle, IonList, IonNote, IonContent, IonThumbnail, IonButton, IonIcon } from '@ionic/angular';
+import {
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonToolbar,
+  IonTitle,
+  IonList,
+  IonNote,
+  IonContent,
+  IonThumbnail,
+  IonButton,
+  IonIcon
+} from '@ionic/angular';
 
 import { ItemCarrito } from '../models/producto.models';
 import { DataService } from '../services/data';
@@ -13,8 +23,10 @@ import { DataService } from '../services/data';
   templateUrl: './carrito.page.html',
   styleUrls: ['./carrito.page.scss'],
   standalone: true,
-  imports: [IonIcon, IonButton,
+  imports: [
     CommonModule,
+    IonIcon,
+    IonButton,
     IonHeader,
     IonItem,
     IonLabel,
@@ -23,88 +35,56 @@ import { DataService } from '../services/data';
     IonList,
     IonNote,
     IonContent,
-    IonThumbnail]
+    IonThumbnail
+  ]
 })
 export class CarritoPage {
+  private readonly dataService = inject(DataService);
+  private readonly router = inject(Router);
+  private readonly cd = inject(ChangeDetectorRef);
 
-  carrito: ItemCarrito[] = [];
-
-  constructor(
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    private dataService: DataService,
-     
-    // eslint-disable-next-line @angular-eslint/prefer-inject
-    private router: Router
-  ) {}
+  carrito: ItemCarrito[] = [...this.dataService.getCarrito()];
 
   ionViewWillEnter(): void {
-    this.carrito =
-      this.dataService.getCarrito();
+    this.actualizarVistaCarrito();
+  }
 
+  private actualizarVistaCarrito(): void {
+    this.carrito = [...this.dataService.getCarrito()];
+    this.cd.detectChanges();
   }
 
   regresar(): void {
-
-    this.router.navigate([
-      '/home'
-    ]);
-
+    this.router.navigate(['/home']);
   }
 
   irAMetodosPago(): void {
-
-    this.router.navigate([
-      '/metodos-pago'
-    ]);
-
+    this.router.navigate(['/metodos-pago']);
   }
 
-  aumentarCantidad(
-    item: ItemCarrito
-  ): void {
-
+  aumentarCantidad(item: ItemCarrito): void {
     item.cantidad++;
-
+    this.cd.detectChanges();
   }
 
-  disminuirCantidad(
-    item: ItemCarrito
-  ): void {
-
+  disminuirCantidad(item: ItemCarrito): void {
     if (item.cantidad > 1) {
-
       item.cantidad--;
-
     } else {
-
-      const indice =
-        this.carrito.indexOf(item);
-
+      const carritoReal = this.dataService.getCarrito();
+      const indice = carritoReal.indexOf(item);
       if (indice !== -1) {
-
-        this.carrito.splice(
-          indice,
-          1
-        );
-
+        carritoReal.splice(indice, 1);
       }
-
+      this.carrito = [...carritoReal];
     }
-
+    this.cd.detectChanges();
   }
 
   obtenerTotal(): number {
-
     return this.carrito.reduce(
-      (
-        total,
-        item
-      ) =>
-        total +
-        item.producto.precio *
-        item.cantidad,
+      (total, item) => total + item.producto.precio * item.cantidad,
       0
     );
-
   }
 }

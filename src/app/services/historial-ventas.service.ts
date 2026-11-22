@@ -1,5 +1,5 @@
-// MODIFICADO: historial CRUD persistido en localStorage, con fechas e importes.
 import { Injectable } from '@angular/core';
+import { Preferences } from '@capacitor/preferences';
 import { ItemCarrito } from '../models/producto.models';
 import { Venta, VentaDetalle } from '../models/ventas.models';
 
@@ -7,16 +7,27 @@ import { Venta, VentaDetalle } from '../models/ventas.models';
 export class HistorialVentasService {
   private readonly storageKey = 'rebanaditas.historial.v1';
   private readonly ivaRate = 0.16;
+  private ventasCache: Venta[] = [];
 
-  listar(): Venta[] {
+  constructor() {
+    this.cargarDesdePreferences();
+  }
+
+  async cargarDesdePreferences(): Promise<Venta[]> {
     try {
-      const data: unknown = JSON.parse(localStorage.getItem(this.storageKey) ?? '[]');
-      return Array.isArray(data)
+      const { value } = await Preferences.get({ key: this.storageKey });
+      const data: unknown = JSON.parse(value ?? '[]');
+      this.ventasCache = Array.isArray(data)
         ? (data as Venta[]).sort((a, b) => b.fecha.localeCompare(a.fecha))
         : [];
     } catch {
-      return [];
+      this.ventasCache = [];
     }
+    return this.ventasCache;
+  }
+
+  listar(): Venta[] {
+    return [...this.ventasCache].sort((a, b) => b.fecha.localeCompare(a.fecha));
   }
 
   registrarCompra(
@@ -82,11 +93,11 @@ export class HistorialVentasService {
   }
 
   private persistir(ventas: Venta[]): void {
-    try {
-      localStorage.setItem(this.storageKey, JSON.stringify(ventas));
-    } catch {
-      throw new Error('No se pudo guardar el historial en este navegador.');
-    }
+    this.ventasCache = ventas;
+    Preferences.set({
+      key: this.storageKey,
+      value: JSON.stringify(ventas)
+    }).catch(() => {});
   }
 
   private redondear(valor: number): number {

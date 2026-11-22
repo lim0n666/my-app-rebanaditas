@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,18 +18,24 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonInput, IonLabel, IonIcon } from '@ionic/angular';
+  IonInput,
+  IonLabel,
+  IonIcon
+} from '@ionic/angular';
 import { DataService } from '../services/data';
 import { HistorialVentasService } from '../services/historial-ventas.service';
+import { StripeApiService } from '../services/stripe-api.service';
 
 @Component({
   selector: 'app-metodos-pago',
   templateUrl: './metodos-pago.page.html',
   styleUrls: ['./metodos-pago.page.scss'],
   standalone: true,
-  imports: [IonIcon, IonLabel, 
+  imports: [
     CommonModule,
     FormsModule,
+    IonIcon,
+    IonLabel,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -47,13 +53,11 @@ import { HistorialVentasService } from '../services/historial-ventas.service';
   ]
 })
 export class MetodosPagoPage {
-  constructor() {
-    addIcons({
-      cashOutline,
-      cardOutline,
-      swapHorizontalOutline
-    });
-  }
+  private readonly data = inject(DataService);
+  private readonly historial = inject(HistorialVentasService);
+  private readonly stripeApi = inject(StripeApiService);
+  private readonly router = inject(Router);
+  private readonly cd = inject(ChangeDetectorRef);
 
   metodoSeleccionado = 'Efectivo';
   titularTarjeta = '';
@@ -67,11 +71,22 @@ export class MetodosPagoPage {
   folioRecibo = '';
   procesando = false;
 
-  private readonly data = inject(DataService);
-  private readonly historial = inject(HistorialVentasService);
-  private readonly router = inject(Router);
+  constructor() {
+    addIcons({
+      cashOutline,
+      cardOutline,
+      swapHorizontalOutline
+    });
+  }
 
-  confirmarCompra(): void {
+  ionViewWillEnter(): void {
+    this.mensajeError = '';
+    this.estadoPago = '';
+    this.folioRecibo = '';
+    this.procesando = false;
+  }
+
+  async confirmarCompra(): Promise<void> {
     const carrito = this.data.getCarrito();
     if (!carrito.length) {
       this.mensajeError = 'Tu carrito está vacío.';
@@ -81,7 +96,6 @@ export class MetodosPagoPage {
     this.mensajeError = '';
     this.folioRecibo = '';
 
-    // Validaciones según el método elegido
     if (this.metodoSeleccionado === 'Tarjeta Sandbox') {
       const limpia = this.numeroTarjeta.replace(/\s+/g, '');
       if (!this.titularTarjeta.trim()) {
@@ -99,23 +113,47 @@ export class MetodosPagoPage {
       return;
     }
 
-    // Estado 1: Pendiente (conectando con pasarela sandbox)
     this.procesando = true;
-    this.estadoPago = 'PENDIENTE - Validando con pasarela sandbox...';
+    this.estadoPago = 'PENDIENTE - Conectando con API de pago...';
+    this.cd.detectChanges();
 
-    setTimeout(() => {
-      // Simulación de tarjeta rechazada (Fallo) para cumplir la rúbrica
-      if (
-        this.metodoSeleccionado === 'Tarjeta Sandbox' &&
-        this.numeroTarjeta.replace(/\s+/g, '').startsWith('4000')
-      ) {
+    const subtotal = carrito.reduce((acc, item) => acc + item.producto.precio * item.cantidad, 0);
+    const totalConIva = Math.round(subtotal * 1.16 * 100) / 100;
+
+    if (this.metodoSeleccionado === 'Tarjeta Sandbox') {
+      const resultadoStripe = await this.stripeApi.crearIntentoPago(
+        totalConIva,
+        `Pedido Rebanaditas - ${this.titularTarjeta.trim()}`,
+        this.numeroTarjeta
+      );
+
+      if (!resultadoStripe.exito) {
         this.procesando = false;
-        this.estadoPago = 'FALLO - Tarjeta declinada por el banco emisor (Sandbox).';
-        this.mensajeError = 'El pago fue rechazado. Prueba con la tarjeta 4242 4242 4242 4242.';
+        this.estadoPago = `FALLO (${resultadoStripe.estado}) - Pago rechazado.`;
+        this.mensajeError = resultadoStripe.mensaje;
+        this.cd.detectChanges();
         return;
       }
 
-      // Estado 2: Éxito + Generación de folio de recibo
+      this.folioRecibo = resultadoStripe.idTransaccion;
+      this.estadoPago = `ÉXITO - Stripe (${resultadoStripe.estado})`;
+      this.historial.registrarCompra(
+        carrito,
+        `Stripe Card (${resultadoStripe.idTransaccion})`,
+        'pagada'
+      );
+      this.data.vaciarCarrito();
+      this.procesando = false;
+      this.cd.detectChanges();
+
+      setTimeout(() => {
+        void this.router.navigateByUrl('/historial-compras');
+      }, 900);
+      return;
+    }
+
+    // Flujo para Efectivo o Transferencia / Mercado Pago
+    setTimeout(() => {
       const folio = 'REB-' + Math.floor(100000 + Math.random() * 900000);
       this.folioRecibo = folio;
       this.estadoPago = 'ÉXITO - Pago confirmado.';
@@ -131,11 +169,12 @@ export class MetodosPagoPage {
 
       this.data.vaciarCarrito();
       this.procesando = false;
+      this.cd.detectChanges();
 
       setTimeout(() => {
         void this.router.navigateByUrl('/historial-compras');
       }, 900);
-    }, 800);
+    }, 600);
   }
 
   volverAlCarrito(): void {
