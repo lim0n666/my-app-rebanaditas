@@ -94,6 +94,7 @@ export class MenuPage {
       this.correoUsuario = '';
       this.esAdmin = false;
     }
+    //cambios
     this.cd.detectChanges();
   }
 
