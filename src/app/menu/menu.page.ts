@@ -99,6 +99,7 @@ export class MenuPage {
 
   abrirRedSocial(url: string): void {
     window.open(url, '_blank', 'noopener,noreferrer');
+    
   }
 
   async cerrarSesion(): Promise<void> {
