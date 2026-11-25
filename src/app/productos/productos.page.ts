@@ -23,7 +23,7 @@ import {
 import { Producto } from '../models/producto.models';
 import { DataService } from '../services/data';
 import { FastFoodApiService } from '../services/fast-food-api.service';
-import { finalize } from 'rxjs';
+import { finalize } from 'rxjs';                                      
 
 @Component({
   selector: 'app-productos',
@@ -46,7 +46,7 @@ import { finalize } from 'rxjs';
     IonSelect,
     IonSelectOption,
     IonButtons,
-    IonBackButton
+    IonBackButton                                            
   ]
 })
 export class ProductosPage {
@@ -197,11 +197,11 @@ export class ProductosPage {
     this.nuevaDescripcion = producto.descripcion ?? '';
     this.nuevaImagen = producto.imagen ?? '';
     this.mensaje = 'Edita los datos y guarda los cambios.';
-  }
+  }                                      
 
   eliminarProducto(indice: number): void {
     const producto = this.productos[indice];
-    if (!producto) return;
+    if (!producto) return;                                   
 
     this.api.eliminar(producto.id).subscribe({
       next: () => {
@@ -216,4 +216,4 @@ export class ProductosPage {
   regresar(): void {
     this.router.navigateByUrl('/home');
   }
-}
+}                                   
