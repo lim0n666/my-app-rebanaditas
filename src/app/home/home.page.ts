@@ -237,7 +237,8 @@ export class HomePage {
   cerrarFiltros(): void {
     this.mostrarFiltros = false;
   }
-
+ 
+  
   limpiarFiltros(): void {
     this.categoriaSeleccionada = '';
     this.saborSeleccionado = '';
