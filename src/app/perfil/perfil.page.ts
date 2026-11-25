@@ -33,7 +33,7 @@ import {
 } from 'ionicons/icons';
 import { DataService } from '../services/data';
 import { Usuario } from '../models/producto.models';
-
+//componente
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
